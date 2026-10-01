@@ -1791,3 +1791,48 @@ renderCoins(); renderHome(); show("start");
   else setTimeout(check,1500);
 })();
 </script>
+<script>
+/* Appka: diagnostický log zvuku. Tlačítko „🐞 Test zvuku / log" na úvodní obrazovce
+   zkusí přehrát klip (fetch → HTMLAudio → Web Audio) a vypíše, kde to vázne.
+   Zároveň při prvním klepnutí odemkne iOS audio (přehraje tichý buffer v gestu). */
+(function(){
+  var L=[];
+  function log(m){ try{ L.push(new Date().toLocaleTimeString()+" "+m); if(L.length>400)L.shift(); var p=document.getElementById("ppLogBody"); if(p){ p.textContent=L.join("\n"); p.scrollTop=p.scrollHeight; } }catch(e){} }
+  window.pplog=log;
+  window.addEventListener("error", function(e){ log("ERR "+(e.message||(e.error&&e.error.message)||e.filename||e)); });
+  window.addEventListener("unhandledrejection", function(e){ log("REJECT "+(e.reason&&(e.reason.message||e.reason))); });
+  log("start onLine="+navigator.onLine+" caches="+(typeof caches)+" AC="+(typeof(window.AudioContext||window.webkitAudioContext))+" muted="+(typeof muted!=="undefined"?muted:"?"));
+
+  if(typeof ensureAudio==="function"){ var _ea=ensureAudio; window.ensureAudio=function(){ _ea();
+    try{ if(typeof actx!=="undefined"&&actx){ if(actx.state==="suspended") actx.resume();
+      var b=actx.createBuffer(1,1,22050), s=actx.createBufferSource(); s.buffer=b; s.connect(actx.destination); s.start(0);
+      log("ensureAudio actx="+actx.state); } else log("ensureAudio actx=null"); }catch(e){ log("ensureAudio EX "+e); } }; }
+  if(typeof getBuf==="function"){ var _gb=getBuf; window.getBuf=function(id){ var p=_gb(id); try{ p.then(function(b){ log("buf OK "+id+" "+(b&&b.duration?b.duration.toFixed(2):"?")+"s"); }, function(e){ log("buf FAIL "+id+" "+e); }); }catch(_){ } return p; }; }
+  if(typeof play==="function"){ var _pl=play; window.play=function(ids,o){ log("play "+JSON.stringify(Array.isArray(ids)?ids:[ids])+" muted="+(typeof muted!=="undefined"?muted:"?")); return _pl(ids,o); }; }
+  if(typeof playSeq==="function"){ var _ps=playSeq; window.playSeq=function(a,b,c,d){ log("playSeq(fallback) "+JSON.stringify(a)); return _ps(a,b,c,d); }; }
+  if(typeof speakTTS==="function"){ var _st=speakTTS; window.speakTTS=function(t,o){ log("TTS "+String(t||"").slice(0,30)); return _st(t,o); }; }
+
+  function addUI(){
+    var host=document.getElementById("sc_start"); if(!host||document.getElementById("ppLogBtn")) return;
+    var btn=document.createElement("button"); btn.id="ppLogBtn"; btn.className="reset"; btn.style.marginTop="2px";
+    btn.textContent="🐞 Test zvuku / log";
+    var pn=document.createElement("div"); pn.id="ppLogPanel";
+    pn.style.cssText="display:none;position:fixed;inset:0;z-index:1000;background:#fffdf3;color:#222;flex-direction:column;padding:10px;padding-top:calc(10px + env(safe-area-inset-top,0px));font-family:ui-monospace,monospace;font-size:12px";
+    pn.innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="ppTest" style="padding:8px 14px;font-weight:700">🔊 Test</button><button id="ppCopy" style="padding:8px 14px">Kopírovat</button><button id="ppClose" style="padding:8px 14px">Zavřít</button></div><pre id="ppLogBody" style="flex:1;overflow:auto;white-space:pre-wrap;margin:8px 0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px"></pre>';
+    btn.onclick=function(){ pn.style.display="flex"; var p=document.getElementById("ppLogBody"); if(p) p.textContent=L.join("\n"); };
+    host.appendChild(btn); document.body.appendChild(pn);
+    document.getElementById("ppClose").onclick=function(){ pn.style.display="none"; };
+    document.getElementById("ppCopy").onclick=function(){ try{ navigator.clipboard.writeText(L.join("\n")); log("(zkopírováno do schránky)"); }catch(e){ log("copy EX "+e); } };
+    document.getElementById("ppTest").onclick=async function(){
+      log("--- TEST ---"); try{ ensureAudio(); }catch(e){ log("ensureAudio EX "+e); }
+      var id=(typeof AUDIO_IDS!=="undefined"&&AUDIO_IDS.indexOf("story_0")>=0)?"story_0":(typeof AUDIO_IDS!=="undefined"&&AUDIO_IDS.length?AUDIO_IDS[0]:null);
+      log("id="+id+" base="+(typeof AUDIO_BASE!=="undefined"?AUDIO_BASE:"?"));
+      if(!id) return;
+      try{ var r=await fetch(AUDIO_BASE+id+".mp3",{cache:"no-store"}); log("fetch "+r.status+" "+r.headers.get("content-type")); var ab=await r.arrayBuffer(); log("bytes "+ab.byteLength); }catch(e){ log("fetch EX "+e); }
+      try{ var a=new Audio(AUDIO_BASE+id+".mp3"); a.onplaying=function(){ log("HTMLAudio HRAJE"); }; a.onerror=function(){ log("HTMLAudio error "+(a.error&&a.error.code)); }; var pr=a.play(); if(pr&&pr.catch) pr.catch(function(e){ log("HTMLAudio play EX "+e); }); }catch(e){ log("HTMLAudio EX "+e); }
+      try{ play([id],{onend:function(){ log("Web Audio onend"); }}); }catch(e){ log("play EX "+e); }
+    };
+  }
+  if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",addUI); else addUI();
+})();
+</script>
