@@ -47,6 +47,12 @@ $appDir = __DIR__ . '/app';
 if (!is_dir($appDir) && !mkdir($appDir, 0775, true) && !is_dir($appDir)) {
     konec(500, ['chyba' => 'Nejde vytvořit složku app/.']);
 }
+// CORS pro /app/ – appka si odtud čte build.json (kontrola nové verze). Bez toho
+// by cross-origin fetch z WKWebView (capacitor://) selhal a nabídka verze by se neukázala.
+$htaccess = $appDir . '/.htaccess';
+if (!is_file($htaccess)) {
+    @file_put_contents($htaccess, "<IfModule mod_headers.c>\n  Header set Access-Control-Allow-Origin \"*\"\n</IfModule>\nAddType application/json .json\n");
+}
 
 // Veřejná adresa složky app/ (z aktuální URL)
 $https  = (($_SERVER['HTTPS'] ?? '') === 'on') || (($_SERVER['SERVER_PORT'] ?? '') === '443');
