@@ -29,12 +29,12 @@ Apple ID zdarma: podpis vydrží **7 dní**, pak appku znovu nahraj přes Sidelo
 (postup ve hře zůstane). S placeným Apple Developer Programem vydrží rok.
 
 ## Hosting zvuků (tvůj server)
-- Zvuky se berou z **`https://kukacka.cz/piratsky-poklad/audio/`**.
+- Zvuky se berou z **`https://www.kukackovi.cz/piratsky-poklad/audio/`**.
 - Nahraj přes FTP celou složku `audio/` (ze ZIPu, co jsem poslal) do
-  `piratsky-poklad/audio/` v kořeni webu kukacka.cz. V ZIPu je i `audio/.htaccess`,
+  `piratsky-poklad/audio/` v kořeni webu www.kukackovi.cz. V ZIPu je i `audio/.htaccess`,
   který povolí appce stahovat zvuky z jiné domény (CORS) – nech ho tam.
 - Ověření: v prohlížeči musí jít otevřít třeba
-  `https://kukacka.cz/piratsky-poklad/audio/story_0.mp3`.
+  `https://www.kukackovi.cz/piratsky-poklad/audio/story_0.mp3`.
 - Když změníš adresu, uprav `AUDIO_BASE` v `app/www/index.html` (jeden řádek).
 - Zvuky schválně nejsou v GitHub repu (neplýtvá se místem); build appky je nepotřebuje.
 

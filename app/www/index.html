@@ -825,7 +825,7 @@ function speakTTS(text,{rate=0.98,pitch=1.1,onend=null,queue=false}={}){
   }catch(e){ if(onend) setTimeout(done,450); }
 }
 /* ================== NAMLUVENÉ KLIPY (Gemini TTS, složka audio/) ================== */
-const AUDIO_BASE="https://kukacka.cz/piratsky-poklad/audio/";
+const AUDIO_BASE="https://www.kukackovi.cz/piratsky-poklad/audio/";
 const AUDIO_SET=new Set(AUDIO_IDS);
 const AUDIO_BY_TEXT={};
 (function(){
@@ -1711,7 +1711,7 @@ renderCoins(); renderHome(); show("start");
   async function firstRun(){
     var done=false; try{ done=localStorage.getItem("pp_audio_dl")==="1"; }catch(e){}
     if(done) return;
-    if(!(window.AUDIO_IDS&&AUDIO_IDS.length)) return;
+    if(typeof AUDIO_IDS==="undefined"||!AUDIO_IDS.length) return;
     if(!navigator.onLine) return;              /* offline: necháme na příště, zatím TTS */
     var o=overlay(), bar=o.querySelector("#ppdl_b"), lab=o.querySelector("#ppdl_l");
     var skipped=false; o.querySelector("#ppdl_s").onclick=function(){ skipped=true; o.remove(); };
