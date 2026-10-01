@@ -1734,3 +1734,29 @@ renderCoins(); renderHome(); show("start");
   else window.addEventListener("DOMContentLoaded",function(){ setTimeout(firstRun,400); });
 })();
 </script>
+<script>
+/* Appka: tlačítko „Smazat stažené zvuky" na úvodní obrazovce (uvolní místo / vynutí
+   nové stažení). Dvojí klepnutí pro potvrzení (confirm() se v obalu nemusí zobrazit). */
+(function(){
+  function add(){
+    var host=document.getElementById("sc_start");
+    if(!host || document.getElementById("ppDelAudio")) return;
+    var b=document.createElement("button");
+    b.id="ppDelAudio"; b.className="reset"; b.style.marginTop="2px";
+    b.textContent="🗑️ Smazat stažené zvuky";
+    var armed=false,t=null;
+    b.onclick=async function(){
+      if(!armed){ armed=true; b.textContent="Opravdu smazat zvuky? Klepni znovu";
+        t=setTimeout(function(){ armed=false; b.textContent="🗑️ Smazat stažené zvuky"; },3000); return; }
+      clearTimeout(t); armed=false;
+      try{ await caches.delete("pp-audio-v1"); }catch(e){}
+      try{ localStorage.removeItem("pp_audio_dl"); }catch(e){}
+      try{ for(var k in bufCache) delete bufCache[k]; }catch(e){}
+      b.textContent="✅ Smazáno, stáhnou se znovu";
+      setTimeout(function(){ b.textContent="🗑️ Smazat stažené zvuky"; },3500);
+    };
+    host.appendChild(b);
+  }
+  if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",add); else add();
+})();
+</script>
