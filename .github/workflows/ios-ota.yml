@@ -63,6 +63,23 @@ jobs:
           npx @capacitor/assets generate --ios || true
           npx cap sync ios
 
+      - name: Zvuk i při ztlumeném zvonku (AVAudioSession playback)
+        run: |
+          python3 - <<'PY'
+          import re
+          f = "ios/App/App/AppDelegate.swift"
+          s = open(f, encoding="utf-8").read()
+          if "AVAudioSession" not in s:
+              s = s.replace("import Capacitor", "import Capacitor\nimport AVFoundation", 1)
+              s = re.sub(r"(didFinishLaunchingWithOptions[^\n]*->\s*Bool\s*\{)",
+                         r"\1\n        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)\n        try? AVAudioSession.sharedInstance().setActive(true)",
+                         s, count=1)
+              open(f, "w", encoding="utf-8").write(s)
+              print("AppDelegate: audio session = playback (hraje i na silent).")
+          else:
+              print("AVAudioSession už nastaven.")
+          PY
+
       - name: Nástroje pro podpis
         run: |
           pipx install codemagic-cli-tools || pip3 install --user codemagic-cli-tools
