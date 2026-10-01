@@ -1,0 +1,30 @@
+[
+ {
+  "id": "n_voda",
+  "role": "pepik",
+  "text": "Voda",
+  "style": "Speak in Czech with natural native pronunciation. You are Pepík, a cheerful pirate parrot. Say ONLY the following short label (the name of a map symbol), cheerfully, nothing else, no extra words:"
+ },
+ {
+  "id": "n_nepr_plot",
+  "role": "pepik",
+  "text": "Vysoký plot",
+  "style": "Speak in Czech with natural native pronunciation. You are Pepík, a cheerful pirate parrot. Say ONLY the following short label (the name of a map symbol), cheerfully, nothing else, no extra words:"
+ },
+ {
+  "id": "iname_papousci",
+  "role": "pepik",
+  "text": "Ostrov papoušků",
+  "style": "Speak in Czech with natural native pronunciation. You are Pepík, a cheerful pirate parrot. Say ONLY the following short label (the name of a map symbol), cheerfully, nothing else, no extra words:"
+ },
+ {
+  "id": "say_voda",
+  "role": "pepik",
+  "text": "Modrá plocha s černým okrajem je voda, rybník nebo jezero. Vodu nepřeběhneš, musíš ji oběhnout. Pomůcka: modrá jako vodička, osvěží tě trošička!"
+ },
+ {
+  "id": "mlha_challenge",
+  "role": "mlha",
+  "text": "Arr! Tak ty chceš kousek mapy, plavčíku? Poraz mě v souboji, jestli to dokážeš!"
+ }
+]

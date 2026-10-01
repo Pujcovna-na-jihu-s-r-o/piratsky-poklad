@@ -1,0 +1,789 @@
+[
+ {
+  "id": "n_divoky",
+  "role": "ukol",
+  "text": "Paseka",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_pole",
+  "role": "ukol",
+  "text": "Pole",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_sad",
+  "role": "ukol",
+  "text": "Sad",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_vinice",
+  "role": "ukol",
+  "text": "Vinice",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_zelena_svetla",
+  "role": "ukol",
+  "text": "Řídké křoví",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_zelena_stredni",
+  "role": "ukol",
+  "text": "Hustší křoví",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_housti",
+  "role": "ukol",
+  "text": "Hustník",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "cheer_housti",
+  "role": "ukol",
+  "text": "Správně! Nevadí, když tě houští zbrzdí, chytře ho oběhni po cestičce!"
+ },
+ {
+  "id": "n_podrost",
+  "role": "ukol",
+  "text": "Podrost",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_strom",
+  "role": "ukol",
+  "text": "Velký strom",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_ker",
+  "role": "ukol",
+  "text": "Keř",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_veg_x",
+  "role": "ukol",
+  "text": "Vývrat",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_hranice_veg",
+  "role": "ukol",
+  "text": "Hranice porostu",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_kopec",
+  "role": "ukol",
+  "text": "Vrstevnice",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "cheer_kopec",
+  "role": "ukol",
+  "text": "Správně! Každý kopec hravě vyšlápneš a nahoře budeš mít přehled!"
+ },
+ {
+  "id": "n_doplnkova",
+  "role": "ukol",
+  "text": "Pomocná vrstevnice",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_kupka",
+  "role": "ukol",
+  "text": "Kupka",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_protahla_kupka",
+  "role": "ukol",
+  "text": "Protáhlá kupka",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_prohluben",
+  "role": "ukol",
+  "text": "Prohlubeň",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_jama",
+  "role": "ukol",
+  "text": "Jáma",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_teren_objekt",
+  "role": "ukol",
+  "text": "Zvláštní terénní objekt",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_rozbity",
+  "role": "ukol",
+  "text": "Rozbitý povrch",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_zemni_sraz",
+  "role": "ukol",
+  "text": "Mez",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_ryha",
+  "role": "ukol",
+  "text": "Rýha",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_val",
+  "role": "ukol",
+  "text": "Zemní val",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_balvan",
+  "role": "ukol",
+  "text": "Balvan",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "cheer_balvan",
+  "role": "ukol",
+  "text": "Správně! Balvan nepřehlédneš, je to báječný bod pro orientaci!"
+ },
+ {
+  "id": "n_velkybalvan",
+  "role": "ukol",
+  "text": "Velký balvan",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_shluk",
+  "role": "ukol",
+  "text": "Shluk balvanů",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_obrovsky",
+  "role": "ukol",
+  "text": "Obrovský balvan",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_balvanove_pole",
+  "role": "ukol",
+  "text": "Balvanové pole",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_kamenity",
+  "role": "ukol",
+  "text": "Kamenitý povrch",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_skala",
+  "role": "ukol",
+  "text": "Holá skála",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_sraz",
+  "role": "ukol",
+  "text": "Skalní sráz",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_nepr_sraz",
+  "role": "ukol",
+  "text": "Nepřekonatelný sráz",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_kamenna_jama",
+  "role": "ukol",
+  "text": "Kamenná jáma",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_pisek",
+  "role": "ukol",
+  "text": "Písek",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_zpevnena",
+  "role": "ukol",
+  "text": "Asfalt",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_sirokasilnice",
+  "role": "ukol",
+  "text": "Široká silnice",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_silnice",
+  "role": "ukol",
+  "text": "Silnice",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_vozovka",
+  "role": "ukol",
+  "text": "Vozová cesta",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_cesta",
+  "role": "ukol",
+  "text": "Pěší cesta",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "cheer_cesta",
+  "role": "ukol",
+  "text": "Správně! Držíš se cesty a bezpečně dorazíš až do cíle!"
+ },
+ {
+  "id": "n_pesina",
+  "role": "ukol",
+  "text": "Pěšina",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_prusek",
+  "role": "ukol",
+  "text": "Průsek",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_zeleznice",
+  "role": "ukol",
+  "text": "Železnice",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_vedeni",
+  "role": "ukol",
+  "text": "Elektrické vedení",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_most",
+  "role": "ukol",
+  "text": "Most",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_zed",
+  "role": "ukol",
+  "text": "Zeď",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_nepr_zed",
+  "role": "ukol",
+  "text": "Vysoká zeď",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_plot",
+  "role": "ukol",
+  "text": "Plot",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_nepr_plot",
+  "role": "ukol",
+  "text": "Vysoký plot",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_pruchod_plot",
+  "role": "ukol",
+  "text": "Průchod v plotu",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_budova",
+  "role": "ukol",
+  "text": "Budova",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "cheer_budova",
+  "role": "ukol",
+  "text": "Správně! Podle budovy hned poznáš, kde přesně na mapě jsi!"
+ },
+ {
+  "id": "n_zakaz",
+  "role": "ukol",
+  "text": "Zakázaný prostor",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_zricenina",
+  "role": "ukol",
+  "text": "Zřícenina",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_zastreseni",
+  "role": "ukol",
+  "text": "Přístřešek",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_veza",
+  "role": "ukol",
+  "text": "Vysoká věž",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_posed",
+  "role": "ukol",
+  "text": "Posed",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_schody",
+  "role": "ukol",
+  "text": "Schody",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_mohyla",
+  "role": "ukol",
+  "text": "Hraniční kámen",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_krmelec",
+  "role": "ukol",
+  "text": "Krmelec",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_krouzek",
+  "role": "ukol",
+  "text": "Zvláštní objekt – kroužek",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_krizek",
+  "role": "ukol",
+  "text": "Zvláštní objekt – křížek",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_potrubi",
+  "role": "ukol",
+  "text": "Potrubí",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_nepr_potrubi",
+  "role": "ukol",
+  "text": "Vysoké potrubí",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_start",
+  "role": "ukol",
+  "text": "Start",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "cheer_start",
+  "role": "ukol",
+  "text": "Správně! Zorientuj mapu, nadechni se a vyraz za dobrodružstvím!"
+ },
+ {
+  "id": "n_kontrola",
+  "role": "ukol",
+  "text": "Kontrola",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "cheer_kontrola",
+  "role": "ukol",
+  "text": "Správně! Skvělá práce, další kontrolu máš v kapse!"
+ },
+ {
+  "id": "n_cil",
+  "role": "ukol",
+  "text": "Cíl",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "cheer_cil",
+  "role": "ukol",
+  "text": "Správně! Zvládl jsi to úžasně, užij si zasloužený potlesk!"
+ },
+ {
+  "id": "n_spojnice",
+  "role": "ukol",
+  "text": "Spojnice",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_znaceny",
+  "role": "ukol",
+  "text": "Značený úsek",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_nepristupna",
+  "role": "ukol",
+  "text": "Zakázaná oblast",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_pruchod",
+  "role": "ukol",
+  "text": "Průchod",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_prvni_pomoc",
+  "role": "ukol",
+  "text": "První pomoc",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_obcerstveni",
+  "role": "ukol",
+  "text": "Občerstvení",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_nepristupna_trasa",
+  "role": "ukol",
+  "text": "Zakázaná trasa",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "q_1",
+  "role": "ukol",
+  "text": "Kudy poběžíš rychle?"
+ },
+ {
+  "id": "hint_1",
+  "role": "ukol",
+  "text": "Rychle se běží po žluté, bílým lesem a po černých cestách."
+ },
+ {
+  "id": "q_2",
+  "role": "ukol",
+  "text": "Kudy se běží špatně?"
+ },
+ {
+  "id": "hint_2",
+  "role": "ukol",
+  "text": "Špatně se běží zelenou, bažinou a přes kamení."
+ },
+ {
+  "id": "q_3",
+  "role": "ukol",
+  "text": "Kde se zamotáš do větví?"
+ },
+ {
+  "id": "hint_3",
+  "role": "ukol",
+  "text": "Do větví se zamotáš tam, kde je zelená."
+ },
+ {
+  "id": "q_4",
+  "role": "ukol",
+  "text": "Kde se zadýcháš do kopce?"
+ },
+ {
+  "id": "hint_4",
+  "role": "ukol",
+  "text": "Kopec kreslí hnědé vrstevnice."
+ },
+ {
+  "id": "q_5",
+  "role": "ukol",
+  "text": "Co je z kamene?"
+ },
+ {
+  "id": "hint_5",
+  "role": "ukol",
+  "text": "Kameny a skály jsou černé nebo šedé."
+ },
+ {
+  "id": "q_6",
+  "role": "ukol",
+  "text": "Kde bydlí lidi?"
+ },
+ {
+  "id": "hint_6",
+  "role": "ukol",
+  "text": "Lidi bydlí v černé budově."
+ },
+ {
+  "id": "q_7",
+  "role": "ukol",
+  "text": "Kudy jezdí auta?"
+ },
+ {
+  "id": "hint_7",
+  "role": "ukol",
+  "text": "Auta jezdí po silnici, to je plná černá čára, nebo po vozové cestě."
+ },
+ {
+  "id": "q_8",
+  "role": "ukol",
+  "text": "Kde závod začíná?"
+ },
+ {
+  "id": "hint_8",
+  "role": "ukol",
+  "text": "Závod začíná na fialovém trojúhelníku."
+ },
+ {
+  "id": "q_9",
+  "role": "ukol",
+  "text": "Kde si cvakneš čipem?"
+ },
+ {
+  "id": "hint_9",
+  "role": "ukol",
+  "text": "Čipem cvakneš na kontrole, to je jedno kolečko."
+ },
+ {
+  "id": "q_10",
+  "role": "ukol",
+  "text": "Kde je schovaný poklad?"
+ },
+ {
+  "id": "hint_10",
+  "role": "ukol",
+  "text": "Poklad je v cíli, to jsou dvě kolečka."
+ },
+ {
+  "id": "q_11",
+  "role": "ukol",
+  "text": "Kam nesmíš vůbec vstoupit?"
+ },
+ {
+  "id": "hint_11",
+  "role": "ukol",
+  "text": "Zákaz je olivová plocha nebo fialová mřížka."
+ },
+ {
+  "id": "q_12",
+  "role": "ukol",
+  "text": "Co nesmíš přelézt?"
+ },
+ {
+  "id": "hint_12",
+  "role": "ukol",
+  "text": "Nepřekonatelné je to tlusté nebo s dvojitými čárkami."
+ },
+ {
+  "id": "q_13",
+  "role": "ukol",
+  "text": "Kudy projdeš přes plot?"
+ },
+ {
+  "id": "hint_13",
+  "role": "ukol",
+  "text": "Průchod je mezera v plotu se dvěma čárkami."
+ },
+ {
+  "id": "q_14",
+  "role": "ukol",
+  "text": "Kudy je zakázáno běžet?"
+ },
+ {
+  "id": "hint_14",
+  "role": "ukol",
+  "text": "Zákaz je fialový nebo olivový: křížky na cestě, mřížka nebo olivová plocha."
+ },
+ {
+  "id": "q_15",
+  "role": "ukol",
+  "text": "Kde se napiješ?"
+ },
+ {
+  "id": "hint_15",
+  "role": "ukol",
+  "text": "Voda je ve studni, v prameni nebo na občerstvení."
+ },
+ {
+  "id": "q_16",
+  "role": "ukol",
+  "text": "Kde je díra v zemi?"
+ },
+ {
+  "id": "hint_16",
+  "role": "ukol",
+  "text": "Díra je véčko nebo miska."
+ },
+ {
+  "id": "q_17",
+  "role": "ukol",
+  "text": "Kde je malý kopeček?"
+ },
+ {
+  "id": "hint_17",
+  "role": "ukol",
+  "text": "Kopeček je hnědá tečka."
+ },
+ {
+  "id": "q_18",
+  "role": "ukol",
+  "text": "Kde ti pomůžou, když se zraníš?"
+ },
+ {
+  "id": "hint_18",
+  "role": "ukol",
+  "text": "První pomoc má fialový kříž."
+ },
+ {
+  "id": "q_19",
+  "role": "ukol",
+  "text": "Co postavili lidé?"
+ },
+ {
+  "id": "hint_19",
+  "role": "ukol",
+  "text": "Co postavili lidé, je černé."
+ },
+ {
+  "id": "q_20",
+  "role": "ukol",
+  "text": "Co tu roste?"
+ },
+ {
+  "id": "hint_20",
+  "role": "ukol",
+  "text": "Rostliny jsou zelené."
+ },
+ {
+  "id": "q_21",
+  "role": "ukol",
+  "text": "Kudy jezdí vlak?"
+ },
+ {
+  "id": "hint_21",
+  "role": "ukol",
+  "text": "Vlak jede po tlusté černé čáře s mezerami."
+ },
+ {
+  "id": "q_22",
+  "role": "ukol",
+  "text": "Kudy běžíš po fáborkách?"
+ },
+ {
+  "id": "hint_22",
+  "role": "ukol",
+  "text": "Fáborky značí fialová přerušovaná čára."
+ },
+ {
+  "id": "q_23",
+  "role": "ukol",
+  "text": "Kudy teče voda?"
+ },
+ {
+  "id": "hint_23",
+  "role": "ukol",
+  "text": "Voda teče po modré čáře."
+ },
+ {
+  "id": "ui_endless",
+  "role": "ukol",
+  "text": "Volné moře! Kolik značek přečteš v řadě bez chyby?"
+ },
+ {
+  "id": "ui_duel",
+  "role": "ukol",
+  "text": "Souboj! Najdi značku dřív než Mlha, než dohoří svíčka."
+ },
+ {
+  "id": "ui_pexeso",
+  "role": "ukol",
+  "text": "Pexeso! Otoč dvě karty a najdi značku a její jméno. Za každou dvojici je zlaťák."
+ },
+ {
+  "id": "ui_pexeso_done",
+  "role": "ukol",
+  "text": "Všechny dvojice! Bonus do truhly!"
+ },
+ {
+  "id": "ui_desc_a",
+  "role": "ukol",
+  "text": "V popisech kontrol je tenhle obrázek. Najdi, jak to vypadá na mapě."
+ },
+ {
+  "id": "fr_rozkaz",
+  "role": "ukol",
+  "text": "Kapitánův rozkaz! Nejdřív"
+ },
+ {
+  "id": "fr_potom",
+  "role": "ukol",
+  "text": "potom"
+ },
+ {
+  "id": "fr_nakonec",
+  "role": "ukol",
+  "text": "a nakonec"
+ },
+ {
+  "id": "fr_ated",
+  "role": "ukol",
+  "text": "A teď:"
+ },
+ {
+  "id": "fr_tedhledej",
+  "role": "ukol",
+  "text": "Teď hledej:"
+ },
+ {
+  "id": "fr_splnen",
+  "role": "ukol",
+  "text": "Rozkaz splněn!"
+ },
+ {
+  "id": "fr_namapeje",
+  "role": "ukol",
+  "text": "Na mapě je"
+ },
+ {
+  "id": "fr_jaktovypada",
+  "role": "ukol",
+  "text": "Jak to vypadá v popisech kontrol?"
+ },
+ {
+  "id": "fr_anonamape",
+  "role": "ukol",
+  "text": "Ano! Na mapě je to"
+ },
+ {
+  "id": "fr_presnetak_popisy",
+  "role": "ukol",
+  "text": "Přesně tak! V popisech kontrol je"
+ },
+ {
+  "id": "fr_takhle",
+  "role": "ukol",
+  "text": "takhle."
+ },
+ {
+  "id": "fr_tohlejevpopisech",
+  "role": "ukol",
+  "text": "Tohle je v popisech"
+ }
+]

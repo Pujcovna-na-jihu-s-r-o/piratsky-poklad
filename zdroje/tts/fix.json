@@ -1,0 +1,25 @@
+[
+ {
+  "id": "say_voda",
+  "role": "pepik",
+  "text": "Modrá plocha s černým okrajem je voda, rybník nebo jezero. Vodu nepřeběhneš, musíš ji oběhnout. Pomůcka: modrá jako vodička, osvěží tě trošička!"
+ },
+ {
+  "id": "n_voda",
+  "role": "pepik",
+  "text": "Voda",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_louka",
+  "role": "pepik",
+  "text": "Louka",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_les",
+  "role": "pepik",
+  "text": "Běhací les",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ }
+]

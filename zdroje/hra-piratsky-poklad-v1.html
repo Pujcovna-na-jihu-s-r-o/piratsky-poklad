@@ -1,0 +1,491 @@
+<title>Pirátský poklad</title>
+<meta name="description" content="Mluvící pirátská hra pro děti: čti pirátskou orienťáckou mapu, poznávej značky a sbírej zlaťáky do truhly s pokladem.">
+<style>
+/* Layout: pirátská mapa na pergamenu — nahoře truhla se zlaťáky, uprostřed velká karta/otázka, dole velká dřevěná tlačítka. Jeden „pirátský" svět, barvy natvrdo. */
+:root{
+  --paper:#f3e2b8; --paper2:#e6cd92; --panel:#fffdf3; --panel-edge:#c9a86a;
+  --ink:#41300f; --muted:#8a6a38;
+  --gold:#e7a70f; --gold-deep:#a9740a;
+  --wood:#6f4423; --wood-deep:#4e2f16;
+  --sea:#1f8fbf; --sea-deep:#136a90;
+  --good:#2f9e46; --bad:#d95b4f; --purple:#c026c0; --red:#b8352a;
+  --shadow:0 8px 0 rgba(78,47,22,.22), 0 16px 26px rgba(78,47,22,.22);
+  color-scheme:light;
+  --font-title:"Pirata One", "Fredoka", "Segoe UI", cursive;
+  --font-d:"Fredoka", ui-rounded, "Segoe UI", system-ui, sans-serif;
+  --font-b:"Nunito", ui-rounded, "Segoe UI", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:var(--font-b); color:var(--ink);
+  background:
+    radial-gradient(120% 90% at 15% 0%, #f7ecc9 0%, rgba(247,236,201,0) 55%),
+    radial-gradient(120% 90% at 100% 100%, #d9bd82 0%, rgba(217,189,130,0) 55%),
+    linear-gradient(160deg,var(--paper) 0%, var(--paper2) 100%);
+  background-attachment:fixed;
+  -webkit-tap-highlight-color:transparent; user-select:none;
+}
+/* Vodoznaky mapy */
+.wm{position:fixed; pointer-events:none; z-index:0; opacity:.13}
+.wm.compass{right:-14px; bottom:-10px; width:210px; height:210px}
+.wm.route{left:0; top:38%; width:60vw; max-width:360px; opacity:.1}
+#app{position:relative; z-index:1; min-height:100%; display:flex; flex-direction:column; padding:0 16px 20px; max-width:640px; margin:0 auto}
+
+/* Truhla se zlaťáky */
+.topbar{position:sticky; top:env(safe-area-inset-top,0px); z-index:5;
+  display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 2px 8px}
+.coins{display:flex; align-items:center; gap:9px; background:var(--wood);
+  border:3px solid var(--wood-deep); border-radius:16px; padding:7px 16px 7px 12px; box-shadow:var(--shadow);
+  font-family:var(--font-d); font-weight:700; font-size:22px; color:#ffe9b8}
+.coins .cimg{font-size:26px; line-height:1}
+.coins.pop{animation:pop .4s ease}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.28)}100%{transform:scale(1)}}
+.iconbtn{width:52px; height:52px; border:3px solid var(--wood-deep); border-radius:14px; background:var(--wood);
+  box-shadow:var(--shadow); font-size:24px; cursor:pointer; line-height:1}
+.iconbtn:active{transform:translateY(3px); box-shadow:0 4px 0 rgba(78,47,22,.25)}
+
+.screen{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; text-align:center; padding:8px 0 4px}
+.screen[hidden]{display:none!important}
+
+h1.title{font-family:var(--font-title); font-weight:400; font-size:clamp(46px,15vw,76px);
+  margin:0; line-height:.95; color:var(--red); letter-spacing:1px;
+  text-shadow:0 2px 0 #fff5db, 0 4px 0 rgba(78,47,22,.25)}
+.subtitle{font-family:var(--font-d); font-size:19px; color:var(--wood); font-weight:700; margin:-2px 0 4px}
+.mascot{font-size:78px; line-height:1; filter:drop-shadow(0 6px 6px rgba(78,47,22,.3)); animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(4deg)}}
+
+.bigbtn{font-family:var(--font-d); font-weight:700; font-size:25px; color:#fff5db;
+  border:3px solid var(--wood-deep); border-radius:18px; padding:19px 26px; min-width:280px; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center; gap:12px;
+  background:linear-gradient(180deg,#8a5628,#6f4423); box-shadow:0 8px 0 var(--wood-deep), 0 14px 22px rgba(78,47,22,.35)}
+.bigbtn .bi{font-size:30px}
+.bigbtn:active{transform:translateY(6px); box-shadow:0 2px 0 var(--wood-deep)}
+.bigbtn.gold{color:#5a3d00; border-color:var(--gold-deep); background:linear-gradient(180deg,#ffcf4d,#e7a70f); box-shadow:0 8px 0 var(--gold-deep), 0 14px 22px rgba(169,116,10,.4)}
+.bigbtn.gold:active{box-shadow:0 2px 0 var(--gold-deep)}
+.btnrow{display:flex; flex-direction:column; gap:16px; align-items:center}
+
+.card{background:var(--panel); border:3px solid var(--panel-edge); border-radius:22px; box-shadow:var(--shadow);
+  padding:18px 18px 14px; width:min(88vw,340px); cursor:pointer; position:relative}
+.card::before{content:"✖"; position:absolute; top:8px; right:14px; color:var(--red); font-weight:900; font-size:18px; opacity:.5}
+.card .sym{width:100%; aspect-ratio:1/1; max-width:230px; margin:0 auto; display:block}
+.card .nm{font-family:var(--font-d); font-weight:700; font-size:30px; margin:6px 0 2px}
+.card .emoji{font-size:34px}
+.card .tap{font-size:15px; color:var(--muted); font-weight:700; margin-top:6px}
+.card.flash{animation:cardflash .5s ease}
+@keyframes cardflash{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+.nav{display:flex; align-items:center; justify-content:center; gap:16px}
+.nav .count{font-family:var(--font-d); font-weight:700; font-size:20px; color:var(--wood); min-width:64px}
+.navbtn{width:66px; height:66px; border:3px solid var(--wood-deep); border-radius:16px; background:var(--wood);
+  box-shadow:var(--shadow); font-size:30px; cursor:pointer; color:#ffe9b8}
+.navbtn:active{transform:translateY(4px); box-shadow:0 3px 0 rgba(78,47,22,.25)}
+.navbtn:disabled{opacity:.4}
+
+.prompt{background:var(--panel); border:3px solid var(--panel-edge); border-radius:20px; box-shadow:var(--shadow);
+  padding:14px 18px; display:flex; align-items:center; gap:14px; width:min(92vw,430px); justify-content:center}
+.prompt .pe{font-size:58px; line-height:1}
+.prompt .pt{font-family:var(--font-d); font-weight:700; font-size:21px; text-align:left; line-height:1.15}
+.replay{border:3px solid var(--gold-deep); background:var(--gold); color:#5a3d00; font-weight:800; font-family:var(--font-d);
+  border-radius:14px; padding:9px 16px; font-size:16px; cursor:pointer; box-shadow:0 5px 0 var(--gold-deep)}
+.replay:active{transform:translateY(3px); box-shadow:0 2px 0 var(--gold-deep)}
+.options{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; width:min(94vw,460px)}
+@media (max-width:420px){.options{gap:10px}}
+.opt{background:var(--panel); border:4px solid var(--panel-edge); border-radius:20px; padding:10px; cursor:pointer;
+  box-shadow:var(--shadow); aspect-ratio:1/1; display:flex; align-items:center; justify-content:center}
+.opt svg{width:100%; height:100%}
+.opt:active{transform:translateY(3px)}
+.opt.correct{border-color:var(--good); animation:pop .45s ease}
+.opt.wrong{border-color:var(--bad); animation:shake .4s ease}
+.opt.hintme{border-color:var(--gold); animation:hintpulse .8s ease-in-out infinite}
+@keyframes hintpulse{0%,100%{box-shadow:var(--shadow)}50%{box-shadow:0 0 0 5px rgba(231,167,15,.55), var(--shadow)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.progress{display:flex; gap:7px; margin-top:2px}
+.dot{width:15px; height:15px; border-radius:50%; background:rgba(111,68,35,.18); box-shadow:inset 0 0 0 2px rgba(111,68,35,.25); font-size:11px; display:flex; align-items:center; justify-content:center}
+.dot.on{background:var(--gold); box-shadow:0 2px 4px rgba(169,116,10,.5)}
+
+.floater{position:fixed; z-index:40; font-family:var(--font-d); font-weight:800; font-size:30px; color:var(--gold-deep);
+  pointer-events:none; text-shadow:0 2px 0 #fff5db}
+.mapprog{display:flex; flex-direction:column; align-items:center; gap:6px; margin:-2px 0 2px}
+.mapprog .pl{font-family:var(--font-d); font-weight:700; font-size:18px; color:var(--wood)}
+.mapprog .pdrow{display:flex; gap:5px; flex-wrap:wrap; justify-content:center; max-width:300px}
+.mapprog .pd{width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; background:rgba(111,68,35,.16)}
+.mapprog .pd.done{background:transparent}
+.reset{margin-top:2px; background:transparent; border:2px dashed var(--panel-edge); color:var(--muted); font-family:var(--font-d); font-weight:700; font-size:14px; border-radius:12px; padding:7px 14px; cursor:pointer}
+.reset:active{transform:translateY(2px)}
+.lostcoin{position:fixed; z-index:28; width:54px; height:54px; border:none; background:transparent; font-size:42px; line-height:1; cursor:pointer; padding:0; filter:drop-shadow(0 3px 3px rgba(120,80,0,.55)); animation:coinpulse 1s ease-in-out infinite}
+@keyframes coinpulse{0%,100%{transform:scale(1) rotate(-6deg)}50%{transform:scale(1.14) rotate(6deg)}}
+#fx{position:fixed; inset:0; z-index:30; pointer-events:none}
+.hint{font-size:14px; color:var(--muted); font-weight:700; max-width:350px; margin:6px auto 0}
+.badge-pop{position:fixed; inset:0; z-index:45; display:flex; align-items:center; justify-content:center; pointer-events:none}
+.badge-pop .b{background:var(--panel); border:3px solid var(--gold-deep); border-radius:24px; padding:24px 32px; box-shadow:var(--shadow); text-align:center; animation:badgein .6s cubic-bezier(.2,1.4,.4,1)}
+.badge-pop .be{font-size:80px; line-height:1}
+.badge-pop .bt{font-family:var(--font-d); font-weight:700; font-size:25px; margin-top:6px; color:var(--wood)}
+@keyframes badgein{0%{transform:scale(.3) rotate(-15deg); opacity:0}100%{transform:scale(1) rotate(0); opacity:1}}
+.linkback{background:transparent; border:none; color:var(--wood); font-weight:800; font-family:var(--font-d); font-size:17px; cursor:pointer; padding:8px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important}}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap">
+
+<!-- vodoznaky pirátské mapy -->
+<svg class="wm compass" viewBox="0 0 100 100" aria-hidden="true">
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#6f4423" stroke-width="2"/>
+  <circle cx="50" cy="50" r="38" fill="none" stroke="#6f4423" stroke-width="1"/>
+  <polygon points="50,6 57,50 50,94 43,50" fill="#6f4423"/>
+  <polygon points="6,50 50,43 94,50 50,57" fill="#8a6a38"/>
+  <polygon points="50,14 54,50 50,50" fill="#b8352a"/>
+  <text x="50" y="26" font-size="10" text-anchor="middle" fill="#6f4423" font-family="serif">S</text>
+</svg>
+<svg class="wm route" viewBox="0 0 200 120" aria-hidden="true">
+  <path d="M10 100 C 60 20, 120 130, 190 30" fill="none" stroke="#6f4423" stroke-width="3" stroke-dasharray="9 8" stroke-linecap="round"/>
+  <text x="188" y="34" font-size="20" fill="#b8352a" font-weight="900">✖</text>
+</svg>
+
+<div id="app">
+  <div class="topbar">
+    <div class="coins" id="coins"><span class="cimg">💰</span><span id="coinNum">0</span></div>
+    <button class="iconbtn" id="muteBtn" title="Zvuk" aria-label="Zapnout nebo vypnout zvuk">🔊</button>
+  </div>
+
+  <!-- START -->
+  <section class="screen" id="scStart">
+    <div class="mascot">🏴‍☠️</div>
+    <h1 class="title">Pirátský poklad</h1>
+    <p class="subtitle">Čti pirátskou mapu a sbírej zlaťáky! 🪙</p>
+    <div class="mapprog" id="mapProg"></div>
+    <div class="btnrow">
+      <button class="bigbtn gold" id="playBtn"><span class="bi">🏴‍☠️</span> Hledat poklad</button>
+      <button class="bigbtn" id="learnBtn"><span class="bi">🗺️</span> Prohlédnout mapu</button>
+    </div>
+    <p class="hint">Ahoj, námořníku! 🦜 Číst nemusíš — kapitán ti vše poví. A pozor: piráti cestou roní zlaťáky, chytej je! 🪙</p>
+    <button class="reset" id="resetBtn">🔄 Začít znovu</button>
+  </section>
+
+  <!-- UČENÍ -->
+  <section class="screen" id="scLearn" hidden>
+    <div class="card" id="learnCard">
+      <svg class="sym" id="learnSym" viewBox="0 0 100 100" aria-hidden="true"></svg>
+      <div class="nm"><span class="emoji" id="learnEmoji"></span> <span id="learnName"></span></div>
+      <div class="tap">👆 Klepni a poslechni si to</div>
+    </div>
+    <div class="nav">
+      <button class="navbtn" id="prevBtn" aria-label="Předchozí">⬅️</button>
+      <div class="count" id="learnCount">1 / 12</div>
+      <button class="navbtn" id="nextBtn" aria-label="Další">➡️</button>
+    </div>
+    <button class="linkback" data-home>🏠 Zpět na loď</button>
+  </section>
+
+  <!-- HRA -->
+  <section class="screen" id="scPlay" hidden>
+    <div class="prompt">
+      <span class="pe" id="qEmoji">💧</span>
+      <span class="pt" id="qText">Najdi na mapě!</span>
+      <button class="replay" id="replayBtn">🔊 Znovu</button>
+    </div>
+    <div class="progress" id="progress" aria-hidden="true"></div>
+    <div class="options" id="options"></div>
+    <button class="linkback" data-home>🏠 Zpět na loď</button>
+  </section>
+</div>
+
+<canvas id="fx"></canvas>
+
+<script>
+/* ---------- Značky (dětská školní sada, ISOM barvy) na „pirátské mapě" ---------- */
+const SY = [
+  {id:"voda", name:"Voda", emoji:"💧", say:"Modrá je voda. Potok, rybník nebo louže. Pomůcka: modrá jako voda!",
+   svg:`<rect x="12" y="22" width="76" height="56" rx="14" fill="#1e9fe0"/>
+        <path d="M22 42 q9 -9 18 0 t18 0" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <path d="M22 58 q9 -9 18 0 t18 0" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round"/>`},
+  {id:"housti", name:"Houští", emoji:"🌲", say:"Zelená je husté houští. Špatně se tudy běží. Pomůcka: zelená brzdí!",
+   svg:`<rect x="12" y="22" width="76" height="56" rx="14" fill="#2fa32f"/>
+        <circle cx="34" cy="42" r="7" fill="#248a24"/><circle cx="58" cy="38" r="6" fill="#248a24"/>
+        <circle cx="48" cy="58" r="7" fill="#248a24"/><circle cx="70" cy="60" r="6" fill="#248a24"/>`},
+  {id:"louka", name:"Louka", emoji:"🌼", say:"Žlutá je louka. Volno, dá se rychle běžet. Pomůcka: žlutá jako sluníčko na louce!",
+   svg:`<rect x="12" y="22" width="76" height="56" rx="14" fill="#ffd23f"/>
+        <circle cx="42" cy="46" r="5" fill="#fff"/><circle cx="42" cy="46" r="2.4" fill="#e0a400"/>
+        <circle cx="62" cy="58" r="5" fill="#fff"/><circle cx="62" cy="58" r="2.4" fill="#e0a400"/>`},
+  {id:"les", name:"Běhací les", emoji:"🌳", say:"Bílá je les, kterým se dá dobře běžet. Pomůcka: bílá je volná cesta lesem!",
+   svg:`<rect x="12" y="22" width="76" height="56" rx="14" fill="#ffffff" stroke="#cfe0e6" stroke-width="3"/>
+        <path d="M50 34 l12 20 h-24 z" fill="#2fa32f"/><path d="M50 44 l14 20 h-28 z" fill="#2fa32f"/>
+        <rect x="47" y="62" width="6" height="9" fill="#8a5a2b"/>`},
+  {id:"kopec", name:"Kopec", emoji:"⛰️", say:"Hnědé čáry jsou kopeček. Čím blíž u sebe, tím je kopec strmější. Pomůcka: hnědá jako čokoládový kopeček!",
+   svg:`<g fill="none" stroke="#b06a2c" stroke-width="4.5">
+        <ellipse cx="50" cy="58" rx="34" ry="20"/><ellipse cx="50" cy="54" rx="22" ry="13"/><ellipse cx="50" cy="50" rx="10" ry="6"/></g>`},
+  {id:"cesta", name:"Cesta", emoji:"🛤️", say:"Černá čára je cesta nebo pěšina. Po ní se běží nejrychleji. Pomůcka: běž po čáře jako po chodníku!",
+   svg:`<path d="M14 68 C 34 30, 66 70, 86 32" stroke="#232323" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="13 9"/>`},
+  {id:"budova", name:"Budova", emoji:"🏠", say:"Černý domeček je budova. Pomůcka: černý dům jen míjíš, nebydlíš v něm!",
+   svg:`<path d="M28 46 L50 28 L72 46 Z" fill="#232323"/><rect x="34" y="46" width="32" height="26" fill="#232323"/>`},
+  {id:"bazina", name:"Bažina", emoji:"🐸", say:"Modré čárky jsou bažina. Je tam mokro, radši ji obejdi. Pomůcka: modré čárky, mokré nožičky!",
+   svg:`<g stroke="#1e9fe0" stroke-width="5" stroke-linecap="round">
+        <line x1="26" y1="40" x2="50" y2="40"/><line x1="56" y1="40" x2="74" y2="40"/>
+        <line x1="26" y1="52" x2="44" y2="52"/><line x1="50" y1="52" x2="74" y2="52"/>
+        <line x1="26" y1="64" x2="50" y2="64"/><line x1="56" y1="64" x2="74" y2="64"/></g>`},
+  {id:"balvan", name:"Balvan", emoji:"🪨", say:"Černý trojúhelník je velký kámen, balvan. Pomůcka: velký kámen, velký trojúhelník!",
+   svg:`<path d="M50 28 L72 68 L28 68 Z" fill="#232323"/>`},
+  {id:"start", name:"Start", emoji:"🚩", say:"Fialový trojúhelník je start. Tady začínáš svoji cestu za pokladem. Pomůcka: trojúhelník jako start rakety!",
+   svg:`<path d="M50 26 L73 68 L27 68 Z" fill="none" stroke="#c026c0" stroke-width="7" stroke-linejoin="round"/>`},
+  {id:"kontrola", name:"Kontrola", emoji:"🎯", say:"Fialové kolečko je kontrola. Tam je lampionek a cvakneš si čipem. Pomůcka: kolečko jako lampionek!",
+   svg:`<circle cx="50" cy="50" r="24" fill="none" stroke="#c026c0" stroke-width="7"/>`},
+  {id:"cil", name:"Poklad (cíl)", emoji:"💎", say:"Dvě fialová kolečka jsou cíl. Tady je schovaný poklad, tady dobíháš. Pomůcka: dvě kolečka jako medaile nebo truhla s pokladem!",
+   svg:`<circle cx="50" cy="50" r="25" fill="none" stroke="#c026c0" stroke-width="6"/><circle cx="50" cy="50" r="15" fill="none" stroke="#c026c0" stroke-width="6"/>`},
+];
+
+const byId=(s)=>document.getElementById(s);
+
+/* ---------- Stav ---------- */
+let coins=0, muted=false;
+try{coins=parseInt(localStorage.getItem("orient_coins")||"0",10)||0;}catch(e){}
+try{muted=localStorage.getItem("orient_muted")==="1";}catch(e){}
+
+/* ---------- Pokrok učení (uloženo v tomto zařízení) ---------- */
+const MAXBOX=4, LEARN=4;               /* „naučeno" = přihrádka 4 (cca 4 správné bez chyby) */
+let prog={};
+try{ prog=JSON.parse(localStorage.getItem("orient_prog")||"{}")||{}; }catch(e){ prog={}; }
+SY.forEach(s=>{ if(!prog[s.id]) prog[s.id]={box:0,ok:0,bad:0}; });
+function saveProg(){ try{localStorage.setItem("orient_prog",JSON.stringify(prog));}catch(e){} }
+function masteredCount(){ return SY.filter(s=>prog[s.id]&&prog[s.id].box>=LEARN).length; }
+function resetProg(){ SY.forEach(s=>prog[s.id]={box:0,ok:0,bad:0}); prog.__won=false; coins=0; saveProg(); saveCoins(); renderCoins(); updateProgress(); }
+
+/* ---------- Řeč (TTS) ---------- */
+let voices=[], csVoice=null;
+function loadVoices(){
+  try{voices=window.speechSynthesis?window.speechSynthesis.getVoices():[];}catch(e){voices=[];}
+  csVoice=voices.find(v=>/^cs/i.test(v.lang))||voices.find(v=>/czech|cesk/i.test(v.name))||null;
+}
+if(window.speechSynthesis){ loadVoices(); window.speechSynthesis.onvoiceschanged=loadVoices; }
+function speak(text,{rate=0.98,pitch=1.1,onend=null,queue=false}={}){
+  let called=false; const done=()=>{ if(!called){ called=true; onend&&onend(); } };
+  if(muted||!window.speechSynthesis){ if(onend) setTimeout(done,450); return; }
+  try{
+    if(!queue) window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="cs-CZ"; u.rate=rate; u.pitch=pitch;
+    if(csVoice) u.voice=csVoice;
+    u.onend=done; u.onerror=done;
+    window.speechSynthesis.speak(u);
+    if(onend) setTimeout(done, Math.min(9000, 1400+text.length*95)); /* pojistka, kdyby onend nepřišel */
+  }catch(e){ if(onend) setTimeout(done,450); }
+}
+function stopSpeak(){ try{window.speechSynthesis&&window.speechSynthesis.cancel();}catch(e){} }
+
+/* ---------- Zvuky ---------- */
+let actx=null;
+function tone(freq,dur,type="sine",vol=0.18,delay=0){
+  if(muted) return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const t=actx.currentTime+delay;
+    const o=actx.createOscillator(), g=actx.createGain();
+    o.type=type; o.frequency.value=freq; o.connect(g); g.connect(actx.destination);
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(vol,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.start(t); o.stop(t+dur+0.02);
+  }catch(e){}
+}
+function sndGood(){ tone(660,0.14,"triangle",0.2,0); tone(880,0.16,"triangle",0.2,0.12); tone(1180,0.22,"triangle",0.2,0.24); }
+function sndWrong(){ tone(300,0.18,"sine",0.16,0); tone(220,0.24,"sine",0.16,0.14); }
+function sndCoin(){ tone(1050,0.08,"square",0.12,0); tone(1400,0.12,"square",0.12,0.07); }
+
+/* ---------- Zlaťáky ---------- */
+function saveCoins(){ try{localStorage.setItem("orient_coins",String(coins));}catch(e){} }
+function renderCoins(){ byId("coinNum").textContent=coins; }
+function addCoin(fromEl){
+  coins++; saveCoins(); renderCoins(); sndCoin();
+  const c=byId("coins"); c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop");
+  const f=document.createElement("div"); f.className="floater"; f.textContent="+1 🪙";
+  const r=(fromEl||c).getBoundingClientRect();
+  f.style.left=(r.left+r.width/2-20)+"px"; f.style.top=(r.top-10)+"px";
+  document.body.appendChild(f);
+  const tr=c.getBoundingClientRect();
+  const dx=(tr.left+20)-(r.left+r.width/2), dy=(tr.top+10)-(r.top-10);
+  f.animate([{transform:"translate(0,0)",opacity:1},{transform:`translate(${dx}px,${dy}px) scale(.7)`,opacity:0}],
+    {duration:900,easing:"cubic-bezier(.4,0,.2,1)"}).onfinish=()=>f.remove();
+}
+
+/* ---------- Konfety (zlaté mince) ---------- */
+const cv=byId("fx"), cx=cv.getContext("2d"); let parts=[], raf=null;
+function sizeCanvas(){ cv.width=innerWidth; cv.height=innerHeight; }
+sizeCanvas(); addEventListener("resize",sizeCanvas);
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+function confetti(n=90){
+  if(reduce) return;
+  const cols=["#e7a70f","#ffcf4d","#a9740a","#fff0c0","#c9992a"];
+  for(let i=0;i<n;i++){
+    parts.push({x:innerWidth/2+(Math.random()*160-80), y:innerHeight*0.38,
+      vx:(Math.random()*2-1)*7, vy:Math.random()*-9-4, g:0.28,
+      s:7+Math.random()*7, c:cols[i%cols.length], rot:Math.random()*6, vr:(Math.random()*2-1)*0.3, life:80+Math.random()*40});
+  }
+  if(!raf) raf=requestAnimationFrame(tick);
+}
+function tick(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  parts.forEach(p=>{p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life--;
+    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot);
+    cx.fillStyle=p.c; cx.beginPath(); cx.ellipse(0,0,p.s/2,p.s/2.6,0,0,7); cx.fill();
+    cx.strokeStyle="rgba(120,80,0,.5)"; cx.lineWidth=1; cx.stroke(); cx.restore();});
+  parts=parts.filter(p=>p.life>0 && p.y<cv.height+30);
+  if(parts.length) raf=requestAnimationFrame(tick); else {raf=null; cx.clearRect(0,0,cv.width,cv.height);}
+}
+
+/* ---------- Odznak ---------- */
+function badge(emoji,text){
+  const w=document.createElement("div"); w.className="badge-pop";
+  w.innerHTML=`<div class="b"><div class="be">${emoji}</div><div class="bt">${text}</div></div>`;
+  document.body.appendChild(w);
+  setTimeout(()=>w.remove(),2200);
+}
+
+/* ---------- Obrazovky ---------- */
+const screens={start:byId("scStart"),learn:byId("scLearn"),play:byId("scPlay")};
+function show(name){ for(const k in screens) screens[k].hidden=(k!==name); }
+
+/* ---------- Učení ---------- */
+let li=0;
+function renderLearn(){
+  const s=SY[li];
+  byId("learnSym").innerHTML=s.svg;
+  byId("learnName").textContent=s.name;
+  byId("learnEmoji").textContent=s.emoji;
+  byId("learnCount").textContent=(li+1)+" / "+SY.length;
+  byId("prevBtn").disabled=(li===0);
+  byId("nextBtn").disabled=(li===SY.length-1);
+}
+function speakLearn(){ speak(SY[li].say); const c=byId("learnCard"); c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); }
+byId("learnCard").onclick=speakLearn;
+byId("prevBtn").onclick=()=>{ if(li>0){li--; renderLearn(); speakLearn();} };
+byId("nextBtn").onclick=()=>{ if(li<SY.length-1){li++; renderLearn(); speakLearn();} };
+
+/* ---------- Hra ---------- */
+let target=null, streak=0, roundDots=0;
+const PRAISE=["Arr! Zlaťák do truhly!","Jupí! Máš zlatou minci!","Výborně, námořníku!","Cink! Poklad se plní!","Paráda, správně čteš mapu!"];
+const NUDGE=["Skoro! Zkus to znovu, námořníku.","To nevadí, hledej dál.","Ještě jednou, pirát to nevzdává!"];
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+function sname(s){ return s.name.replace(/\s*\(.*?\)/,"").trim(); } /* jméno pro řeč bez závorek */
+let lastTargetId=null;
+function chooseTarget(){
+  const cand=SY.filter(s=>s.id!==lastTargetId);
+  const bag=[];
+  cand.forEach(s=>{ const b=Math.max(0,Math.min(MAXBOX,prog[s.id].box)); let w=(MAXBOX+1-b); w=w*w; for(let i=0;i<w;i++) bag.push(s); }); /* méně zvládnuté = větší šance */
+  const t=bag.length?bag[Math.floor(Math.random()*bag.length)]:pick(SY);
+  lastTargetId=t.id; return t;
+}
+function speakSeq(list, done){
+  let i=0;
+  const next=()=>{ if(i>=list.length){ done&&done(); return; } const it=list[i++]; if(it.before) it.before(); speak(it.text,{onend:()=>setTimeout(next, it.gap||250)}); };
+  next();
+}
+function updateProgress(){
+  const el=byId("mapProg"); if(!el) return;
+  const m=masteredCount();
+  let dots=""; SY.forEach(s=>{ const done=prog[s.id].box>=LEARN; dots+=`<span class="pd ${done?'done':''}">${done?'🪙':''}</span>`; });
+  el.innerHTML=`<div class="pl">🧭 Naučeno: ${m} / ${SY.length}</div><div class="pdrow">${dots}</div>`;
+}
+
+function renderDots(){
+  const p=byId("progress"); p.innerHTML="";
+  for(let i=0;i<5;i++){ const d=document.createElement("span"); d.className="dot"+(i<roundDots?" on":""); d.textContent=i<roundDots?"🪙":""; p.appendChild(d); }
+}
+function newQuestion(){
+  target=chooseTarget();
+  const others=shuffle(SY.filter(s=>s.id!==target.id)).slice(0,2);
+  const opts=shuffle([target,...others]);
+  byId("qEmoji").textContent=target.emoji;
+  byId("qText").textContent="Kapitán hledá: "+target.name;
+  const box=byId("options"); box.innerHTML="";
+  opts.forEach(s=>{
+    const b=document.createElement("button"); b.className="opt"; b.dataset.id=s.id;
+    b.setAttribute("aria-label",s.name);
+    b.innerHTML=`<svg viewBox="0 0 100 100" aria-hidden="true">${s.svg}</svg>`;
+    b.onclick=()=>choose(b,s);
+    box.appendChild(b);
+  });
+  renderDots();
+  setTimeout(()=>speak("Najdi na mapě: "+sname(target)),350);
+}
+let locked=false;
+function choose(btn,s){
+  if(locked) return;
+  if(s.id===target.id){
+    locked=true; btn.classList.add("correct"); sndGood(); confetti();
+    streak++; roundDots=Math.min(5,roundDots+1); renderDots();
+    addCoin(btn); if(streak%3===0) addCoin(btn);
+    /* adaptivní pokrok: posun do vyšší přihrádky */
+    const p=prog[target.id], before=p.box; p.ok++; p.box=Math.min(MAXBOX,before+1);
+    const newlyLearned=(before<LEARN && p.box>=LEARN);
+    saveProg(); updateProgress();
+    const proceed=()=>{ locked=false; newQuestion(); };
+    const seq=[{text:pick(PRAISE)}];
+    if(newlyLearned && masteredCount()<SY.length) seq.push({text:"Jupí! Značku "+sname(target)+" už umíš!", before:()=>badge("⭐","Umíš: "+sname(target))});
+    if(coins>0 && coins%5===0) seq.push({text:"Arr! Máš už "+coins+" zlaťáků. Truhla se plní!", before:()=>{badge("💰","Máš "+coins+" zlaťáků!"); confetti(150);}});
+    if(roundDots>=5) seq.push({text:"Vyluštil jsi kus mapy!", before:()=>{badge("🏴‍☠️","Kus mapy vyluštěn!"); roundDots=0; renderDots();}});
+    if(masteredCount()===SY.length && !prog.__won){ prog.__won=true; saveProg(); seq.push({text:"Hurá! Naučil ses celou pirátskou mapu! Jsi kapitán pokladu!", gap:700, before:()=>{badge("👑","Umíš celou mapu!"); confetti(230);}}); }
+    speakSeq(seq, proceed);
+  }else{
+    locked=true;
+    btn.classList.add("wrong"); sndWrong(); streak=0;
+    const p=prog[target.id]; p.bad++; p.box=Math.max(0,p.box-1); saveProg(); updateProgress(); /* chybu opakuj dřív */
+    const correctBtn=[...byId("options").children].find(b=>b.dataset.id===target.id); /* ukaž, kde je Y */
+    if(correctBtn) correctBtn.classList.add("hintme");
+    speak("To není "+sname(target).toLowerCase()+", ale "+sname(s).toLowerCase()+". Zkus to znovu.",{onend:()=>{
+      btn.classList.remove("wrong");
+      if(correctBtn) correctBtn.classList.remove("hintme");
+      locked=false;
+    }});
+  }
+}
+byId("replayBtn").onclick=()=>{ if(target) speak("Najdi na mapě: "+sname(target)); };
+
+/* ---------- Ovládání ---------- */
+function ensureAudio(){ try{actx=actx||new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==="suspended")actx.resume();}catch(e){} }
+byId("playBtn").onclick=()=>{ ensureAudio(); startSpawner(); show("play"); streak=0; roundDots=0; newQuestion(); };
+byId("learnBtn").onclick=()=>{ ensureAudio(); startSpawner(); show("learn"); li=0; renderLearn(); setTimeout(speakLearn,250); };
+document.querySelectorAll("[data-home]").forEach(b=>b.onclick=()=>{ stopSpeak(); show("start"); updateProgress(); });
+byId("muteBtn").onclick=()=>{
+  muted=!muted; try{localStorage.setItem("orient_muted",muted?"1":"0");}catch(e){}
+  byId("muteBtn").textContent=muted?"🔇":"🔊";
+  if(muted) stopSpeak(); else { ensureAudio(); speak("Zvuk je zapnutý, námořníku."); }
+};
+
+/* reset s dvojím potvrzením (confirm() v artefaktu nefunguje) */
+let resetArmed=false, resetTimer=null;
+byId("resetBtn").onclick=()=>{
+  const b=byId("resetBtn");
+  if(!resetArmed){ resetArmed=true; b.textContent="Opravdu smazat? Klepni znovu"; resetTimer=setTimeout(()=>{resetArmed=false; b.textContent="🔄 Začít znovu";},3000); return; }
+  clearTimeout(resetTimer); resetArmed=false; b.textContent="🔄 Začít znovu";
+  resetProg(); speak("Hotovo! Můžeš začít znovu.");
+};
+
+/* ---------- Ztracené zlaťáky (piráti je poztráceli cestou) ---------- */
+let spawning=false;
+function collectLostCoin(el){
+  if(el._got) return; el._got=true; clearTimeout(el._t);
+  addCoin(el);
+  const s=document.createElement("div"); s.className="floater"; s.textContent="✨";
+  const r=el.getBoundingClientRect(); s.style.left=r.left+"px"; s.style.top=r.top+"px";
+  document.body.appendChild(s);
+  s.animate([{opacity:1,transform:"scale(1)"},{opacity:0,transform:"scale(1.9)"}],{duration:500}).onfinish=()=>s.remove();
+  el.remove();
+}
+function spawnLostCoin(){
+  if(document.hidden) return;
+  if(document.querySelectorAll(".lostcoin").length>=3) return;
+  const el=document.createElement("button"); el.className="lostcoin"; el.textContent="🪙";
+  el.setAttribute("aria-label","Sebrat ztracený zlaťák");
+  const x=14+Math.random()*Math.max(40,innerWidth-72);
+  const restY=110+Math.random()*Math.max(80,innerHeight-320);
+  el.style.left=x+"px"; el.style.top="-64px";
+  el.onclick=()=>collectLostCoin(el);
+  document.body.appendChild(el);
+  el.animate([{top:"-64px"},{top:(restY+26)+"px"},{top:restY+"px"}],{duration:1500,easing:"cubic-bezier(.3,.7,.4,1)",fill:"forwards"});
+  el._t=setTimeout(()=>{ if(!el._got){ el.animate([{opacity:1},{opacity:0}],{duration:600}).onfinish=()=>el.remove(); } },6000);
+}
+function startSpawner(){ if(spawning) return; spawning=true; setTimeout(spawnLostCoin,1200); setInterval(spawnLostCoin,4800); }
+
+/* ---------- Init ---------- */
+byId("muteBtn").textContent=muted?"🔇":"🔊";
+renderCoins(); updateProgress();
+</script>

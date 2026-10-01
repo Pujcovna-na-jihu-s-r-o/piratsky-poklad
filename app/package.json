@@ -1,0 +1,19 @@
+{
+  "name": "piratsky-poklad",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pirátský poklad – výuková hra o značkách pro orientační běh (iOS obal)",
+  "scripts": {
+    "sync": "cap sync",
+    "ios": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/ios": "^6.2.0",
+    "@capacitor/preferences": "^6.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/assets": "^3.0.5"
+  }
+}

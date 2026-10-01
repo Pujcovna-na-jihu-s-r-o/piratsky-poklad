@@ -1,0 +1,37 @@
+[
+ {
+  "id": "mlha_challenge",
+  "role": "mlha",
+  "text": "Arr! Tak ty chceš kousek mapy, plavčíku? Poraz mě v souboji, jestli to dokážeš!"
+ },
+ {
+  "id": "mlha_score_0",
+  "role": "mlha",
+  "text": "Cha chá, mám další!"
+ },
+ {
+  "id": "mlha_score_1",
+  "role": "mlha",
+  "text": "Jsi pomalý jako želva!"
+ },
+ {
+  "id": "mlha_score_2",
+  "role": "mlha",
+  "text": "Ten poklad bude můj!"
+ },
+ {
+  "id": "mlha_gloat",
+  "role": "mlha",
+  "text": "Cha chá! Tentokrát jsem vyhrál já!"
+ },
+ {
+  "id": "mlha_lost",
+  "role": "mlha",
+  "text": "Ne! To není možné! Tak dobře, tady máš ten kousek mapy."
+ },
+ {
+  "id": "mlha_story",
+  "role": "mlha",
+  "text": "Cha chá! Tu mapu už nikdy neuvidíte!"
+ }
+]

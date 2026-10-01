@@ -1,0 +1,1164 @@
+[
+ {
+  "id": "story_0",
+  "role": "pepik",
+  "text": "Před dávnými časy schovali piráti na ostrově poklad. Aby ho zase našli, nakreslili mapu. A hádej co: použili úplně stejné značky, jaké se dnes používají v orientačním běhu! Modrá je voda, žlutá louka, černá tečka balvan a křížek v kolečkách je poklad."
+ },
+ {
+  "id": "story_1",
+  "role": "pepik",
+  "text": "Jenže zlý kapitán Mlha mapu ukradl, roztrhal ji na 24 kousků a každý schoval na jiném ostrově. Bez mapy poklad nikdo nenajde."
+ },
+ {
+  "id": "story_2",
+  "role": "pepik",
+  "text": "Kdo chce poklad najít, musí umět značky číst: poznat, kde je voda, kde bažina a kudy vede cesta. A pak vymyslet, kudy se k pokladu dostat, aby nezapadl do bažiny a neztratil se v hustníku."
+ },
+ {
+  "id": "story_3",
+  "role": "pepik",
+  "text": "Já jsem papoušek Pepík a budu ti pomáhat. Za každý vyluštěný ostrov získáš kousek mapy. Až budeš mít všechny, mapu přečteš, dojdeš k pokladu a Zlatý kompas bude tvůj!"
+ },
+ {
+  "id": "ui_home_new",
+  "role": "pepik",
+  "text": "Ahoj, plavčíku! Já jsem papoušek Pepík. Klepni na Začít příběh a dozvíš se, proč musí každý hledač pokladů umět číst mapu."
+ },
+ {
+  "id": "ui_home_first",
+  "role": "pepik",
+  "text": "Vítej zpátky, plavčíku! Ještě nemáme žádný kousek mapy. Vyplujeme k Ostrovu papoušků?"
+ },
+ {
+  "id": "ui_home_back",
+  "role": "pepik",
+  "text": "Vítej zpátky, plavčíku! Další kousek mapy čeká na ostrově:"
+ },
+ {
+  "id": "ui_home_won",
+  "role": "pepik",
+  "text": "Vítej zpátky, kapitáne! Zlatý kompas máme, ale na Volném moři čeká další dobrodružství. Zvládneš delší sérii než minule?"
+ },
+ {
+  "id": "ui_world",
+  "role": "pepik",
+  "text": "Tohle je mapa ostrovů. Je nakreslená jako trať v orientačním běhu: start, kontroly a cíl. Na každém ostrově je schovaný kousek mapy. Klepni na první ostrov!"
+ },
+ {
+  "id": "ui_newsyms",
+  "role": "pepik",
+  "text": "Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!"
+ },
+ {
+  "id": "intro_papousci",
+  "role": "pepik",
+  "text": "Papoušci hlídají první kousek mapy. Ukaž jim, že poznáš vodu, louku a běhací les!"
+ },
+ {
+  "id": "intro_bazina",
+  "role": "pepik",
+  "text": "Fuj, tady to čvachtá! V bažině si namočíš boty, v hustníku se zamotáš do větví a přes potok musíš skočit."
+ },
+ {
+  "id": "intro_kameny",
+  "role": "pepik",
+  "text": "Na Kamenném ostrově stojí stará pevnost. Vede k ní pěší cesta kolem velkých balvanů."
+ },
+ {
+  "id": "intro_sopka",
+  "role": "pepik",
+  "text": "Sopka! Hnědé vrstevnice ukazují, jak je kopec strmý. Kolem jsou malé kupky a hluboké jámy."
+ },
+ {
+  "id": "intro_zavod",
+  "role": "pepik",
+  "text": "Tady piráti závodí! Od startu po spojnici přes kontroly až do cíle. Fialové značky ti ukážou trať."
+ },
+ {
+  "id": "intro_mlha1",
+  "role": "pepik",
+  "text": "V zátoce číhá kapitán Mlha s druhým kouskem mapy! Vyzývá tě na souboj: kdo přečte víc značek, než dohoří svíčka?"
+ },
+ {
+  "id": "intro_stiny",
+  "role": "pepik",
+  "text": "Tady roste všechno možné. Světlá zelená trochu brzdí, tmavší víc, a v podrostu jdeš jako v trávě po pás. Uprostřed stojí obrovský strom."
+ },
+ {
+  "id": "intro_cesty",
+  "role": "pepik",
+  "text": "Ostrov je protkaný cestami: široká silnice pro auta, vozová cesta pro traktor, úzké pěšiny a rovný průsek lesem. Poznáš, která je která?"
+ },
+ {
+  "id": "intro_skaly",
+  "role": "pepik",
+  "text": "Skály, srázy a hromady balvanů! Pozor: jedna tečka je balvan, trojúhelník je celá hromada."
+ },
+ {
+  "id": "intro_pole",
+  "role": "pepik",
+  "text": "Zlaté lány, zarostlé paseky a voňavý sad. Žlutá má spoustu podob, koukej pozorně na puntíky."
+ },
+ {
+  "id": "intro_vodni",
+  "role": "pepik",
+  "text": "Všude bublá voda: prameny, studny a mokré pruhy v lese. Modrá tečka, čárka nebo háček, každá znamená něco jiného."
+ },
+ {
+  "id": "intro_mlha2",
+  "role": "pepik",
+  "text": "Na útesu se mračí kapitán Mlha. Má další kousek mapy a chce odvetu! Přečteš víc značek než on?"
+ },
+ {
+  "id": "intro_ploty",
+  "role": "pepik",
+  "text": "Piráti si tu postavili ploty a zdi. Některé přelezeš, přes jiné se nesmí a musíš najít průchod. Dvojité čárky a tlusté tečky znamenají stop!"
+ },
+ {
+  "id": "intro_stavby",
+  "role": "pepik",
+  "text": "Věže, posedy, schody a asfaltové plácky. A jedna olivová zahrada, kam se nesmí."
+ },
+ {
+  "id": "intro_draty",
+  "role": "pepik",
+  "text": "Nad hlavou bzučí elektrické dráty, dole hučí vlak a lesem vede potrubí. Přes potok vede most. A co je ten křížek? To řekne legenda!"
+ },
+ {
+  "id": "intro_teren",
+  "role": "pepik",
+  "text": "Samé hnědé tvary: hlinité srázy, rýhy vymleté vodou, dolíky a hrbolatá zem."
+ },
+ {
+  "id": "intro_zahrady",
+  "role": "pepik",
+  "text": "Vinice v řádcích, keře a vyvrácený strom. A tečkovaná čára, kde končí starý les."
+ },
+ {
+  "id": "intro_mlha3",
+  "role": "pepik",
+  "text": "Kapitán Mlha se zabarikádoval v pevnosti! Kousek mapy vydá jen tomu, kdo ho porazí v souboji."
+ },
+ {
+  "id": "intro_trat",
+  "role": "pepik",
+  "text": "Velký pirátský závod! Fáborky, občerstvení, první pomoc, zakázané oblasti i zakázané cesty. Fialové značky říkají, co se smí."
+ },
+ {
+  "id": "intro_melciny",
+  "role": "pepik",
+  "text": "Mělké tůně, vodní příkopy, jámy plné vody a písčitá pláž. Světlejší modrá je mělčina, kterou přebrodíš."
+ },
+ {
+  "id": "intro_balvany",
+  "role": "pepik",
+  "text": "Obrovské balvany, kamenná pole a vysoké skalní stěny, přes které se nesmí. Tady čti mapu opravdu pozorně."
+ },
+ {
+  "id": "intro_tajemny",
+  "role": "pepik",
+  "text": "Zřícenina starého hradu, hraniční kameny, přístřešek a krmelec pro srnky. A tajemný kroužek, který vysvětlí jen legenda."
+ },
+ {
+  "id": "intro_hnedy",
+  "role": "pepik",
+  "text": "Poslední hnědé značky: zemní val, protáhlá kupka, pomocná vrstevnice a zvláštní terénní objekt. Pak už umíš úplně všechno!"
+ },
+ {
+  "id": "intro_mlha4",
+  "role": "pepik",
+  "text": "Kapitán Mlha má poslední kousek mapy! Vyzývá tě na rozhodující souboj o Zlatý kompas."
+ },
+ {
+  "id": "iname_papousci",
+  "role": "pepik",
+  "text": "Ostrov papoušků",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_bazina",
+  "role": "pepik",
+  "text": "Bažinatý ostrov",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_kameny",
+  "role": "pepik",
+  "text": "Kamenný ostrov",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_sopka",
+  "role": "pepik",
+  "text": "Sopečný ostrov",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_zavod",
+  "role": "pepik",
+  "text": "Závodní ostrov",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_mlha1",
+  "role": "pepik",
+  "text": "Mlhova zátoka",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_stiny",
+  "role": "pepik",
+  "text": "Ostrov zelených stínů",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_cesty",
+  "role": "pepik",
+  "text": "Ostrov cest",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_skaly",
+  "role": "pepik",
+  "text": "Skalní ostrov",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_pole",
+  "role": "pepik",
+  "text": "Ostrov luk a polí",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_vodni",
+  "role": "pepik",
+  "text": "Vodní ostrov",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_mlha2",
+  "role": "pepik",
+  "text": "Mlhův útes",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_ploty",
+  "role": "pepik",
+  "text": "Ostrov plotů a zdí",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_stavby",
+  "role": "pepik",
+  "text": "Ostrov staveb",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_draty",
+  "role": "pepik",
+  "text": "Ostrov drátů",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_teren",
+  "role": "pepik",
+  "text": "Ostrov strání",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_zahrady",
+  "role": "pepik",
+  "text": "Ostrov zahrad",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_mlha3",
+  "role": "pepik",
+  "text": "Mlhova pevnost",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_trat",
+  "role": "pepik",
+  "text": "Ostrov závodníků",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_melciny",
+  "role": "pepik",
+  "text": "Ostrov mělčin",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_balvany",
+  "role": "pepik",
+  "text": "Balvanový ostrov",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_tajemny",
+  "role": "pepik",
+  "text": "Tajemný ostrov",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_hnedy",
+  "role": "pepik",
+  "text": "Hnědý ostrov",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "iname_mlha4",
+  "role": "pepik",
+  "text": "Ostrov kapitána Mlhy",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "crew_crew0",
+  "role": "pepik",
+  "text": "Opička Kiki se přidává k posádce! Umí šplhat na stěžeň a hlídat zlaťáky."
+ },
+ {
+  "id": "crew_crew1",
+  "role": "pepik",
+  "text": "Želva Ferda se přidává k posádce! Je pomalá, ale nikdy nezabloudí."
+ },
+ {
+  "id": "crew_crew2",
+  "role": "pepik",
+  "text": "Krab Klepeto se přidává k posádce! Klepety otevře každou truhlu."
+ },
+ {
+  "id": "crew_crew3",
+  "role": "pepik",
+  "text": "Chobotnice Ola se přidává k posádce! Osmi rukama vytáhne kotvu jako nic."
+ },
+ {
+  "id": "crew_crew4",
+  "role": "pepik",
+  "text": "Delfín Dan se přidává k posádce! Plave rychleji než každá loď."
+ },
+ {
+  "id": "crew_crew5",
+  "role": "pepik",
+  "text": "Kocour Kompas se přidává k posádce! Vždycky ví, kde je sever."
+ },
+ {
+  "id": "crew_crew6",
+  "role": "pepik",
+  "text": "Tuleň Tonda se přidává k posádce! Zatleská ploutvemi při každém zlaťáku."
+ },
+ {
+  "id": "crew_crew7",
+  "role": "pepik",
+  "text": "Tučňák Pája se přidává k posádce! Chodí v obleku i na palubě."
+ },
+ {
+  "id": "crew_crew8",
+  "role": "pepik",
+  "text": "Papouščice Rózi se přidává k posádce! Je to Pepíkova sestřenice a umí zpívat."
+ },
+ {
+  "id": "crew_crew9",
+  "role": "pepik",
+  "text": "Pes Bublina se přidává k posádce! Vyčenichá každý poklad."
+ },
+ {
+  "id": "crew_crew10",
+  "role": "pepik",
+  "text": "Žába Kuňka se přidává k posádce! Zná každou bažinu."
+ },
+ {
+  "id": "crew_crew11",
+  "role": "pepik",
+  "text": "Ježek Bodlinka se přidává k posádce! Nikdo mu mapu nesebere."
+ },
+ {
+  "id": "crew_crew12",
+  "role": "pepik",
+  "text": "Veverka Zrzka se přidává k posádce! Schovává oříšky i zlaťáky."
+ },
+ {
+  "id": "crew_crew13",
+  "role": "pepik",
+  "text": "Sova Moudrá se přidává k posádce! Vidí i v noci."
+ },
+ {
+  "id": "crew_crew14",
+  "role": "pepik",
+  "text": "Koza Líza se přidává k posádce! Vyleze na každý kopec."
+ },
+ {
+  "id": "crew_crew15",
+  "role": "pepik",
+  "text": "Liška Ryška se přidává k posádce! Zná všechny lesní pěšinky."
+ },
+ {
+  "id": "crew_crew16",
+  "role": "pepik",
+  "text": "Včelka Bzum se přidává k posádce! Miluje louky plné květin."
+ },
+ {
+  "id": "crew_crew17",
+  "role": "pepik",
+  "text": "Plameňák Filip se přidává k posádce! Stojí na jedné noze i v bouři."
+ },
+ {
+  "id": "crew_crew18",
+  "role": "pepik",
+  "text": "Koala Kuba se přidává k posádce! Prospí celou plavbu."
+ },
+ {
+  "id": "crew_crew19",
+  "role": "pepik",
+  "text": "Lev Leo se přidává k posádce! Jeho řev zažene každého piráta."
+ },
+ {
+  "id": "crew_crew20",
+  "role": "pepik",
+  "text": "Opička Kiki se přidává k posádce! Umí šplhat na stěžeň a hlídat zlaťáky."
+ },
+ {
+  "id": "crew_crew21",
+  "role": "pepik",
+  "text": "Želva Ferda se přidává k posádce! Je pomalá, ale nikdy nezabloudí."
+ },
+ {
+  "id": "crew_crew22",
+  "role": "pepik",
+  "text": "Krab Klepeto se přidává k posádce! Klepety otevře každou truhlu."
+ },
+ {
+  "id": "crew_kompas",
+  "role": "pepik",
+  "text": "Mlhův kocour Kompas přeběhl k tobě! Teď je v tvé posádce a vždycky ví, kde je sever."
+ },
+ {
+  "id": "res_lose",
+  "role": "pepik",
+  "text": "Mlha tentokrát vyhrál o fous. Zkus to znovu, příště ho porazíš! Už je unavený."
+ },
+ {
+  "id": "res_win_1",
+  "role": "pepik",
+  "text": "Ostrov vyluštěn! Máš jednu hvězdu."
+ },
+ {
+  "id": "res_win_2",
+  "role": "pepik",
+  "text": "Ostrov vyluštěn! Máš dvě hvězdy."
+ },
+ {
+  "id": "res_win_3",
+  "role": "pepik",
+  "text": "Ostrov vyluštěn! Máš tři hvězdy!"
+ },
+ {
+  "id": "res_retry",
+  "role": "pepik",
+  "text": "Zahraj ho znovu bez chyb a budou tři."
+ },
+ {
+  "id": "res_duel_1",
+  "role": "pepik",
+  "text": "Porazil jsi kapitána Mlhu! Máš jednu hvězdu."
+ },
+ {
+  "id": "res_duel_2",
+  "role": "pepik",
+  "text": "Porazil jsi kapitána Mlhu! Máš dvě hvězdy."
+ },
+ {
+  "id": "res_duel_3",
+  "role": "pepik",
+  "text": "Porazil jsi kapitána Mlhu! Máš tři hvězdy!"
+ },
+ {
+  "id": "res_piece",
+  "role": "pepik",
+  "text": "Získal jsi kousek mapy!"
+ },
+ {
+  "id": "res_map",
+  "role": "pepik",
+  "text": "Mapa je celá! Teď ji přečti a najdi poklad!"
+ },
+ {
+  "id": "rank_1",
+  "role": "pepik",
+  "text": "Povýšení! Teď jsi Námořník!"
+ },
+ {
+  "id": "rank_2",
+  "role": "pepik",
+  "text": "Povýšení! Teď jsi Lodník!"
+ },
+ {
+  "id": "rank_3",
+  "role": "pepik",
+  "text": "Povýšení! Teď jsi Kormidelník!"
+ },
+ {
+  "id": "rank_4",
+  "role": "pepik",
+  "text": "Povýšení! Teď jsi Kapitán!"
+ },
+ {
+  "id": "rank_5",
+  "role": "pepik",
+  "text": "Povýšení! Teď jsi Admirál!"
+ },
+ {
+  "id": "seadone_0",
+  "role": "pepik",
+  "text": "Proplul jsi celé Papouščí moře! Otevírá se Mlžné moře."
+ },
+ {
+  "id": "seadone_1",
+  "role": "pepik",
+  "text": "Proplul jsi celé Mlžné moře! Otevírá se Bouřlivé moře."
+ },
+ {
+  "id": "seadone_2",
+  "role": "pepik",
+  "text": "Proplul jsi celé Bouřlivé moře! Otevírá se Ledové moře."
+ },
+ {
+  "id": "sea_0",
+  "role": "pepik",
+  "text": "Papouščí moře",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "sea_1",
+  "role": "pepik",
+  "text": "Mlžné moře",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "sea_2",
+  "role": "pepik",
+  "text": "Bouřlivé moře",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "sea_3",
+  "role": "pepik",
+  "text": "Ledové moře",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "sea_4",
+  "role": "pepik",
+  "text": "Sluneční moře",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "sea_5",
+  "role": "pepik",
+  "text": "Korálové moře",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "sea_6",
+  "role": "pepik",
+  "text": "Půlnoční moře",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "sea_7",
+  "role": "pepik",
+  "text": "Perlové moře",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "quest_0",
+  "role": "pepik",
+  "text": "Tohle je celá pirátská mapa pokladu. Každá cesta začíná na startu, to je fialový trojúhelník vlevo dole. Klepni na start."
+ },
+ {
+  "id": "quest_1",
+  "role": "pepik",
+  "text": "Od startu vede pěší cesta, ta černá přerušovaná čára. Běž po ní až k balvanu, k černé tečce u kontroly jedna. Klepni na balvan."
+ },
+ {
+  "id": "quest_2",
+  "role": "pepik",
+  "text": "Od balvanu vyběhni na kopec. Kopec poznáš podle hnědých vrstevnic, vrchol je uprostřed nejmenšího kroužku. Klepni na vrchol kopce."
+ },
+ {
+  "id": "quest_3",
+  "role": "pepik",
+  "text": "Z kopce vidíš žlutou louku a na ní velký strom, zelený kroužek u kontroly dva. Klepni na strom."
+ },
+ {
+  "id": "quest_4",
+  "role": "pepik",
+  "text": "A teď pozor. Bažinu s modrými čárkami obejdi, ta je nebezpečná. Pod loukou jsou dvě fialová kolečka s křížkem. Tam je poklad! Klepni na něj."
+ },
+ {
+  "id": "quest_done",
+  "role": "pepik",
+  "text": "Hurá! Našel jsi poklad! Přečetl jsi celou mapu jako opravdový pirát. A v truhle je Zlatý kompas!"
+ },
+ {
+  "id": "qhint_1",
+  "role": "pepik",
+  "text": "Drž se černé přerušované čáry, cesta tě dovede k balvanu."
+ },
+ {
+  "id": "qhint_2",
+  "role": "pepik",
+  "text": "Hledej hnědé kroužky v sobě, to je kopec."
+ },
+ {
+  "id": "qhint_3",
+  "role": "pepik",
+  "text": "Velký strom je zelený kroužek na žluté louce."
+ },
+ {
+  "id": "qhint_4",
+  "role": "pepik",
+  "text": "Poklad je v cíli, ve dvou fialových kolečkách s křížkem."
+ },
+ {
+  "id": "qok_0",
+  "role": "pepik",
+  "text": "Správně!"
+ },
+ {
+  "id": "qok_1",
+  "role": "pepik",
+  "text": "Přesně tak!"
+ },
+ {
+  "id": "qok_2",
+  "role": "pepik",
+  "text": "Výborně, čteš mapu jako kapitán!"
+ },
+ {
+  "id": "qwrong_bazina",
+  "role": "pepik",
+  "text": "To je bažina, tam bys promokl a zapadl."
+ },
+ {
+  "id": "qwrong_voda",
+  "role": "pepik",
+  "text": "To je voda, tam se neběží, tu obejdi."
+ },
+ {
+  "id": "qwrong_housti",
+  "role": "pepik",
+  "text": "To je hustník, tam se zamotáš do větví."
+ },
+ {
+  "id": "qwrong_poklad",
+  "role": "pepik",
+  "text": "Poklad je tam, ale nejdřív musíš doběhnout po trati."
+ },
+ {
+  "id": "qwrong_nothing",
+  "role": "pepik",
+  "text": "Tam nic není."
+ },
+ {
+  "id": "qwrong_again",
+  "role": "pepik",
+  "text": "Poslechni si to znovu."
+ },
+ {
+  "id": "ui_final",
+  "role": "pepik",
+  "text": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový kapitán! Na Volném moři na tebe čekají další dobrodružství."
+ },
+ {
+  "id": "ui_all_learned",
+  "role": "pepik",
+  "text": "Hurá! Umíš všechny značky! Jsi opravdový čtenář map!"
+ },
+ {
+  "id": "ui_daily",
+  "role": "pepik",
+  "text": "Denní poklad! Zlaťáky navíc do truhly. Přijď zase zítra, bude jich ještě víc!"
+ },
+ {
+  "id": "ui_shop_intro",
+  "role": "pepik",
+  "text": "Vítej v krámu! Klobouk si nasadíš na hlavu, vlajku dáš na loď a poklady ti zůstanou v truhle."
+ },
+ {
+  "id": "ui_shop_poor",
+  "role": "pepik",
+  "text": "Ještě nemáš dost zlaťáků. Vylušti další ostrov a budeš je mít!"
+ },
+ {
+  "id": "ui_shop_bought",
+  "role": "pepik",
+  "text": "Paráda! Je to tvoje!"
+ },
+ {
+  "id": "ui_shop_treasure",
+  "role": "pepik",
+  "text": "Krásný poklad! Už je v truhle."
+ },
+ {
+  "id": "ui_shop_equipped",
+  "role": "pepik",
+  "text": "Hotovo, už je to na lodi."
+ },
+ {
+  "id": "ui_mute_on",
+  "role": "pepik",
+  "text": "Zvuk je zapnutý, námořníku."
+ },
+ {
+  "id": "ui_reset",
+  "role": "pepik",
+  "text": "Hotovo! Můžeš začít znovu od začátku."
+ },
+ {
+  "id": "say_voda",
+  "role": "pepik",
+  "text": "Modrá plocha s černým okrajem je voda, rybník nebo jezero. Vodu nepřeběhneš, musíš ji oběhnout. Pomůcka: modrá jako vodička, osvěží tě trošička!"
+ },
+ {
+  "id": "say_melka_voda",
+  "role": "pepik",
+  "text": "Světle modrá plocha je mělká voda, třeba brod nebo mělká tůň. Dá se přebrodit, ale namočíš se. Pomůcka: světlejší modrá, mělčí voda!"
+ },
+ {
+  "id": "say_potok",
+  "role": "pepik",
+  "text": "Modrá čára je potok nebo říčka. Dá se přeskočit nebo přebrodit. Pomůcka: modrá čára teče jako potok!"
+ },
+ {
+  "id": "say_prikop",
+  "role": "pepik",
+  "text": "Modrá přerušovaná čára je malý vodní příkop, někdy i vyschlý. Pomůcka: přerušovaná modrá, voda jen někdy!"
+ },
+ {
+  "id": "say_bazina",
+  "role": "pepik",
+  "text": "Modré vodorovné čárky jsou mokrá bažina, plná vody a bláta. Pomůcka: modré čárky vedle sebe, bláto v botě studí, zebe!"
+ },
+ {
+  "id": "say_nezretelna_bazina",
+  "role": "pepik",
+  "text": "Modré přerušované čárky jsou nezřetelná bažina. Někdy je mokrá, někdy suchá. Pomůcka: přerušované čárky, bažina jen občas!"
+ },
+ {
+  "id": "say_uzka_bazina",
+  "role": "pepik",
+  "text": "Modrá tečkovaná čára je úzká bažina, mokrý pruh v lese. Pomůcka: modré tečky v řadě, mokrá cestička!"
+ },
+ {
+  "id": "say_jama_s_vodou",
+  "role": "pepik",
+  "text": "Modré véčko je malá jáma plná vody. Pomůcka: modré V jako vana!"
+ },
+ {
+  "id": "say_studna",
+  "role": "pepik",
+  "text": "Modrý čtvereček je studna, fontána nebo nádrž na vodu. Pomůcka: modrý čtvereček, studánka v kamenném rámečku!"
+ },
+ {
+  "id": "say_pramen",
+  "role": "pepik",
+  "text": "Modrý háček je pramen, tam voda vytéká ze země. Pomůcka: háček ukazuje, kudy voda odtéká!"
+ },
+ {
+  "id": "say_vodni_objekt",
+  "role": "pepik",
+  "text": "Modrá hvězdička je zvláštní vodní věc, kterou mapa vysvětlí v legendě, třeba napajedlo. Pomůcka: modrá hvězdička, něco s vodou!"
+ },
+ {
+  "id": "say_louka",
+  "role": "pepik",
+  "text": "Žlutá je otevřená louka nebo pole bez stromů, kde se běží lehce a daleko vidíš. Pomůcka: žlutá jako sluníčko, usmívej se maličko!"
+ },
+ {
+  "id": "say_roztrousene",
+  "role": "pepik",
+  "text": "Žlutá s bílými puntíky je louka, kde tu a tam roste strom. Pomůcka: bílé puntíky jsou stromy na louce!"
+ },
+ {
+  "id": "say_divoky",
+  "role": "pepik",
+  "text": "Světle žlutá je paseka nebo zarostlá louka s vysokou trávou. Běží se pomaleji než po louce. Pomůcka: bledší žlutá, vyšší tráva!"
+ },
+ {
+  "id": "say_pole",
+  "role": "pepik",
+  "text": "Žlutá s černými tečkami je oraná půda, pole. Na pole se často nesmí, hlídej pokyny. Pomůcka: černé tečky jsou zrníčka na poli!"
+ },
+ {
+  "id": "say_sad",
+  "role": "pepik",
+  "text": "Žlutá se zelenými tečkami v řádcích je ovocný sad. Stromy tu rostou pěkně v řadách. Pomůcka: zelené tečky v řadě, jabloně v sadě!"
+ },
+ {
+  "id": "say_vinice",
+  "role": "pepik",
+  "text": "Žlutá se zelenými čárkami v řádcích je vinice. Pomůcka: zelené čárky jsou řady vína!"
+ },
+ {
+  "id": "say_les",
+  "role": "pepik",
+  "text": "Bílá je přehledný les, kterým se dá volně a rychle běhat. Na orienťácké mapě je les bílý, ne zelený! Pomůcka: bílá barva v lese svítí, žádné větve tě nechytí!"
+ },
+ {
+  "id": "say_zelena_svetla",
+  "role": "pepik",
+  "text": "Světle zelená je řidší porost, kde se běží pomaleji. Pomůcka: světle zelená trochu brzdí!"
+ },
+ {
+  "id": "say_zelena_stredni",
+  "role": "pepik",
+  "text": "Středně zelená je hustý porost, kde už jen jdeš. Pomůcka: čím tmavší zelená, tím hůř se běží!"
+ },
+ {
+  "id": "say_housti",
+  "role": "pepik",
+  "text": "Tmavě zelená je hustník, husté křoví, kterým se musíš prodírat. Radši ho oběhni. Pomůcka: zelená jako stromeček, zpomalí tvůj krokáček!"
+ },
+ {
+  "id": "say_podrost",
+  "role": "pepik",
+  "text": "Zelené svislé pruhy jsou podrost, třeba ostružiní nebo vysoké kapradí. Vidíš daleko, ale běží se pomalu. Pomůcka: zelené pruhy jako stébla!"
+ },
+ {
+  "id": "say_strom",
+  "role": "pepik",
+  "text": "Zelený kroužek je jeden výrazný velký strom. Pomůcka: kroužek jako koruna stromu!"
+ },
+ {
+  "id": "say_ker",
+  "role": "pepik",
+  "text": "Malá zelená tečka s bílým středem je výrazný keř nebo menší strom. Pomůcka: tečka je keřík, kroužek velký strom!"
+ },
+ {
+  "id": "say_veg_x",
+  "role": "pepik",
+  "text": "Zelený křížek je zvláštní věc z rostlin, nejčastěji vyvrácený strom, vývrat. Pomůcka: zelený křížek, strom leží!"
+ },
+ {
+  "id": "say_hranice_veg",
+  "role": "pepik",
+  "text": "Černá tečkovaná čára je hranice porostu, třeba kde končí vysoký les a začíná mladý. Pomůcka: tečky jako šev mezi lesy!"
+ },
+ {
+  "id": "say_kopec",
+  "role": "pepik",
+  "text": "Hnědé čáry jsou vrstevnice, ukazují kopečky a jak je svah strmý. Čím blíž jsou u sebe, tím víc se zadýcháš. Pomůcka: hnědá jako čokoláda, kopečky má každý rád!"
+ },
+ {
+  "id": "say_doplnkova",
+  "role": "pepik",
+  "text": "Hnědá přerušovaná čára je pomocná vrstevnice. Ukazuje malý kopeček nebo dolík mezi velkými vrstevnicemi. Pomůcka: přerušovaná hnědá, jen maličký hrbolek!"
+ },
+ {
+  "id": "say_kupka",
+  "role": "pepik",
+  "text": "Hnědá tečka je malá kupka, kopeček tak vysoký jako ty. Pomůcka: hnědá tečka, mraveniště nebo hromádka!"
+ },
+ {
+  "id": "say_protahla_kupka",
+  "role": "pepik",
+  "text": "Hnědá protáhlá tečka je podlouhlá kupka, jako veka ležící na zemi. Pomůcka: protáhlá tečka, protáhlý kopeček!"
+ },
+ {
+  "id": "say_prohluben",
+  "role": "pepik",
+  "text": "Hnědá miska, půlkroužek otevřený nahoru, je malá prohlubeň, mělký dolík. Pomůcka: hnědá miska, dolík jako mistička!"
+ },
+ {
+  "id": "say_jama",
+  "role": "pepik",
+  "text": "Hnědé véčko je jáma se strmými stěnami. Pomůcka: hnědé V jako hluboká díra!"
+ },
+ {
+  "id": "say_teren_objekt",
+  "role": "pepik",
+  "text": "Malý hnědý trojúhelníček je zvláštní terénní tvar, mapa ho vysvětlí v legendě. Pomůcka: hnědý trojúhelníček, něco z hlíny!"
+ },
+ {
+  "id": "say_rozbity",
+  "role": "pepik",
+  "text": "Rozházené hnědé tečky jsou rozbitý povrch, samé hrboly a dolíky. Pomůcka: hnědé tečky, hrbolatá zem!"
+ },
+ {
+  "id": "say_zemni_sraz",
+  "role": "pepik",
+  "text": "Hnědá čára s čárkami dolů je mez, zemní sráz: strmý schod z hlíny v lese, násep u silnice nebo strmá strana hráze. Čárky ukazují, kam to padá dolů. Pomůcka: hnědý hřeben, hlína padá dolů!"
+ },
+ {
+  "id": "say_ryha",
+  "role": "pepik",
+  "text": "Tlustá hnědá čára je erozní rýha, hluboký zářez vymletý vodou. Pomůcka: tlustá hnědá, voda vyryla rýhu!"
+ },
+ {
+  "id": "say_val",
+  "role": "pepik",
+  "text": "Hnědá čára s tečkami je zemní val, dlouhý násep z hlíny, třeba hráz rybníka. Hráz nemá vlastní značku, kreslí se jako val nebo zemní sráz. Pomůcka: hnědá čára s korálky, val jako náhrdelník!"
+ },
+ {
+  "id": "say_balvan",
+  "role": "pepik",
+  "text": "Černá tečka je balvan, velký kámen vyšší než ty. Pozor, trojúhelník je až celá hromada kamenů. Pomůcka: černá tečka v lese stojí, velký kámen nohám neublíží!"
+ },
+ {
+  "id": "say_velkybalvan",
+  "role": "pepik",
+  "text": "Větší černá tečka je velký balvan, vyšší než dospělý člověk. Pomůcka: větší tečka, větší kámen!"
+ },
+ {
+  "id": "say_shluk",
+  "role": "pepik",
+  "text": "Černý trojúhelník je shluk balvanů, hromada kamenů těsně u sebe. Pomůcka: trojúhelník jako hromada kamení!"
+ },
+ {
+  "id": "say_obrovsky",
+  "role": "pepik",
+  "text": "Černá plocha nakreslená podle skutečného tvaru je obrovský balvan nebo skalní věž. Pomůcka: černá skvrna, skála velká jako dům!"
+ },
+ {
+  "id": "say_balvanove_pole",
+  "role": "pepik",
+  "text": "Rozházené malé černé trojúhelníčky jsou balvanové pole, spousta kamenů, po kterých se špatně běží. Pomůcka: malé trojúhelníčky, samé kameny!"
+ },
+ {
+  "id": "say_kamenity",
+  "role": "pepik",
+  "text": "Malé černé tečky rozházené po ploše jsou kamenitý povrch, samé menší kameny. Pomůcka: černé tečky, kamínky pod nohama!"
+ },
+ {
+  "id": "say_skala",
+  "role": "pepik",
+  "text": "Šedá plocha je holá skála bez hlíny a stromů, skalní plotna. Pomůcka: šedá jako kámen!"
+ },
+ {
+  "id": "say_sraz",
+  "role": "pepik",
+  "text": "Černá čára s čárkami je skalní sráz, který se dá slézt. Čárky ukazují dolů ze skály. Pomůcka: černý hřeben, skála se svažuje!"
+ },
+ {
+  "id": "say_nepr_sraz",
+  "role": "pepik",
+  "text": "Tlustá černá čára s dlouhými čárkami je nepřekonatelný sráz, vysoká skalní stěna. Tam nelez, je to nebezpečné! Pomůcka: tlustá černá, skála stop!"
+ },
+ {
+  "id": "say_kamenna_jama",
+  "role": "pepik",
+  "text": "Černé véčko je kamenná jáma nebo jeskyně. Pomůcka: černé V, díra ve skále!"
+ },
+ {
+  "id": "say_pisek",
+  "role": "pepik",
+  "text": "Světle žlutá s černými tečkami je písčitý povrch. V písku se běží ztěžka, nohy se boří. Pomůcka: tečky jako zrnka písku!"
+ },
+ {
+  "id": "say_zpevnena",
+  "role": "pepik",
+  "text": "Světle hnědá plocha s černým okrajem je asfalt, beton nebo dlažba, třeba parkoviště nebo hřiště. Pomůcka: světle hnědá, tvrdá zem!"
+ },
+ {
+  "id": "say_sirokasilnice",
+  "role": "pepik",
+  "text": "Dvě černé čáry se světle hnědou uprostřed jsou široká silnice. Pozor na auta! Pomůcka: dvě čáry, mezi nimi jede auto!"
+ },
+ {
+  "id": "say_silnice",
+  "role": "pepik",
+  "text": "Plná černá čára je silnice, po které jezdí auta. Pomůcka: plná černá čára, tvrdá cesta pro auta!"
+ },
+ {
+  "id": "say_vozovka",
+  "role": "pepik",
+  "text": "Černá čára z dlouhých čárek je vozová cesta, širší lesní cesta pro traktor. Pomůcka: dlouhé čárky, traktor tudy projede!"
+ },
+ {
+  "id": "say_cesta",
+  "role": "pepik",
+  "text": "Černá přerušovaná čára je pěší cesta, po které se běží rychle a nezabloudíš. Pomůcka: po černé čáře jako po chodníčku, doběhneš tam za chviličku!"
+ },
+ {
+  "id": "say_pesina",
+  "role": "pepik",
+  "text": "Tenká černá přerušovaná čára je pěšina, úzká stezka pro jednoho. Pomůcka: tenké čárky, úzká stezička!"
+ },
+ {
+  "id": "say_prusek",
+  "role": "pepik",
+  "text": "Tenká černá čára z dlouhých čárek je průsek, rovný pruh vysekaný lesem, třeba pod dráty. Pomůcka: dlouhé tenké čárky, jako by někdo lesem prořízl pruh!"
+ },
+ {
+  "id": "say_zeleznice",
+  "role": "pepik",
+  "text": "Tlustá černá čára s mezerami je železnice. Na koleje se nesmí! Pomůcka: tlustá čára s mezírkami, jedou po ní vagónky!"
+ },
+ {
+  "id": "say_vedeni",
+  "role": "pepik",
+  "text": "Tenká černá čára s příčnými čárkami je elektrické vedení nebo lanovka. Dráty vedou vysoko nad hlavou. Pomůcka: čárky jako sloupy, drát mezi nimi!"
+ },
+ {
+  "id": "say_most",
+  "role": "pepik",
+  "text": "Cesta se dvěma závorkami je most, po kterém přejdeš potok nebo silnici. Pomůcka: závorky drží most!"
+ },
+ {
+  "id": "say_zed",
+  "role": "pepik",
+  "text": "Černá čára s tečkami je kamenná zeď, přes kterou se dá přelézt. Pomůcka: tečky jsou kameny ve zdi!"
+ },
+ {
+  "id": "say_nepr_zed",
+  "role": "pepik",
+  "text": "Tlustá černá čára s velkými tečkami je nepřekonatelná zeď. Přes ni nesmíš, hledej průchod. Pomůcka: tlustá zeď s velkými kameny, stop!"
+ },
+ {
+  "id": "say_plot",
+  "role": "pepik",
+  "text": "Černá čára s krátkými čárkami na jedné straně je plot, který se dá přelézt. Pomůcka: čárky jako kolíky v plotě!"
+ },
+ {
+  "id": "say_nepr_plot",
+  "role": "pepik",
+  "text": "Černá čára s dvojitými čárkami je nepřekonatelný plot. Přes něj se nesmí, musíš najít branku. Pomůcka: dvojité čárky, dvakrát stop!"
+ },
+ {
+  "id": "say_pruchod_plot",
+  "role": "pepik",
+  "text": "Plot s mezerou a dvěma čárkami je průchod, branka nebo schůdky, kudy se přes plot nebo zeď smí. Pomůcka: mezera v plotě, tudy projdeš!"
+ },
+ {
+  "id": "say_budova",
+  "role": "pepik",
+  "text": "Černá plocha ve tvaru domu je budova, dům, chata nebo stavba. Pomůcka: černá kostka v mapě stojí, domeček se deště nebojí!"
+ },
+ {
+  "id": "say_zakaz",
+  "role": "pepik",
+  "text": "Olivově zelená plocha je soukromý pozemek nebo zahrada, kam se nesmí. Pomůcka: olivová jako zavřená vrátka, tam nechoď!"
+ },
+ {
+  "id": "say_zricenina",
+  "role": "pepik",
+  "text": "Černý přerušovaný obrys je zřícenina, zbytky starého domu nebo hradu. Pomůcka: přerušované zdi, dům se rozpadl!"
+ },
+ {
+  "id": "say_zastreseni",
+  "role": "pepik",
+  "text": "Světle šedá plocha s černým okrajem je přístřešek nebo zastřešení, střecha bez zdí, pod kterou proběhneš. Pomůcka: šedá střecha, pod ní sucho!"
+ },
+ {
+  "id": "say_veza",
+  "role": "pepik",
+  "text": "Černá čtyřcípá hvězda je vysoká věž nebo velký sloup, který kouká nad les. Pomůcka: hvězda ční do výšky jako věž!"
+ },
+ {
+  "id": "say_posed",
+  "role": "pepik",
+  "text": "Černé T je posed, malá věž pro myslivce. Pomůcka: T jako trůn pro myslivce!"
+ },
+ {
+  "id": "say_schody",
+  "role": "pepik",
+  "text": "Černý žebříček je schodiště venku v terénu. Pomůcka: příčky jako schody!"
+ },
+ {
+  "id": "say_mohyla",
+  "role": "pepik",
+  "text": "Černý kroužek s tečkou uprostřed je hraniční kámen, pomníček nebo mohyla. Pomůcka: tečka v kroužku, kámen s nápisem!"
+ },
+ {
+  "id": "say_krmelec",
+  "role": "pepik",
+  "text": "Černá šipka nahoru je krmelec, kam myslivci nosí zvířatům jídlo. Pomůcka: šipka ukazuje na střechu krmelce!"
+ },
+ {
+  "id": "say_krouzek",
+  "role": "pepik",
+  "text": "Černý kroužek je zvláštní věc, kterou postavili lidé. Co to je, říká legenda mapy, třeba lavička. Pomůcka: kroužek, koukni do legendy!"
+ },
+ {
+  "id": "say_krizek",
+  "role": "pepik",
+  "text": "Černý křížek je jiná zvláštní věc od lidí, třeba pomníček nebo tabule. Pomůcka: křížek, koukni do legendy!"
+ },
+ {
+  "id": "say_potrubi",
+  "role": "pepik",
+  "text": "Černá čára se šipkami je potrubí nebo jiná dlouhá věc od lidí, kterou překročíš. Co to přesně je, řekne legenda mapy. Pomůcka: šipky ukazují, kudy trubka vede!"
+ },
+ {
+  "id": "say_nepr_potrubi",
+  "role": "pepik",
+  "text": "Tlustá černá čára s dvojitými šipkami je vysoké potrubí nebo jiná dlouhá překážka, přes kterou se nedostaneš. Pomůcka: dvojité šipky, dvakrát stop!"
+ },
+ {
+  "id": "say_start",
+  "role": "pepik",
+  "text": "Fialový trojúhelník je start, odtud tvá trať začíná. Pomůcka: trojúhelník ukazuje špičkou vpřed, vyraz jako raketa na výzvěd!"
+ },
+ {
+  "id": "say_kontrola",
+  "role": "pepik",
+  "text": "Fialové kolečko je kontrola, je tam oranžovo-bílý lampionek a čip. Pomůcka: kolečko je jako lampionek, oraž si ho za okamžik!"
+ },
+ {
+  "id": "say_cil",
+  "role": "pepik",
+  "text": "Dvě fialová kolečka jsou cíl, konec trati a schovaný poklad. Pomůcka: dvě kolečka jako medaile, v cíli tě každý pochválí!"
+ },
+ {
+  "id": "say_spojnice",
+  "role": "pepik",
+  "text": "Fialová rovná čára spojuje kontroly a ukazuje, v jakém pořadí je máš hledat. Pomůcka: čára vede od kolečka ke kolečku!"
+ },
+ {
+  "id": "say_znaceny",
+  "role": "pepik",
+  "text": "Fialová přerušovaná čára je značený úsek. Tudy musíš běžet po fáborkách. Pomůcka: čárky jako fáborky na stromech!"
+ },
+ {
+  "id": "say_nepristupna",
+  "role": "pepik",
+  "text": "Fialové šrafování je oblast, kam se při závodě nesmí. Pomůcka: fialová mřížka, zamčeno!"
+ },
+ {
+  "id": "say_pruchod",
+  "role": "pepik",
+  "text": "Dvě fialové obloučky proti sobě jsou průchod, jediné místo, kudy smíš přes plot nebo zeď. Pomůcka: obloučky jako otevřená vrátka!"
+ },
+ {
+  "id": "say_prvni_pomoc",
+  "role": "pepik",
+  "text": "Fialový kříž je stanoviště první pomoci. Když se zraníš, běž sem. Pomůcka: kříž jako na lékárničce!"
+ },
+ {
+  "id": "say_obcerstveni",
+  "role": "pepik",
+  "text": "Fialový kelímek je občerstvovací stanice. Tady se při závodě napiješ. Pomůcka: kelímek s pitím!"
+ },
+ {
+  "id": "say_nepristupna_trasa",
+  "role": "pepik",
+  "text": "Fialové křížky na cestě jsou zakázaná trasa. Cestu smíš přeběhnout napříč, ale nesmíš po ní běžet. Pomůcka: křížky přeškrtly cestu!"
+ },
+ {
+  "id": "ui_locked",
+  "role": "pepik",
+  "text": "Sem se dostaneš, až vyluštíš předchozí ostrov."
+ },
+ {
+  "id": "ui_boss_rules",
+  "role": "pepik",
+  "text": "Já ti vždycky řeknu jméno značky a ty na ni rychle klepni. Vyhraje ten, kdo jich najde víc, než dohoří svíčka."
+ },
+ {
+  "id": "ui_duel_start",
+  "role": "pepik",
+  "text": "Souboj začíná! Tři, dva, jedna, teď!"
+ }
+]

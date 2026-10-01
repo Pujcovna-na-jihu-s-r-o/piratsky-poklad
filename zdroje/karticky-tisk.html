@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="cs"><head><meta charset="utf-8">
+<title>Obrázkové kartičky – orientační běh (děti)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap">
+<style>
+@page{ size:A4; margin:9mm; }
+*{box-sizing:border-box}
+body{ margin:0; font-family:"Nunito","Segoe UI",sans-serif; color:#12333d; }
+h2.sheet{ font-family:"Fredoka","Segoe UI",sans-serif; font-size:13pt; margin:0 0 4mm; color:#5c7c88; text-align:center;}
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:5mm; }
+.card{ border:2.2px dashed #b9c6cc; border-radius:7mm; padding:5mm 5mm 4mm; height:84mm;
+  display:flex; flex-direction:column; align-items:center; text-align:center; page-break-inside:avoid; background:#fff;}
+.sym{ width:42mm; height:42mm; }
+.row{ display:flex; align-items:center; gap:2.5mm; margin-top:1mm;}
+.emoji{ font-size:20pt; }
+.name{ font-family:"Fredoka","Segoe UI",sans-serif; font-weight:700; font-size:19pt; }
+.mnem{ font-size:11.5pt; font-weight:800; color:#0f7a3a; margin-top:1.5mm; }
+.desc{ font-size:9.5pt; color:#54707b; margin-top:1mm; line-height:1.25; }
+.pagebreak{ page-break-before:always; }
+.foot{ text-align:center; color:#9bb0b8; font-size:8pt; margin-top:3mm;}
+</style></head>
+<body>
+<div id="root"></div>
+<script>
+const SY=[
+ {n:"Voda",e:"💧",m:"Modrá jako voda!",d:"Potok, rybník nebo louže.",svg:`<rect x="12" y="22" width="76" height="56" rx="14" fill="#1e9fe0"/><path d="M22 42 q9 -9 18 0 t18 0" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M22 58 q9 -9 18 0 t18 0" stroke="#fff" stroke-width="4.5" fill="none" stroke-linecap="round"/>`},
+ {n:"Houští",e:"🌲",m:"Zelená brzdí!",d:"Husté křoví, špatně se běží.",svg:`<rect x="12" y="22" width="76" height="56" rx="14" fill="#2fa32f"/><circle cx="34" cy="42" r="7" fill="#248a24"/><circle cx="58" cy="38" r="6" fill="#248a24"/><circle cx="48" cy="58" r="7" fill="#248a24"/><circle cx="70" cy="60" r="6" fill="#248a24"/>`},
+ {n:"Louka",e:"🌼",m:"Žlutá jako sluníčko!",d:"Volno, dá se rychle běžet.",svg:`<rect x="12" y="22" width="76" height="56" rx="14" fill="#ffd23f"/><circle cx="42" cy="46" r="5" fill="#fff"/><circle cx="42" cy="46" r="2.4" fill="#e0a400"/><circle cx="62" cy="58" r="5" fill="#fff"/><circle cx="62" cy="58" r="2.4" fill="#e0a400"/>`},
+ {n:"Běhací les",e:"🌳",m:"Bílá = volná cesta lesem!",d:"Les, kterým se dá dobře běžet.",svg:`<rect x="12" y="22" width="76" height="56" rx="14" fill="#ffffff" stroke="#cfe0e6" stroke-width="3"/><path d="M50 34 l12 20 h-24 z" fill="#2fa32f"/><path d="M50 44 l14 20 h-28 z" fill="#2fa32f"/><rect x="47" y="62" width="6" height="9" fill="#8a5a2b"/>`},
+ {n:"Kopec",e:"⛰️",m:"Hnědá jako čokoládový kopeček!",d:"Čáry blízko sebe = strmý kopec.",svg:`<g fill="none" stroke="#b06a2c" stroke-width="4.5"><ellipse cx="50" cy="58" rx="34" ry="20"/><ellipse cx="50" cy="54" rx="22" ry="13"/><ellipse cx="50" cy="50" rx="10" ry="6"/></g>`},
+ {n:"Cesta",e:"🛤️",m:"Běž po čáře jako po chodníku!",d:"Cesta nebo pěšina, nejrychlejší běh.",svg:`<path d="M14 68 C 34 30, 66 70, 86 32" stroke="#232323" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="13 9"/>`},
+ {n:"Budova",e:"🏠",m:"Černý dům jen míjíš!",d:"Budova, dům.",svg:`<path d="M28 46 L50 28 L72 46 Z" fill="#232323"/><rect x="34" y="46" width="32" height="26" fill="#232323"/>`},
+ {n:"Bažina",e:"🐸",m:"Modré čárky, mokré nožičky!",d:"Mokro, radši obejít.",svg:`<g stroke="#1e9fe0" stroke-width="5" stroke-linecap="round"><line x1="26" y1="40" x2="50" y2="40"/><line x1="56" y1="40" x2="74" y2="40"/><line x1="26" y1="52" x2="44" y2="52"/><line x1="50" y1="52" x2="74" y2="52"/><line x1="26" y1="64" x2="50" y2="64"/><line x1="56" y1="64" x2="74" y2="64"/></g>`},
+ {n:"Balvan",e:"🪨",m:"Velký kámen, velký trojúhelník!",d:"Velký kámen v terénu.",svg:`<path d="M50 28 L72 68 L28 68 Z" fill="#232323"/>`},
+ {n:"Start",e:"🚩",m:"Trojúhelník jako start rakety!",d:"Tady začínáš.",svg:`<path d="M50 26 L73 68 L27 68 Z" fill="none" stroke="#c026c0" stroke-width="7" stroke-linejoin="round"/>`},
+ {n:"Kontrola",e:"🎯",m:"Kolečko jako lampionek!",d:"Tady si cvakneš čipem.",svg:`<circle cx="50" cy="50" r="24" fill="none" stroke="#c026c0" stroke-width="7"/>`},
+ {n:"Cíl",e:"🏁",m:"Dvě kolečka jako medaile!",d:"Tady dobíháš.",svg:`<circle cx="50" cy="50" r="25" fill="none" stroke="#c026c0" stroke-width="6"/><circle cx="50" cy="50" r="15" fill="none" stroke="#c026c0" stroke-width="6"/>`},
+];
+function cardHTML(s){return `<div class="card"><svg class="sym" viewBox="0 0 100 100">${s.svg}</svg><div class="row"><span class="emoji">${s.e}</span><span class="name">${s.n}</span></div><div class="mnem">${s.m}</div><div class="desc">${s.d}</div></div>`;}
+let html="";
+for(let p=0;p<2;p++){
+  const chunk=SY.slice(p*6,p*6+6);
+  html+=`<section class="${p>0?'pagebreak':''}"><h2 class="sheet">Orientační běh – obrázkové kartičky (${p+1}/2) ✂️</h2><div class="grid">${chunk.map(cardHTML).join("")}</div><div class="foot">Vystřihni po čárkované čáře. Barva + značka + pomůcka, jak si ji zapamatovat.</div></section>`;
+}
+document.getElementById("root").innerHTML=html;
+window.__ready=true;
+</script>
+</body></html>

@@ -1,0 +1,286 @@
+[
+ {
+  "id": "story_0",
+  "role": "pepik",
+  "text": "Před dávnými časy schovali piráti na ostrově poklad. Aby ho zase našli, nakreslili mapu. A hádej co: použili úplně stejné značky, jaké se dnes používají v orientačním běhu! Modrá je voda, žlutá louka, černá tečka balvan a křížek v kolečkách je poklad."
+ },
+ {
+  "id": "story_1",
+  "role": "pepik",
+  "text": "Jenže zlý kapitán Mlha mapu ukradl, roztrhal ji na 24 kousků a každý schoval na jiném ostrově. Bez mapy poklad nikdo nenajde."
+ },
+ {
+  "id": "story_2",
+  "role": "pepik",
+  "text": "Kdo chce poklad najít, musí umět značky číst: poznat, kde je voda, kde bažina a kudy vede cesta. A pak vymyslet, kudy se k pokladu dostat, aby nezapadl do bažiny a neztratil se v hustníku."
+ },
+ {
+  "id": "story_3",
+  "role": "pepik",
+  "text": "Já jsem papoušek Pepík a budu ti pomáhat. Za každý vyluštěný ostrov získáš kousek mapy. Až budeš mít všechny, mapu přečteš, dojdeš k pokladu a Zlatý kompas bude tvůj!"
+ },
+ {
+  "id": "mlha_story",
+  "role": "mlha",
+  "text": "Cha chá! Tu mapu už nikdy neuvidíte!"
+ },
+ {
+  "id": "ui_home_new",
+  "role": "pepik",
+  "text": "Ahoj, plavčíku! Já jsem papoušek Pepík. Klepni na Začít příběh a dozvíš se, proč musí každý hledač pokladů umět číst mapu."
+ },
+ {
+  "id": "ui_home_first",
+  "role": "pepik",
+  "text": "Vítej zpátky, plavčíku! Ještě nemáme žádný kousek mapy. Vyplujeme k Ostrovu papoušků?"
+ },
+ {
+  "id": "ui_home_back",
+  "role": "pepik",
+  "text": "Vítej zpátky, plavčíku! Další kousek mapy čeká na ostrově:"
+ },
+ {
+  "id": "ui_world",
+  "role": "pepik",
+  "text": "Tohle je mapa ostrovů. Je nakreslená jako trať v orientačním běhu: start, kontroly a cíl. Na každém ostrově je schovaný kousek mapy. Klepni na první ostrov!"
+ },
+ {
+  "id": "ui_daily",
+  "role": "pepik",
+  "text": "Denní poklad! Zlaťáky navíc do truhly. Přijď zase zítra, bude jich ještě víc!"
+ },
+ {
+  "id": "intro_papousci",
+  "role": "pepik",
+  "text": "Papoušci hlídají první kousek mapy. Ukaž jim, že poznáš vodu, louku a běhací les!"
+ },
+ {
+  "id": "iname_papousci",
+  "role": "pepik",
+  "text": "Ostrov papoušků",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "crew_crew0",
+  "role": "pepik",
+  "text": "Opička Kiki se přidává k posádce! Umí šplhat na stěžeň a hlídat zlaťáky."
+ },
+ {
+  "id": "ui_newsyms",
+  "role": "pepik",
+  "text": "Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!"
+ },
+ {
+  "id": "ui_what",
+  "role": "ukol",
+  "text": "Co je to za značku? Vyber správné jméno."
+ },
+ {
+  "id": "ui_desc_yes",
+  "role": "ukol",
+  "text": "V popisech kontrol má svůj obrázek."
+ },
+ {
+  "id": "ui_desc_no",
+  "role": "ukol",
+  "text": "V popisech kontrol se tahle značka nepoužívá, je jen v mapě."
+ },
+ {
+  "id": "n_voda",
+  "role": "ukol",
+  "text": "Voda",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "say_voda",
+  "role": "pepik",
+  "text": "Modrá plocha s černým okrajem je voda, rybník nebo jezero. Vodu nepřeběhneš, musíš ji oběhnout. Pomůcka: modrá jako vodička, osvěží tě trošička!"
+ },
+ {
+  "id": "cheer_voda",
+  "role": "ukol",
+  "text": "Správně! Vodu snadno oběhneš a vesele běžíš dál k další kontrole!"
+ },
+ {
+  "id": "n_louka",
+  "role": "ukol",
+  "text": "Louka",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "say_louka",
+  "role": "pepik",
+  "text": "Žlutá je otevřená louka nebo pole bez stromů, kde se běží lehce a daleko vidíš. Pomůcka: žlutá jako sluníčko, usmívej se maličko!"
+ },
+ {
+  "id": "cheer_louka",
+  "role": "ukol",
+  "text": "Správně! Na louce natáhni nožky a leť rychle jako vítr!"
+ },
+ {
+  "id": "n_les",
+  "role": "ukol",
+  "text": "Běhací les",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "say_les",
+  "role": "pepik",
+  "text": "Bílá je přehledný les, kterým se dá volně a rychle běhat. Na orienťácké mapě je les bílý, ne zelený! Pomůcka: bílá barva v lese svítí, žádné větve tě nechytí!"
+ },
+ {
+  "id": "cheer_les",
+  "role": "ukol",
+  "text": "Správně! Lesem bez překážek se ti poběží úplně lehce!"
+ },
+ {
+  "id": "praise_0",
+  "role": "ukol",
+  "text": "Arr! Zlaťák do truhly!"
+ },
+ {
+  "id": "praise_1",
+  "role": "ukol",
+  "text": "Jupí! Máš zlatou minci!"
+ },
+ {
+  "id": "praise_2",
+  "role": "ukol",
+  "text": "Výborně, námořníku!"
+ },
+ {
+  "id": "praise_3",
+  "role": "ukol",
+  "text": "Cink! Poklad se plní!"
+ },
+ {
+  "id": "praise_4",
+  "role": "ukol",
+  "text": "Paráda, správně čteš mapu!"
+ },
+ {
+  "id": "praise_5",
+  "role": "ukol",
+  "text": "Tak se čte mapa!"
+ },
+ {
+  "id": "q_0",
+  "role": "ukol",
+  "text": "Kde si namočíš nohy?"
+ },
+ {
+  "id": "hint_0",
+  "role": "ukol",
+  "text": "Mokro je tam, kde je na mapě modrá."
+ },
+ {
+  "id": "res_win_1",
+  "role": "pepik",
+  "text": "Ostrov vyluštěn! Máš jednu hvězdu."
+ },
+ {
+  "id": "res_win_2",
+  "role": "pepik",
+  "text": "Ostrov vyluštěn! Máš dvě hvězdy."
+ },
+ {
+  "id": "res_win_3",
+  "role": "pepik",
+  "text": "Ostrov vyluštěn! Máš tři hvězdy!"
+ },
+ {
+  "id": "res_retry",
+  "role": "pepik",
+  "text": "Zahraj ho znovu bez chyb a budou tři."
+ },
+ {
+  "id": "res_piece",
+  "role": "pepik",
+  "text": "Získal jsi kousek mapy!"
+ },
+ {
+  "id": "rank_1",
+  "role": "pepik",
+  "text": "Povýšení! Teď jsi Námořník!"
+ },
+ {
+  "id": "fr_find",
+  "role": "ukol",
+  "text": "Najdi na mapě:"
+ },
+ {
+  "id": "fr_toneni",
+  "role": "ukol",
+  "text": "To není"
+ },
+ {
+  "id": "fr_ale",
+  "role": "ukol",
+  "text": "ale"
+ },
+ {
+  "id": "fr_znovu",
+  "role": "ukol",
+  "text": "Zkus to znovu."
+ },
+ {
+  "id": "fr_anojeto",
+  "role": "ukol",
+  "text": "Ano, je to"
+ },
+ {
+  "id": "fr_ne",
+  "role": "ukol",
+  "text": "Ne,"
+ },
+ {
+  "id": "fr_vypada",
+  "role": "ukol",
+  "text": "vypadá jinak. Tohle je"
+ },
+ {
+  "id": "fr_spravne",
+  "role": "ukol",
+  "text": "Správně!"
+ },
+ {
+  "id": "fr_netoje",
+  "role": "ukol",
+  "text": "Ne, to je"
+ },
+ {
+  "id": "fr_kdeje",
+  "role": "ukol",
+  "text": "Kde je na mapě"
+ },
+ {
+  "id": "fr_klepni",
+  "role": "ukol",
+  "text": "Klepni na to."
+ },
+ {
+  "id": "fr_presnetam",
+  "role": "ukol",
+  "text": "Přesně tam!"
+ },
+ {
+  "id": "fr_toje",
+  "role": "ukol",
+  "text": "To je"
+ },
+ {
+  "id": "fr_hledej",
+  "role": "ukol",
+  "text": "Hledej:"
+ },
+ {
+  "id": "fr_learned1",
+  "role": "ukol",
+  "text": "Jupí! Značku"
+ },
+ {
+  "id": "fr_learned2",
+  "role": "ukol",
+  "text": "už umíš!"
+ }
+]

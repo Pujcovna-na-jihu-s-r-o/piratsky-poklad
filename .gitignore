@@ -1,0 +1,25 @@
+# tajné – nikdy necommitovat
+**/.env
+**/accounts.json
+
+# Node / Capacitor / iOS build (generuje se v CI nebo na Macu)
+app/node_modules/
+app/ios/
+app/build/
+**/Pods/
+**/DerivedData/
+
+# Python
+__pycache__/
+*.pyc
+
+# dočasné
+*.wav
+*.log
+
+# velká regenerovatelná média z NotebookLM (nejsou potřeba pro hru ani appku;
+# lze kdykoli znovu vygenerovat). Když je chceš v repu, smaž tyto řádky.
+deti-2trida/*.mp3
+dospeli/*.mp3
+deti-2trida/PREZENTACE-orientacni-beh.pdf
+dospeli/prezentace.pdf

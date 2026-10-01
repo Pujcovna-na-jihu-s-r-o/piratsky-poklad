@@ -1,0 +1,174 @@
+[
+ {
+  "id": "iname_teren",
+  "role": "pepik",
+  "text": "Ostrov strání",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "sea_7",
+  "role": "pepik",
+  "text": "Perlové moře",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "ui_locked",
+  "role": "pepik",
+  "text": "Sem se dostaneš, až vyluštíš předchozí ostrov."
+ },
+ {
+  "id": "ui_daily",
+  "role": "pepik",
+  "text": "Denní poklad! Zlaťáky navíc do truhly. Přijď zase zítra, bude jich ještě víc!"
+ },
+ {
+  "id": "ui_boss_rules",
+  "role": "pepik",
+  "text": "Já ti vždycky řeknu jméno značky a ty na ni rychle klepni. Vyhraje ten, kdo jich najde víc, než dohoří svíčka."
+ },
+ {
+  "id": "ui_duel_start",
+  "role": "pepik",
+  "text": "Souboj začíná! Tři, dva, jedna, teď!"
+ },
+ {
+  "id": "ui_all_learned",
+  "role": "pepik",
+  "text": "Hurá! Umíš všechny značky! Jsi opravdový čtenář map!"
+ },
+ {
+  "id": "ui_shop_intro",
+  "role": "pepik",
+  "text": "Vítej v krámu! Klobouk si nasadíš na hlavu, vlajku dáš na loď a poklady ti zůstanou v truhle."
+ },
+ {
+  "id": "ui_shop_poor",
+  "role": "pepik",
+  "text": "Ještě nemáš dost zlaťáků. Vylušti další ostrov a budeš je mít!"
+ },
+ {
+  "id": "ui_shop_bought",
+  "role": "pepik",
+  "text": "Paráda! Je to tvoje!"
+ },
+ {
+  "id": "ui_shop_treasure",
+  "role": "pepik",
+  "text": "Krásný poklad! Už je v truhle."
+ },
+ {
+  "id": "ui_shop_equipped",
+  "role": "pepik",
+  "text": "Hotovo, už je to na lodi."
+ },
+ {
+  "id": "ui_mute_on",
+  "role": "pepik",
+  "text": "Zvuk je zapnutý, námořníku."
+ },
+ {
+  "id": "ui_reset",
+  "role": "pepik",
+  "text": "Hotovo! Můžeš začít znovu od začátku."
+ },
+ {
+  "id": "quest_0",
+  "role": "pepik",
+  "text": "Tohle je celá pirátská mapa pokladu. Každá cesta začíná na startu, to je fialový trojúhelník vlevo dole. Klepni na start."
+ },
+ {
+  "id": "quest_1",
+  "role": "pepik",
+  "text": "Od startu vede pěší cesta, ta černá přerušovaná čára. Běž po ní až k balvanu, k černé tečce u kontroly jedna. Klepni na balvan."
+ },
+ {
+  "id": "qhint_1",
+  "role": "pepik",
+  "text": "Drž se černé přerušované čáry, cesta tě dovede k balvanu."
+ },
+ {
+  "id": "quest_2",
+  "role": "pepik",
+  "text": "Od balvanu vyběhni na kopec. Kopec poznáš podle hnědých vrstevnic, vrchol je uprostřed nejmenšího kroužku. Klepni na vrchol kopce."
+ },
+ {
+  "id": "qhint_2",
+  "role": "pepik",
+  "text": "Hledej hnědé kroužky v sobě, to je kopec."
+ },
+ {
+  "id": "quest_3",
+  "role": "pepik",
+  "text": "Z kopce vidíš žlutou louku a na ní velký strom, zelený kroužek u kontroly dva. Klepni na strom."
+ },
+ {
+  "id": "qhint_3",
+  "role": "pepik",
+  "text": "Velký strom je zelený kroužek na žluté louce."
+ },
+ {
+  "id": "quest_4",
+  "role": "pepik",
+  "text": "A teď pozor. Bažinu s modrými čárkami obejdi, ta je nebezpečná. Pod loukou jsou dvě fialová kolečka s křížkem. Tam je poklad! Klepni na něj."
+ },
+ {
+  "id": "qhint_4",
+  "role": "pepik",
+  "text": "Poklad je v cíli, ve dvou fialových kolečkách s křížkem."
+ },
+ {
+  "id": "qok_0",
+  "role": "pepik",
+  "text": "Správně!"
+ },
+ {
+  "id": "qok_1",
+  "role": "pepik",
+  "text": "Přesně tak!"
+ },
+ {
+  "id": "qok_2",
+  "role": "pepik",
+  "text": "Výborně, čteš mapu jako kapitán!"
+ },
+ {
+  "id": "quest_done",
+  "role": "pepik",
+  "text": "Hurá! Našel jsi poklad! Přečetl jsi celou mapu jako opravdový pirát. A v truhle je Zlatý kompas!"
+ },
+ {
+  "id": "qwrong_bazina",
+  "role": "pepik",
+  "text": "To je bažina, tam bys promokl a zapadl."
+ },
+ {
+  "id": "qwrong_voda",
+  "role": "pepik",
+  "text": "To je voda, tam se neběží, tu obejdi."
+ },
+ {
+  "id": "qwrong_housti",
+  "role": "pepik",
+  "text": "To je hustník, tam se zamotáš do větví."
+ },
+ {
+  "id": "qwrong_poklad",
+  "role": "pepik",
+  "text": "Poklad je tam, ale nejdřív musíš doběhnout po trati."
+ },
+ {
+  "id": "qwrong_nothing",
+  "role": "pepik",
+  "text": "Tam nic není."
+ },
+ {
+  "id": "qwrong_again",
+  "role": "pepik",
+  "text": "Poslechni si to znovu."
+ },
+ {
+  "id": "ui_final",
+  "role": "pepik",
+  "text": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový kapitán! Na Volném moři na tebe čekají další dobrodružství."
+ }
+]
