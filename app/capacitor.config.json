@@ -2,5 +2,8 @@
   "appId": "cz.kukacka.piratskypoklad",
   "appName": "Pirátský poklad",
   "webDir": "www",
-  "ios": { "contentInset": "always", "backgroundColor": "#f3e2b8" }
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#f3e2b8"
+  }
 }

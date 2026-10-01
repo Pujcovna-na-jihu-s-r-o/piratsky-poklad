@@ -1,0 +1,235 @@
+name: iOS OTA – podepsaná .ipa + instalace odkazem
+
+# Stejný princip jako u Nežera: na macOS se postaví PODEPSANÁ .ipa (týmový
+# distribuční certifikát + Ad Hoc wildcard profil cz.kukacka.*), vyrobí se
+# manifest.plist a instalační stránka a všechno se push-tokenem nahraje na
+# server (kukackovi.cz). Na iPhonu se instaluje odkazem v Safari, bez Sideloadly,
+# platnost rok (Ad Hoc). Appka je Capacitor (web v nativním obalu).
+#
+# Potřebné secrets (repo Pujcovna-na-jihu-s-r-o/piratsky-poklad):
+#   IOS_CERT_P12_BASE64   distribuční certifikát týmu v .p12, base64 (stejný jako u Nežera/Faktur)
+#   IOS_CERT_PASSWORD     heslo k tomu .p12
+#   IOS_PROVISION_PROFILE Ad Hoc profil „Kukacka Wildcard AdHoc" (cz.kukacka.*), base64
+#   PP_WEB_URL            https://www.kukackovi.cz/piratsky-poklad  (složka s ota.php)
+#   PP_PUSH_TOKEN         stejný token jako v /piratsky-poklad/ota-token.txt na serveru
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - ".github/workflows/ios-ota.yml"
+  workflow_dispatch:
+
+env:
+  BUNDLE_ID: cz.kukacka.piratskypoklad
+  APP_TITLE: Pirátský poklad
+  IPA_NAME: piratsky-poklad.ipa
+  WEB_URL: ${{ secrets.PP_WEB_URL }}
+
+jobs:
+  build:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Zjistit, kam balíček patří (ověří token i adresu)
+        env:
+          TOKEN: ${{ secrets.PP_PUSH_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "${WEB_URL:-}" || { echo "::error::Chybí secret PP_WEB_URL."; exit 1; }
+          test -n "${TOKEN:-}" || { echo "::error::Chybí secret PP_PUSH_TOKEN."; exit 1; }
+          ODP=$(curl -sS --fail --max-time 30 -H "X-Push-Token: $TOKEN" "$WEB_URL/ota.php") || {
+            echo "::error::Server $WEB_URL/ota.php neodpověděl. Zkontroluj PP_WEB_URL a token."; exit 1; }
+          BASE=$(printf '%s' "$ODP" | python3 -c 'import json,sys;print(json.load(sys.stdin)["url"])')
+          test -n "$BASE" || { echo "::error::Server neřekl, kde balíček leží."; exit 1; }
+          echo "BASE=$BASE" >> "$GITHUB_ENV"
+          echo "Balíček půjde na $BASE"
+
+      - name: Instalace závislostí
+        run: npm install
+
+      - name: Přidat iOS platformu + sync
+        run: |
+          npx cap add ios
+          npx @capacitor/assets generate --ios || true
+          npx cap sync ios
+
+      - name: Nástroje pro podpis
+        run: |
+          pipx install codemagic-cli-tools || pip3 install --user codemagic-cli-tools
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Naimportovat certifikát a profil
+        env:
+          CERT_P12: ${{ secrets.IOS_CERT_P12_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.IOS_CERT_PASSWORD }}
+          PROFILE: ${{ secrets.IOS_PROVISION_PROFILE }}
+        run: |
+          set -euo pipefail
+          test -n "${CERT_P12:-}" || { echo "::error::Chybí secret IOS_CERT_P12_BASE64"; exit 1; }
+          test -n "${PROFILE:-}" || { echo "::error::Chybí secret IOS_PROVISION_PROFILE"; exit 1; }
+          keychain initialize
+          echo "$CERT_P12" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          keychain add-certificates --certificate "$RUNNER_TEMP/cert.p12" --certificate-password "$CERT_PASSWORD"
+          rm "$RUNNER_TEMP/cert.p12"
+          PROFILES_DIR="$HOME/Library/MobileDevice/Provisioning Profiles"
+          mkdir -p "$PROFILES_DIR"
+          echo "$PROFILE" | base64 --decode > "$PROFILES_DIR/build.mobileprovision"
+          xcode-project use-profiles \
+            --project ios/App/App.xcodeproj \
+            --export-options-plist "$HOME/export_options.plist"
+
+      - name: Identita buildu (verze, commit, čas)
+        run: |
+          set -euo pipefail
+          V=$(python3 -c "import json;print(json.load(open('package.json')).get('version','1.0.0'))")
+          {
+            echo "APP_VERSION=$V"
+            echo "BUILD_ID=$(git rev-parse --short HEAD)"
+          } >> "$GITHUB_ENV"
+
+      - name: Build podepsané .ipa
+        run: |
+          set -euo pipefail
+          # číslo buildu z běhu – každá instalace přepíše předchozí, data zůstanou
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" ios/App/App/Info.plist || true
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $APP_VERSION" ios/App/App/Info.plist || true
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -archivePath "$PWD/build/App.xcarchive" archive
+          xcodebuild -exportArchive -archivePath "$PWD/build/App.xcarchive" \
+            -exportOptionsPlist "$HOME/export_options.plist" -exportPath "$PWD/build/ipa"
+
+      - name: Ověřit podpis
+        run: |
+          set -euo pipefail
+          IPA=$(find build/ipa -name "*.ipa" | head -1)
+          test -n "$IPA" || { echo "::error::Nevznikla žádná .ipa"; exit 1; }
+          echo "IPA_PATH=$IPA" >> "$GITHUB_ENV"
+          CHECK="$RUNNER_TEMP/ipa-check"; rm -rf "$CHECK"; mkdir -p "$CHECK"
+          unzip -q "$IPA" -d "$CHECK"
+          APP=$(find "$CHECK/Payload" -maxdepth 1 -name "*.app" | head -1)
+          test -f "$APP/embedded.mobileprovision" || { echo "::error::.ipa není podepsaná (chybí profil)"; exit 1; }
+          codesign -dvv "$APP" 2>&1 | grep -q "Authority=Apple Distribution" || {
+            echo "::error::Balíček není podepsaný distribučním certifikátem"; codesign -dvv "$APP" 2>&1 | head -20; exit 1; }
+          echo "Podpis v pořádku."
+
+      - name: Připravit OTA balíček
+        run: |
+          set -euo pipefail
+          mkdir -p ota
+          cp "$IPA_PATH" "ota/$IPA_NAME"
+          sips -z 120 120 assets/icon.png --out ota/icon-small.png >/dev/null
+          sips -z 512 512 assets/icon.png --out ota/icon-large.png >/dev/null
+          # URL manifestu pro itms-services musí být zakódovaná
+          MANIFEST_URL=$(printf '%s' "$BASE/manifest.plist" | sed 's|:|%3A|g; s|/|%2F|g')
+
+          cat > ota/build.json <<JSON
+          {
+            "aplikace": "piratsky-poklad",
+            "platforma": "ios",
+            "sha": "${BUILD_ID}",
+            "verze": "${APP_VERSION}",
+            "build": "${GITHUB_RUN_NUMBER}",
+            "manifest": "${BASE}/manifest.plist",
+            "postaveno": "$(date '+%Y-%m-%dT%H:%M:%S%z')",
+            "beh": "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          }
+          JSON
+
+          cat > ota/manifest.plist <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict><key>items</key><array><dict>
+            <key>assets</key><array>
+              <dict><key>kind</key><string>software-package</string><key>url</key><string>${BASE}/${IPA_NAME}?v=${GITHUB_RUN_NUMBER}</string></dict>
+              <dict><key>kind</key><string>display-image</string><key>url</key><string>${BASE}/icon-small.png</string></dict>
+              <dict><key>kind</key><string>full-size-image</string><key>url</key><string>${BASE}/icon-large.png</string></dict>
+            </array>
+            <key>metadata</key><dict>
+              <key>bundle-identifier</key><string>${BUNDLE_ID}</string>
+              <key>bundle-version</key><string>${APP_VERSION}</string>
+              <key>kind</key><string>software</string>
+              <key>title</key><string>${APP_TITLE}</string>
+            </dict>
+          </dict></array></dict></plist>
+          PLIST
+
+          cat > ota/index.html <<HTML
+          <!doctype html><html lang="cs"><head><meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <meta name="robots" content="noindex, nofollow"><title>${APP_TITLE}</title>
+          <style>body{font-family:-apple-system,system-ui,sans-serif;margin:0;padding:48px 24px;background:#f3e2b8;color:#41300f;text-align:center}
+          img{width:96px;height:96px;border-radius:22px;box-shadow:0 4px 16px rgba(0,0,0,.2)}h1{font-size:24px;margin:16px 0 4px;color:#b8352a}
+          p{color:#8a6a38;font-size:15px;margin:4px 0}a.install{display:inline-block;margin-top:28px;padding:14px 32px;border-radius:999px;background:#e7a70f;color:#5a3d00;text-decoration:none;font-size:17px;font-weight:700}
+          .note{margin-top:32px;font-size:13px}</style></head><body>
+          <img src="icon-large.png" alt=""><h1>${APP_TITLE}</h1>
+          <p>Verze ${APP_VERSION} (build ${GITHUB_RUN_NUMBER}) · ${BUILD_ID}</p>
+          <a class="install" href="itms-services://?action=download-manifest&amp;url=${MANIFEST_URL}">Nainstalovat</a>
+          <p class="note">Otevři v Safari na iPhonu. Po instalaci potvrď důvěru v Nastavení → Obecné → VPN a správa zařízení.</p>
+          </body></html>
+          HTML
+
+      - name: Nahrát na server (push token, po částech)
+        env:
+          TOKEN: ${{ secrets.PP_PUSH_TOKEN }}
+        run: |
+          set -euo pipefail
+          CAST=1500000
+          posli() {
+            soubor="$1"; jmeno=$(basename "$soubor")
+            rm -rf "$RUNNER_TEMP/casti"; mkdir -p "$RUNNER_TEMP/casti"
+            split -b "$CAST" "$soubor" "$RUNNER_TEMP/casti/kus-"
+            casti=("$RUNNER_TEMP"/casti/kus-*); prvni=1; odpoved=""
+            for i in "${!casti[@]}"; do
+              hotovo=0; [ "$i" -eq $(( ${#casti[@]} - 1 )) ] && hotovo=1
+              odpoved=$(curl -sS --fail --max-time 120 -X POST \
+                -H "X-Push-Token: $TOKEN" -H "Content-Type: application/octet-stream" \
+                --data-binary "@${casti[$i]}" \
+                "$WEB_URL/ota.php?soubor=$jmeno&prvni=$prvni&hotovo=$hotovo") || {
+                  echo "::error::Nahrávání $jmeno selhalo (část $((i+1))/${#casti[@]})."; exit 1; }
+              prvni=0
+            done
+            vzdaleny=$(printf '%s' "$odpoved" | python3 -c 'import json,sys;print(json.load(sys.stdin).get("sha256",""))')
+            mistni=$(shasum -a 256 "$soubor" | cut -d" " -f1)
+            [ "$vzdaleny" = "$mistni" ] || { echo "::error::$jmeno se cestou poškodil."; exit 1; }
+            echo "  $jmeno ok"
+          }
+          posli ota/icon-small.png
+          posli ota/icon-large.png
+          posli "ota/$IPA_NAME"
+          posli ota/index.html
+          posli ota/manifest.plist
+          posli ota/build.json
+
+      - name: Ověřit, že je na webu tenhle build
+        run: |
+          set -uo pipefail
+          MAN=$(curl -sS --max-time 60 -H 'Cache-Control: no-cache' "$BASE/manifest.plist?t=$GITHUB_RUN_ID" || true)
+          printf '%s' "$MAN" | grep -q "v=$GITHUB_RUN_NUMBER" || { echo "::error::manifest.plist na webu není tenhle build."; exit 1; }
+          CODE=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 60 -r 0-0 "$BASE/$IPA_NAME" || echo 000)
+          case "$CODE" in 200|206) ;; *) echo "::error::.ipa nejde stáhnout (HTTP $CODE)."; exit 1;; esac
+          echo "Na webu leží build $BUILD_ID (run $GITHUB_RUN_NUMBER)."
+
+      - name: Odkaz na instalaci
+        run: |
+          {
+            echo "## Instalace"
+            echo ""
+            echo "Na iPhonu otevři v Safari: <$BASE/>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: piratsky-poklad-signed-ipa
+          path: app/ota/piratsky-poklad.ipa
+          if-no-files-found: error

@@ -1,53 +1,59 @@
-# Pirátský poklad – appka na iPhone (bez Macu)
+# Pirátský poklad – appka na iPhone (OTA, stejně jako Nežer)
 
-Hra zabalená do nativního obalu (Capacitor + WKWebView). **Appka je minimalistická**:
-v balíčku je jen hra a fonty (~1,3 MB). **Zvuky (421 klipů) se při prvním spuštění
-stáhnou z hostingu** (GitHub Pages) do úložiště a pak fungují offline. Postup se ukládá
-trvale (nativní Preferences + localStorage), takže se o nic nepřijde.
+Appka je Capacitor (web v nativním obalu). Publikuje se **přes vzduch (OTA)**,
+stejně jako Nežer: GitHub Actions na macOS postaví **podepsanou `.ipa`**, vyrobí
+instalační stránku s odkazem `itms-services://` a nahraje to na server. Na iPhonu
+se instaluje **odkazem v Safari**, bez Macu a bez Sideloadly, platí rok (Ad Hoc).
 
-Protože nemáš Mac, **appka se kompiluje na GitHubu** (GitHub Actions, macOS runner) a
-podepíše se až potom na Windows přes Sideloadly nebo AltStore. Veřejné repo = minuty
-na build zdarma.
+- **Podpis:** týmový distribuční certifikát „Pujcovna na jihu s.r.o." + Ad Hoc
+  wildcard profil **Kukacka Wildcard AdHoc** (`cz.kukacka.*`). Bundle id appky je
+  `cz.kukacka.piratskypoklad`, spadá pod wildcard, takže se nezakládá nový App ID.
+- **Zvuky** se tahají zvlášť z `https://www.kukackovi.cz/piratsky-poklad/audio/`
+  (nejsou v balíčku), appka si je stáhne za běhu do úložiště.
+- **Instalační stránka + .ipa** jsou na `https://www.kukackovi.cz/piratsky-poklad/app/`.
 
-## Jak vznikne .ipa (na GitHubu)
-1. Push do repa spustí workflow `.github/workflows/ios.yml` (jde spustit i ručně:
-   GitHub → záložka **Actions** → *Build iOS (unsigned IPA)* → **Run workflow**).
-2. Workflow na macOS runneru sestaví **nepodepsané `.ipa`** a nahraje ho jako
-   **artifact** (dole u běhu workflow, `PiratskyPoklad-unsigned-ipa`).
-3. Artifact (zip s `.ipa`) si stáhneš na Windows.
+## Jednorázové nastavení
 
-## Jak dostat .ipa do iPhonu (Windows, Apple ID zdarma)
-Použij **Sideloadly** (sideloadly.io) nebo **AltStore**:
-1. Nainstaluj Sideloadly, připoj iPhone kabelem, nainstaluj iTunes + iCloud (kvůli
-   ovladačům), pokud to Sideloadly vyžaduje.
-2. V Sideloadly přetáhni `.ipa`, zadej svoje **Apple ID** (zdarma), klikni **Start**.
-   Sideloadly appku podepíše tvým účtem a nahraje do telefonu.
-3. V iPhonu: **Nastavení → Obecné → Správa VPN a zařízení** → tvůj účet → **Důvěřovat**.
-4. Při prvním spuštění appka stáhne hlasy (ukazatel průběhu), pak už jede offline.
+### 1) Server (kukackovi.cz, přes FTP)
+- Nahraj `server/ota.php` jako `/piratsky-poklad/ota.php`.
+- Vedle něj vytvoř `/piratsky-poklad/ota-token.txt` s jedním dlouhým náhodným
+  řetězcem (to je push token).
+- Složka `/piratsky-poklad/app/` se vytvoří sama při prvním nahrání.
 
-Apple ID zdarma: podpis vydrží **7 dní**, pak appku znovu nahraj přes Sideloadly
-(postup ve hře zůstane). S placeným Apple Developer Programem vydrží rok.
+### 2) Ad Hoc profil se všemi zařízeními
+Aby hra šla na všechny rodinné iPhony, musí být v profilu jejich zařízení.
+V Apple Developer → Profiles → **Kukacka Wildcard AdHoc** → Edit → zaškrtni
+**všechna zařízení** → Save → **Download**. Stažený `.mobileprovision` převeď na
+base64 a dej do secretu `IOS_PROVISION_PROFILE` (viz níže).
+(Nová zařízení přidaná později = profil znovu vygenerovat a secret aktualizovat.)
 
-## Hosting zvuků (tvůj server)
-- Zvuky se berou z **`https://www.kukackovi.cz/piratsky-poklad/audio/`**.
-- Nahraj přes FTP celou složku `audio/` (ze ZIPu, co jsem poslal) do
-  `piratsky-poklad/audio/` v kořeni webu www.kukackovi.cz. V ZIPu je i `audio/.htaccess`,
-  který povolí appce stahovat zvuky z jiné domény (CORS) – nech ho tam.
-- Ověření: v prohlížeči musí jít otevřít třeba
-  `https://www.kukackovi.cz/piratsky-poklad/audio/story_0.mp3`.
-- Když změníš adresu, uprav `AUDIO_BASE` v `app/www/index.html` (jeden řádek).
-- Zvuky schválně nejsou v GitHub repu (neplýtvá se místem); build appky je nepotřebuje.
+### 3) GitHub secrets (repo Pujcovna-na-jihu-s-r-o/piratsky-poklad → Settings → Secrets → Actions)
+| secret | hodnota |
+|---|---|
+| `IOS_CERT_P12_BASE64` | týmový distribuční `.p12` v base64 (stejné jako u Nežera/Faktur) |
+| `IOS_CERT_PASSWORD` | heslo k tomu `.p12` |
+| `IOS_PROVISION_PROFILE` | base64 profilu „Kukacka Wildcard AdHoc" |
+| `PP_WEB_URL` | `https://www.kukackovi.cz/piratsky-poklad` |
+| `PP_PUSH_TOKEN` | stejný token jako v `ota-token.txt` |
 
-## Když se hra později změní
-Přepiš `app/www/index.html` (nebo znovu vygeneruj z `zdroje/`), pushni – workflow
-sám sestaví nové `.ipa`. Když přibudou nové zvuky, nahraj je na server do `piratsky-poklad/audio/` a v appce se dostáhnou (smaž `pp_audio_dl` v úložišti nebo
-to dožene postupně při hraní).
+Base64 na Windows (PowerShell):
+```powershell
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("cesta\k\profilu.mobileprovision")) | Set-Clipboard
+```
+
+## Build a instalace
+1. Push do `main` (nebo Actions → *iOS OTA* → Run workflow) spustí build.
+2. Workflow podepíše `.ipa`, nahraje ji + stránku na server a ověří.
+3. Na iPhonu otevři v **Safari**: `https://www.kukackovi.cz/piratsky-poklad/app/`
+   → **Nainstalovat**. Potvrď důvěru v Nastavení → Obecné → VPN a správa zařízení.
+4. Při prvním spuštění appka stáhne hlasy (jen poprvé), pak jede offline.
+
+## Když se hra změní
+Uprav `app/www/` a pushni – workflow postaví a nasadí novou verzi. Platnost
+instalace je rok (Ad Hoc); do té doby stačí znovu otevřít instalační odkaz.
 
 ## Co je uvnitř
-- `app/www/` – minimalistická hra: `index.html` + `fonts/` (offline), zvuky se stahují.
-- `app/capacitor.config.json`, `app/package.json` – Capacitor.
-- `app/assets/` – podklady pro ikonu a splash.
-- `.github/workflows/ios.yml` – build .ipa na GitHubu.
-
-Pozn.: tohle je obal webové hry pro vlastní iPhone / rodinu. Do App Store by Apple
-u čistého webview mohl chtít víc; pro sideload to řeší bez problému.
+- `app/www/` – hra: `index.html` + `fonts/` (offline); zvuky se stahují ze serveru.
+- `.github/workflows/ios-ota.yml` – build podepsané .ipa a nasazení na server.
+- `server/ota.php` – přijímač balíčku na server (push token, pevný seznam souborů).
+- `app/assets/` – ikona a splash.
