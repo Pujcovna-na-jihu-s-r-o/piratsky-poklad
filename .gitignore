@@ -23,3 +23,6 @@ deti-2trida/*.mp3
 dospeli/*.mp3
 deti-2trida/PREZENTACE-orientacni-beh.pdf
 dospeli/prezentace.pdf
+
+# audio se hostuje na vlastním serveru, ne na GitHubu
+zdroje/tts/audio/

@@ -28,16 +28,19 @@ Použij **Sideloadly** (sideloadly.io) nebo **AltStore**:
 Apple ID zdarma: podpis vydrží **7 dní**, pak appku znovu nahraj přes Sideloadly
 (postup ve hře zůstane). S placeným Apple Developer Programem vydrží rok.
 
-## Hosting zvuků (GitHub Pages)
-- Zvuky se berou z `https://<tvůj-účet>.github.io/piratsky-poklad/zdroje/tts/audio/`.
-- Pages se zapne v **Settings → Pages → Source: Deploy from a branch → main / (root)**.
-- Soubor `.nojekyll` v kořeni zajistí, že se složky servírují tak, jak jsou.
-- Když změníš účet/název repa, uprav `AUDIO_BASE` v `app/www/index.html`.
+## Hosting zvuků (tvůj server)
+- Zvuky se berou z **`https://kukacka.cz/piratsky-poklad/audio/`**.
+- Nahraj přes FTP celou složku `audio/` (ze ZIPu, co jsem poslal) do
+  `piratsky-poklad/audio/` v kořeni webu kukacka.cz. V ZIPu je i `audio/.htaccess`,
+  který povolí appce stahovat zvuky z jiné domény (CORS) – nech ho tam.
+- Ověření: v prohlížeči musí jít otevřít třeba
+  `https://kukacka.cz/piratsky-poklad/audio/story_0.mp3`.
+- Když změníš adresu, uprav `AUDIO_BASE` v `app/www/index.html` (jeden řádek).
+- Zvuky schválně nejsou v GitHub repu (neplýtvá se místem); build appky je nepotřebuje.
 
 ## Když se hra později změní
 Přepiš `app/www/index.html` (nebo znovu vygeneruj z `zdroje/`), pushni – workflow
-sám sestaví nové `.ipa`. Když přibudou nové zvuky, nahraj je do `zdroje/tts/audio/`
-(Pages je bude hostovat) a v appce se dostáhnou (smaž `pp_audio_dl` v úložišti nebo
+sám sestaví nové `.ipa`. Když přibudou nové zvuky, nahraj je na server do `piratsky-poklad/audio/` a v appce se dostáhnou (smaž `pp_audio_dl` v úložišti nebo
 to dožene postupně při hraní).
 
 ## Co je uvnitř

@@ -825,7 +825,7 @@ function speakTTS(text,{rate=0.98,pitch=1.1,onend=null,queue=false}={}){
   }catch(e){ if(onend) setTimeout(done,450); }
 }
 /* ================== NAMLUVENÉ KLIPY (Gemini TTS, složka audio/) ================== */
-const AUDIO_BASE="https://kukuczech.github.io/piratsky-poklad/zdroje/tts/audio/";
+const AUDIO_BASE="https://kukacka.cz/piratsky-poklad/audio/";
 const AUDIO_SET=new Set(AUDIO_IDS);
 const AUDIO_BY_TEXT={};
 (function(){
