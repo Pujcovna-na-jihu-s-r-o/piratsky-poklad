@@ -1836,3 +1836,57 @@ renderCoins(); renderHome(); show("start");
   if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",addUI); else addUI();
 })();
 </script>
+<script>
+/* Appka iOS: přehrávání přes HTMLAudio z Cache. Web Audio je ve WKWebView tiché,
+   HTMLAudio hraje. Sekvenčně s přednačtením dalšího klipu (malé mezery), klipy
+   jsou ořezané od ticha. Offline z Cache (blob URL). */
+(function(){
+  if(typeof play!=="function"||typeof AUDIO_BASE==="undefined") return;
+  var CACHE="pp-audio-v1", SILENT="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+  function logp(m){ try{ if(window.pplog) window.pplog(m); }catch(e){} }
+  /* odemčení HTMLAudio cesty tichým klipem v gestu */
+  if(typeof ensureAudio==="function"){ var _ea2=ensureAudio, unlocked=false;
+    window.ensureAudio=function(){ _ea2(); if(!unlocked){ unlocked=true; try{ var s=new Audio(SILENT); var p=s.play(); if(p&&p.catch)p.catch(function(){}); logp("HTMLAudio unlock"); }catch(e){} } }; }
+  var urlCache={};
+  function clipURL(id){
+    if(urlCache[id]) return Promise.resolve(urlCache[id]);
+    return caches.open(CACHE).then(function(c){ return c.match(AUDIO_BASE+id+".mp3"); }).then(function(r){
+      if(r) return r.blob().then(function(b){ var u=URL.createObjectURL(b); urlCache[id]=u; return u; });
+      return AUDIO_BASE+id+".mp3";
+    }).catch(function(){ return AUDIO_BASE+id+".mp3"; });
+  }
+  function mk(url){ var a=new Audio(url); a.preload="auto"; return a; }
+  window.play=function(ids,opts){
+    ids=(Array.isArray(ids)?ids:[ids]).filter(Boolean);
+    stopAudio(); var token=++playToken; opts=opts||{};
+    var called=false; function done(){ if(!called){ called=true; if(opts.onend) opts.onend(); } }
+    logp("play "+JSON.stringify(ids)+" muted="+(typeof muted!=="undefined"?muted:"?"));
+    if(muted){ setTimeout(done,350); return; }
+    try{ ensureAudio(); }catch(e){}
+    var i=0, nextEl=null;
+    function run(el){
+      if(token!==playToken) return;
+      if(!el){ done(); return; }
+      curAudio=el;
+      el.onended=function(){ setTimeout(nextClip,0); };
+      el.onerror=function(){ logp("HA error"); setTimeout(nextClip,0); };
+      var pr=el.play(); if(pr&&pr.catch) pr.catch(function(e){ logp("HA play EX "+e); setTimeout(nextClip,0); });
+    }
+    function nextClip(){
+      if(token!==playToken) return;
+      if(i>=ids.length){ done(); return; }
+      var id=ids[i++];
+      if(!AUDIO_SET.has(id)){ speakTTS(textOf(id)||id,{onend:function(){ setTimeout(nextClip,0); }}); return; }
+      var elP = nextEl ? Promise.resolve(nextEl) : clipURL(id).then(mk);
+      nextEl=null;
+      elP.then(function(el){
+        if(token!==playToken) return;
+        if(i<ids.length && AUDIO_SET.has(ids[i])) clipURL(ids[i]).then(function(u){ nextEl=mk(u); });
+        run(el);
+      });
+    }
+    nextClip();
+  };
+  logp("HTMLAudio přehrávač aktivní");
+})();
+</script>
