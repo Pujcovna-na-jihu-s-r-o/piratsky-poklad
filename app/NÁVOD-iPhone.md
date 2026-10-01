@@ -49,11 +49,17 @@ Base64 na Windows (PowerShell):
 4. Při prvním spuštění appka stáhne hlasy (jen poprvé), pak jede offline.
 
 ## Když se hra změní
-Uprav `app/www/` a pushni – workflow postaví a nasadí novou verzi. Platnost
+Hru neupravuj v `app/www/index.html` – ten se **generuje**. Jádro hry měň ve zdroji
+`zdroje/hra-piratsky-poklad.html` (data značek přes `zdroje/gen_symbols.py`, texty přes
+`zdroje/tts/make_manifest.py`), obal appky (úvodní a koncové skripty) v `app/wrapper/`
+(`head.html`, `tail.html`). Pak spusť `python zdroje/build_app.py` (kontrola aktuálnosti:
+`python zdroje/build_app.py --check`), výsledek commitni a pushni – workflow postaví
+a nasadí novou verzi. Platnost
 instalace je rok (Ad Hoc); do té doby stačí znovu otevřít instalační odkaz.
 
 ## Co je uvnitř
-- `app/www/` – hra: `index.html` + `fonts/` (offline); zvuky se stahují ze serveru.
+- `app/www/` – hra: `index.html` (generovaný `zdroje/build_app.py`, ručně se needituje) + `fonts/` (offline); zvuky se stahují ze serveru.
+- `app/wrapper/` – obal appky (`head.html`, `tail.html`), ze kterého se `index.html` skládá spolu s jádrem hry.
 - `.github/workflows/ios-ota.yml` – build podepsané .ipa a nasazení na server.
 - `server/ota.php` – přijímač balíčku na server (push token, pevný seznam souborů).
 - `app/assets/` – ikona a splash.

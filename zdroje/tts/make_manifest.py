@@ -43,6 +43,9 @@ UI = {
  "ui_pexeso": "Pexeso! Otoč dvě karty a najdi značku a její jméno. Za každou dvojici je zlaťák.",
  "ui_pexeso_done": "Všechny dvojice! Bonus do truhly!",
  "ui_desc_a": "V popisech kontrol je tenhle obrázek. Najdi, jak to vypadá na mapě.",
+ "ui_shared": "Kterým značkám na mapě patří tenhle obrázek? Najdi všechny.",
+ "ui_shared_intro": "Pozor, plavčíku! Popis kontrol říká, co to je, a mapa ukazuje, jak to vypadá. Proto jeden obrázek v popisu někdy patří víc značkám na mapě.",
+ "ui_shared_more": "Správně! Ještě nějaká chybí.",
  "ui_desc_yes": "V popisech kontrol má svůj obrázek.",
  "ui_desc_no": "V popisech kontrol se tahle značka nepoužívá, je jen v mapě.",
  # fragmenty (skládané věty: fragment + jméno značky + fragment)
@@ -85,6 +88,18 @@ UI = {
  "res_duel_3": "Porazil jsi kapitána Mlhu! Máš tři hvězdy!",
  "res_piece": "Získal jsi kousek mapy!",
  "res_map": "Mapa je celá! Teď ji přečti a najdi poklad!",
+ # zkouška moře, procvičení chyb, opakování (klipy zatím nejsou namluvené, hra čte hlasem prohlížeče)
+ "exam_intro": "Zkouška moře! Na každou značku se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!",
+ "exam_round2": "Ještě jednou projdeme ty, které se ti pletly. Tentokrát se zeptám obráceně.",
+ "exam_gold": "Zlatá medaile! Tohle moře znáš jako své boty. Jsi opravdový kapitán!",
+ "exam_silver": "Stříbrná medaile! Skoro všechno si pamatuješ. Tak se pluje!",
+ "exam_bronze": "Bronzová medaile! Dobrý začátek. Pár značek ještě procvičíme a bude zlatá.",
+ "exam_none": "Tentokrát bez medaile, ale nevěš hlavu! Procvičíme, co se pletlo, a zkusíš to znovu.",
+ "fix_intro": "Pojď si procvičit značky, které ti dělaly potíže. Tentokrát ti pomůžu.",
+ "fix_done": "Hotovo! Tyhle značky už půjdou líp. Můžeš zkusit zkoušku znovu.",
+ "review_offer": "Co kdybychom si zopakovali značky z minulých ostrovů? Ať ti žádná neuplave!",
+ "review_intro": "Zopakujeme si značky z minulých ostrovů, hlavně ty, co se ti pletou.",
+ "review_done": "Výborně, značky z minulých ostrovů máš zase čerstvé!",
  # krám a ovládání
  "ui_shop_intro": "Vítej v krámu! Klobouk si nasadíš na hlavu, vlajku dáš na loď a poklady ti zůstanou v truhle.",
  "ui_shop_poor": "Ještě nemáš dost zlaťáků. Vylušti další ostrov a budeš je mít!",
@@ -146,7 +161,8 @@ def build():
     for id, text in UI.items(): add(id, text, role=("mlha" if id.startswith("mlha_") else "pepik"))
     # Rozdělení hlasů: kapitán Mlha (mlha_*), "ukol" = hlas, který během úkolů čte zadání
     # a jména značek (ty se skládají do jedné věty, musí být jedním hlasem), Pepík = zbytek.
-    TASK_UI = {"ui_what", "ui_pexeso", "ui_pexeso_done", "ui_desc_a", "ui_desc_yes", "ui_desc_no", "ui_duel", "ui_endless"}
+    TASK_UI = {"ui_what", "ui_pexeso", "ui_pexeso_done", "ui_desc_a", "ui_desc_yes", "ui_desc_no", "ui_shared", "ui_shared_more", "ui_duel", "ui_endless",
+               "exam_intro", "exam_round2", "fix_intro", "fix_done", "review_intro", "review_done"}
     def role_for(i):
         if i.startswith("mlha_"): return "mlha"
         if i.startswith(("fr_", "n_", "q_", "hint_", "praise_", "cheer_")) or i in TASK_UI: return "ukol"

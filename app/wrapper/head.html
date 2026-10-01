@@ -1,0 +1,26 @@
+<script>
+/* Appka: trvalé ukládání přes nativní Capacitor Preferences (localStorage v obalu je taky trvalý,
+   tohle je pojistka, aby se o postup nepřišlo). Na webu bez Capacitoru se nic nemění. */
+(function(){
+  var KEYS=["orient_prog","orient_coins","orient_game","orient_muted"];
+  try{
+    var _set=localStorage.setItem.bind(localStorage);
+    localStorage.setItem=function(k,v){ _set(k,v); try{ var P=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.Preferences; if(P&&KEYS.indexOf(k)>=0) P.set({key:k,value:String(v)}); }catch(e){} };
+  }catch(e){}
+  (async function(){
+    try{
+      var P=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.Preferences; if(!P) return;
+      var restored=false;
+      for(var i=0;i<KEYS.length;i++){ var k=KEYS[i];
+        if(localStorage.getItem(k)==null){ var r=await P.get({key:k}); if(r&&r.value!=null){ localStorage.setItem(k,r.value); restored=true; } } }
+      if(restored && !sessionStorage.getItem("__restored")){ sessionStorage.setItem("__restored","1"); location.reload(); }
+    }catch(e){}
+  })();
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} html{-webkit-text-size-adjust:100%} *{-webkit-touch-callout:none}
+</style>

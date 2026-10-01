@@ -32,3 +32,7 @@ server/ota-token.txt
 
 # číslo buildu doplní CI
 app/www/version.json
+
+# specifikace IOF/ČSOS (ISCD) – velká PDF, stáhnout z orienteering.sport a ceskyorientak.cz;
+# hra používá jen vytažené piktogramy v zdroje/iscd_piktogramy.json
+zdroje/ISCD-*.pdf

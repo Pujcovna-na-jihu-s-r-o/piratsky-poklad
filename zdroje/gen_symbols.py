@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Generuje datový blok hry (SY, ISLANDS, CONCEPTS) podle ISOM 2017-2 a vloží ho do HTML."""
-import io, re
+import io, json, re
 
 import os
 HTML = os.path.join(os.path.dirname(os.path.abspath(__file__)), "hra-piratsky-poklad.html")
@@ -382,99 +382,61 @@ add(id="nepristupna_trasa", name="Zakázaná trasa", isom="711 Nepřístupná tr
 ids = [s["id"] for s in S]
 assert len(ids) == len(set(ids)), "duplicitní id"
 
-# ---------- POPISY KONTROL (ISCD 2018) – černé piktogramy, jak jsou ve vysvětlivkách ke kontrolám ----------
-def L(paths, w=4.5, fill="none"):
-    return f'<g stroke="{bk}" stroke-width="{w}" fill="{fill}" stroke-linecap="round" stroke-linejoin="round">' + "".join(f'<path d="{p}"/>' for p in paths) + "</g>"
-def diag_ticks(pts, d=7, w=4, double=False):
-    out = []
-    for x, y in pts:
-        out.append(f'<line x1="{x}" y1="{y}" x2="{x-d}" y2="{y-d}" stroke="{bk}" stroke-width="{w}" stroke-linecap="round"/>')
-        if double:
-            out.append(f'<line x1="{x+5}" y1="{y-5}" x2="{x+5-d}" y2="{y-5-d}" stroke="{bk}" stroke-width="{w}" stroke-linecap="round"/>')
-    return "".join(out)
-DIAG = "M26 74 L74 26"
-DIAMOND = "M50 24 L76 50 L50 76 L24 50 Z"
-WAVE = "M16 50 q8.5 -14 17 0 t17 0 t17 0 t17 0"
-THICKET = L(["M30 44 L44 30", "M30 58 L58 30", "M30 72 L72 30", "M44 72 L72 44", "M58 72 L72 58",
-             "M30 30 L72 72"], 3.5)
-DESC = {
-    # voda
-    "voda": f'<ellipse cx="50" cy="50" rx="28" ry="18" fill="none" stroke="{bk}" stroke-width="4"/>' + L(["M32 50 q9 -9 18 0 t18 0"], 3.5),
-    "melka_voda": f'<ellipse cx="50" cy="50" rx="20" ry="13" fill="none" stroke="{bk}" stroke-width="4"/>' + L(["M38 50 q6 -7 12 0 t12 0"], 3.2),
-    "potok": L([WAVE], 4),
-    "prikop": L([WAVE, "M33 56 v12", "M50 56 v12", "M67 56 v12"], 3.5),
-    "bazina": L(["M22 38 h22 M56 38 h22", "M22 50 h22 M56 50 h22", "M22 62 h22 M56 62 h22"], 4),
-    "uzka_bazina": f'<path d="M22 78 L78 22" stroke="{bk}" stroke-width="5.5" stroke-dasharray="0.5 8" stroke-linecap="round" fill="none"/>',
-    "jama_s_vodou": L(["M34 44 L50 72 L66 44", "M34 32 q8 -8 16 0 t16 0"], 4.5),
-    "studna": f'<circle cx="50" cy="40" r="10" fill="none" stroke="{bk}" stroke-width="4"/>' + L(["M50 50 v14", "M38 66 h24"], 4),
-    "pramen": L(["M40 36 a11 11 0 1 1 11 11 v20"], 4.5),
-    "vodni_objekt": L(["M32 32 L68 68", "M68 32 L32 68"], 5),
-    # vegetace
-    "louka": L([DIAMOND], 4),
-    "roztrousene": L([DIAMOND], 4) + dots(bk, [(50, 40), (40, 50), (60, 50), (50, 60)], 2.6),
-    "divoky": f'<path d="{DIAMOND}" fill="none" stroke="{bk}" stroke-width="5" stroke-dasharray="0.5 7" stroke-linecap="round"/>',
-    "les": L(["M32 32 V68 H68 Z"], 4.5),
-    "housti": THICKET, "zelena_svetla": THICKET, "zelena_stredni": THICKET, "podrost": THICKET,
-    "hranice_veg": f'<path d="M22 78 L78 22" stroke="{bk}" stroke-width="5.5" stroke-dasharray="0.5 8" stroke-linecap="round" fill="none"/>',
-    "strom": L(["M50 26 L66 58 H34 Z", "M50 58 V74"], 4),
-    "ker": f'<circle cx="50" cy="44" r="14" fill="none" stroke="{bk}" stroke-width="4"/>' + L(["M50 58 V74"], 4),
-    "veg_x": f'<circle cx="50" cy="50" r="17" fill="none" stroke="{bk}" stroke-width="4"/>' + L(["M39 39 L61 61", "M61 39 L39 61"], 4),
-    # terén
-    "kopec": f'<ellipse cx="50" cy="50" rx="24" ry="14" fill="none" stroke="{bk}" stroke-width="4"/>',
-    "kupka": f'<circle cx="50" cy="50" r="9" fill="{bk}"/>',
-    "protahla_kupka": f'<ellipse cx="50" cy="50" rx="15" ry="7" fill="{bk}"/>',
-    "prohluben": L(["M32 42 a18 18 0 0 0 36 0"], 5),
-    "jama": L(["M34 34 L50 66 L66 34"], 5),
-    "rozbity": L(["M26 48 a10 10 0 0 0 20 0", "M54 48 a10 10 0 0 0 20 0"], 4) + dots(bk, [(31, 34), (41, 34), (59, 34), (69, 34)], 2.6),
-    "zemni_sraz": L(["M22 40 H78", "M32 40 v14", "M44 40 v14", "M56 40 v14", "M68 40 v14"], 4),
-    "ryha": L(["M30 68 L50 32 L70 68"], 4.5),
-    "val": L(["M22 50 H78", "M34 40 v20", "M50 40 v20", "M66 40 v20"], 4),
-    # skály
-    "balvan": f'<path d="M50 28 L72 68 H28 Z" fill="{bk}"/>',
-    "velkybalvan": f'<path d="M50 24 L76 72 H24 Z" fill="{bk}"/>',
-    "obrovsky": f'<path d="M50 22 L63 76 H37 Z" fill="{bk}"/>',
-    "shluk": f'<path d="M40 34 L58 68 H22 Z" fill="{bk}"/><path d="M62 30 L80 64 H44 Z" fill="{bk}" stroke="{wh}" stroke-width="2"/>',
-    "balvanove_pole": "".join(f'<path d="M{x} {y-8} L{x+8} {y+6} H{x-8} Z" fill="{bk}"/>' for x, y in [(36, 42), (64, 42), (50, 64)]),
-    "kamenity": dots(bk, grid(36, 36, 64, 64, 14, 14), 3),
-    "skala": L(["M50 26 V74", "M26 50 H74", "M33 33 L67 67", "M67 33 L33 67"], 4),
-    "sraz": L(["M22 40 H78", "M30 40 v14", "M42 40 v14", "M54 40 v14", "M66 40 v14", "M78 40 v14"], 4),
-    "nepr_sraz": L(["M22 38 H78"], 6) + L(["M30 38 v18", "M42 38 v18", "M54 38 v18", "M66 38 v18", "M78 38 v18"], 4),
-    "kamenna_jama": L(["M34 34 L50 66 L66 34"], 5),
-    # komunikace a objekty
-    "zpevnena": L(["M30 30 H70 V70 H30 Z", "M30 70 L70 30", "M30 50 L50 30", "M50 70 L70 50"], 3.5),
-    "silnice": L([DIAG], 5), "sirokasilnice": L([DIAG], 5),
-    "vozovka": f'<path d="{DIAG}" stroke="{bk}" stroke-width="5" stroke-dasharray="10 7" fill="none" stroke-linecap="round"/>',
-    "cesta": f'<path d="{DIAG}" stroke="{bk}" stroke-width="5" stroke-dasharray="10 7" fill="none" stroke-linecap="round"/>',
-    "pesina": f'<path d="{DIAG}" stroke="{bk}" stroke-width="4" stroke-dasharray="7 6" fill="none" stroke-linecap="round"/>',
-    "vedeni": L([DIAG], 4) + "".join(f'<line x1="{x-5}" y1="{y-5}" x2="{x+5}" y2="{y+5}" stroke="{bk}" stroke-width="4" stroke-linecap="round"/>' for x, y in [(38, 62), (50, 50), (62, 38)]),
-    "most": L(["M22 66 L62 26", "M38 74 L78 34"], 4.5),
-    "zed": L([DIAG], 4) + dots(bk, [(38, 62), (50, 50), (62, 38)], 4.5),
-    "nepr_zed": L([DIAG], 6) + dots(bk, [(38, 62), (50, 50), (62, 38)], 5.5),
-    "plot": L([DIAG], 4) + diag_ticks([(38, 62), (50, 50), (62, 38)]),
-    "nepr_plot": L([DIAG], 4) + diag_ticks([(36, 64), (52, 48), (68, 32)], double=True),
-    "pruchod": L(["M28 36 q22 16 44 0", "M28 64 q22 -16 44 0"], 5),
-    "budova": f'<rect x="32" y="32" width="36" height="36" fill="{bk}"/>',
-    "zricenina": L(["M30 44 V30 H44", "M56 30 H70 V44", "M70 56 V70 H56", "M44 70 H30 V56"], 4.5),
-    "veza": L(["M30 30 H70", "M50 30 V72"], 5),
-    "posed": L(["M36 72 V30 H66"], 5),
-    "schody": L(["M28 72 H40 V60 H52 V48 H64 V36 H76"], 4.5),
-    "mohyla": f'<circle cx="50" cy="50" r="13" fill="none" stroke="{bk}" stroke-width="4"/><circle cx="50" cy="50" r="4.5" fill="{bk}"/>',
-    "krmelec": L(["M50 28 V72", "M40 38 L50 28 L60 38", "M40 62 L50 72 L60 62"], 4.5),
-    "krouzek": f'<circle cx="50" cy="50" r="15" fill="none" stroke="{bk}" stroke-width="4.5"/>',
-    "krizek": L(["M32 32 L68 68", "M68 32 L32 68"], 5),
-    "prvni_pomoc": f'<rect x="42" y="26" width="16" height="48" fill="{bk}"/><rect x="26" y="42" width="48" height="16" fill="{bk}"/>',
-    "obcerstveni": L(["M32 30 h36 l-5 40 h-26 z", "M36 42 h28"], 4.5),
-    "pisek": dots(bk, grid(32, 32, 68, 68, 12, 12), 2.6),
-    "prusek": f'<path d="M22 78 L78 22" stroke="{bk}" stroke-width="5.5" stroke-dasharray="0.5 8" stroke-linecap="round" fill="none"/>',
-    "pruchod_plot": L(["M20 50 H40", "M60 50 H80", "M40 38 V62", "M60 38 V62"], 4.5),
-    "zastreseni": L(["M30 68 V34 H70 V68"], 4.5),
-    "potrubi": L([DIAG], 4) + "".join(f'<path d="M{x+1.5} {y+5.5} L{x+3} {y-3} L{x-5.5} {y-1.5}" stroke="{bk}" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' for x, y in [(38, 62), (50, 50), (62, 38)]),
-    "nepr_potrubi": L([DIAG], 6) + "".join(f'<path d="M{x+1.5} {y+5.5} L{x+3} {y-3} L{x-5.5} {y-1.5}" stroke="{bk}" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' for x, y in [(34, 66), (42, 58), (54, 46), (62, 38)]),
+# ---------- POPISY KONTROL (ISCD 2024, IOF) – černé piktogramy ze sloupce D ----------
+# Závazným zdrojem je ISCD 2024 (originál IOF + český překlad ČSOS). Kresby piktogramů se NEKRESLÍ ručně:
+# vektorizuje je nástroj trace_iscd.py přímo z originálu do iscd_piktogramy.json (číslo piktogramu → SVG cesta).
+# Značka dostane piktogram podle čísel ISOM, která u piktogramů uvádí ISCD (s. 6–12 originálu 2024). Když ISCD
+# dvě značky nerozlišuje (např. 109 a 110 → 1.10), mají stejné číslo, tedy shodný piktogram – hra s tím počítá
+# („sdílené piktogramy“, úkol sdilene).
+#
+# Přepínač ISCD_2024: piktogramy, které značce přiřazuje teprve verze 2024 (ISCD_ONLY_2024), se při False vynechají,
+# takže hra se pak chová podle verze 2018. Schválený stav je True (přechod na ISCD 2024).
+# Další rozdíly 2018 → 2024 u značek hry přepínač neřeší (v 2018 je ISOM 406 → 4.8 a 405 → 4.8 místo 4.5 a 4.3,
+# viz kontrola-piktogramu.html), protože hra už sleduje tabulku v repu a verzi 2024.
+ISCD_2024 = True
+with io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "iscd_piktogramy.json"), encoding="utf-8") as _f:
+    PICTO = json.load(_f)      # "1.14" -> {"d": "M…Z", "pageIOF": 7, "pageCZ": 7}
+
+ISCD_REF = {
+    # voda a bažiny (ISOM 3.3)
+    "voda": "3.1", "melka_voda": "3.2", "potok": "3.4", "prikop": "3.5", "bazina": "3.7", "nezretelna_bazina": "3.7",
+    "uzka_bazina": "3.6", "jama_s_vodou": "3.3", "studna": "3.9", "pramen": "3.10", "vodni_objekt": "6.1",
+    # vegetace (ISOM 3.4)
+    "louka": "4.1", "pole": "4.1", "sad": "4.1", "vinice": "4.1", "roztrousene": "4.2", "divoky": "4.2", "les": "4.3",
+    "housti": "4.5", "zelena_svetla": "4.5", "zelena_stredni": "4.5", "podrost": "4.5", "hranice_veg": "4.7",
+    "strom": "4.9", "ker": "4.9", "veg_x": "4.10",
+    # terén (ISOM 3.1)
+    "kopec": "1.9", "doplnkova": "1.9", "kupka": "1.10", "protahla_kupka": "1.10", "prohluben": "1.13", "jama": "1.14",
+    "teren_objekt": "5.19", "rozbity": "1.15", "zemni_sraz": "1.4", "ryha": "1.7", "val": "1.6",
+    # skály a balvany (ISOM 3.2)
+    "balvan": "2.4", "velkybalvan": "2.4", "obrovsky": "2.2", "shluk": "2.6", "balvanove_pole": "2.5", "kamenity": "2.7",
+    "skala": "2.8", "sraz": "2.1", "nepr_sraz": "2.1", "kamenna_jama": "1.14", "pisek": "8.8",
+    # umělé objekty (ISOM 3.5)
+    "zpevnena": "5.12", "silnice": "5.1", "sirokasilnice": "5.1", "vozovka": "5.2", "cesta": "5.2", "pesina": "5.2",
+    "prusek": "5.3", "zeleznice": "5.24", "vedeni": "5.5", "most": "5.4", "zed": "5.8", "nepr_zed": "5.8", "plot": "5.9",
+    "nepr_plot": "5.9", "pruchod_plot": "5.10", "budova": "5.11", "zakaz": "5.23", "zricenina": "5.13", "zastreseni": "5.21",
+    "veza": "5.15", "posed": "5.16", "schody": "5.22", "mohyla": "5.17", "krmelec": "5.18", "krouzek": "6.2",
+    "krizek": "6.1", "potrubi": "5.14", "nepr_potrubi": "5.14",
+    # značky pro dotisk (ISOM 7): zvláštní řádky a sloupec H
+    "pruchod": "15.3", "prvni_pomoc": "13.1", "obcerstveni": "13.2",
 }
-for k in DESC: assert k in ids, ("desc", k)
+# Značky, kterým ISCD piktogram přiřazuje až ve verzi 2024 (v ISCD 2018 u jejich čísla ISOM chybí).
+ISCD_ONLY_2024 = {
+    "nezretelna_bazina": "ISOM 310 přibylo k 3.7 (s. 9)", "pole": "ISOM 412 přibylo k 4.1 (s. 9)",
+    "sad": "ISOM 413 přibylo k 4.1 (s. 9)", "vinice": "ISOM 414 přibylo k 4.1 (s. 9)",
+    "doplnkova": "ISOM 102 a 103 přibyly k 1.9 (s. 6–7)", "zeleznice": "5.24 Železnice je nový v 2024 (s. 11)",
+}
+for _k, _r in ISCD_REF.items():
+    assert _k in ids, ("ISCD_REF: neznámé id", _k)
+    assert _r in PICTO, ("ISCD_REF: neznámý piktogram", _k, _r)
+for _k in ISCD_ONLY_2024: assert _k in ISCD_REF, _k
+
+def picto_svg(ref): return f'<path d="{PICTO[ref]["d"]}" fill="{bk}" fill-rule="evenodd"/>'
+DESC_REF = {k: r for k, r in ISCD_REF.items() if ISCD_2024 or k not in ISCD_ONLY_2024}
+DESC = {k: picto_svg(r) for k, r in DESC_REF.items()}
 for s in S:
-    if s["id"] in DESC: s["desc"] = DESC[s["id"]]
-if __name__ == "__main__": print("s popisem kontrol:", len(DESC), "z", len(S))
+    if s["id"] in DESC: s["desc"] = DESC[s["id"]]; s["iscd"] = DESC_REF[s["id"]]
+if __name__ == "__main__": print("s popisem kontrol:", len(DESC), "z", len(S), "(ISCD_2024 =", ISCD_2024, ")")
 
 # ---------- OSTROVY ----------
 ISL = [
@@ -607,6 +569,35 @@ CON = [
 for c in CON:
     for s in c["ok"] + c["no"]: assert s in ids, ("concept", s)
 
+# ---------- ZAMĚNITELNÉ ZNAČKY (CONF) ----------
+# Skupiny značek, které se dětem pletou. Od 2. moře se mezi nabídky dává aspoň jedna ze skupiny cíle
+# (od 4. moře až dvě), pokud ji dítě už zná.
+CONF = [
+ ["bazina","nezretelna_bazina","uzka_bazina"],
+ ["balvan","velkybalvan","obrovsky","shluk"],
+ ["zed","nepr_zed"],
+ ["plot","nepr_plot","pruchod_plot"],
+ ["sraz","nepr_sraz","zemni_sraz"],
+ ["louka","roztrousene","divoky"],
+ ["kupka","protahla_kupka"],
+ ["jama","kamenna_jama","prohluben"],
+ ["zelena_svetla","zelena_stredni","housti","podrost"],
+ ["silnice","sirokasilnice","zpevnena"],
+ ["vozovka","cesta","pesina"],
+ ["krouzek","krizek"],
+ ["voda","melka_voda"],
+ ["potok","prikop"],
+ ["potrubi","nepr_potrubi"],
+ ["start","kontrola","cil"],
+ ["zakaz","nepristupna","nepristupna_trasa"],
+ ["kopec","doplnkova"],
+ ["pole","sad","vinice"],
+ ["veza","posed"],
+ ["studna","pramen","vodni_objekt"],
+]
+for _g in CONF:
+    for _s in _g: assert _s in ids, ("CONF: neznámé id", _s)
+
 # ---------- GENEROVÁNÍ JS ----------
 def js_str(s): return '"' + s.replace('\\', '\\\\').replace('"', '\\"') + '"'
 def js_tpl(s):
@@ -614,6 +605,8 @@ def js_tpl(s):
     return '`' + s + '`'
 
 out = []
+out.append("/* Piktogramy popisů kontrol (ISCD 2024) podle čísla piktogramu; značky se shodným číslem sdílejí tentýž řetězec */")
+out.append("const PICTO={" + ",".join(f"{js_str(r)}:{js_tpl(picto_svg(r))}" for r in sorted(set(DESC_REF.values()), key=lambda x: [int(n) for n in x.split('.')])) + "};")
 out.append("const SY=[")
 for s in S:
     parts = [f'id:{js_str(s["id"])}', f'name:{js_str(s["name"])}', f'isom:{js_str(s["isom"])}', f'emoji:{js_str(s["emoji"])}', f'col:{js_str(s["col"])}']
@@ -624,7 +617,7 @@ for s in S:
     parts.append(f'svg:{js_tpl(s["svg"])}')
     if s.get("deco"): parts.append(f'deco:{js_tpl(s["deco"])}')
     if s.get("tile"): parts.append(f'tile:{js_tpl(s["tile"])}')
-    if s.get("desc"): parts.append(f'desc:{js_tpl(s["desc"])}')
+    if s.get("desc"): parts.append(f'desc:PICTO[{js_str(s["iscd"])}]')
     out.append("  {" + ", ".join(parts) + "},")
 out.append("];")
 out.append("const SYM={}; SY.forEach(s=>SYM[s.id]=s);")
@@ -644,6 +637,8 @@ out.append("/* Fond posádky – ostrov bez vlastní crew dostane člena podle p
 out.append("const CREW_POOL=[" + ",".join("{emoji:%s,name:%s,say:%s}" % (js_str(e), js_str(n), js_str(t)) for e, n, t in CREW) + "];")
 out.append("const SEAS=[" + ",".join(js_str(x) for x in SEAS) + "];")
 out.append("const PRAISE=[" + ",".join(js_str(x) for x in PRAISE) + "];")
+out.append("/* Skupiny zaměnitelných značek (obtížnější nabídky od 2. moře) */")
+out.append("const CONF=[" + ",".join("[" + ",".join(js_str(x) for x in g) + "]" for g in CONF) + "];")
 SY_ISL_JS = "\n".join(out)
 
 out = ["const CONCEPTS=["]
@@ -655,7 +650,8 @@ CON_JS = "\n".join(out)
 def write_html():
     html = io.open(HTML, encoding="utf-8").read()
     # 1) SY + ISLANDS blok: od "const SY=[" po konec "const ISLANDS=[...];"
-    a = html.index("const SY=[")
+    mk = "/* Piktogramy popisů kontrol (ISCD 2024)"
+    a = html.index(mk) if mk in html else html.index("const SY=[")
     b = html.index("const SEA_SIZE=6;")
     html = html[:a] + SY_ISL_JS + "\n\n" + html[b:]
     # 2) CONCEPTS blok

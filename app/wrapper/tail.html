@@ -1,0 +1,221 @@
+
+<script>
+/* MINIMALISTICKÁ APPKA: zvuky nejsou v balíčku, stahují se za běhu z hostingu do úložiště
+   (Cache Storage) a pak fungují offline. Při prvním spuštění se stáhnou všechny najednou
+   s ukazatelem průběhu; dokud nejsou, čte hlas prohlížeče (cs-CZ). */
+(function(){
+  var AUD_CACHE="pp-audio-v1";
+  async function cachedFetch(url){
+    try{ var c=await caches.open(AUD_CACHE); var r=await c.match(url); if(r) return r;
+      var n=await fetch(url); if(n&&n.ok){ try{ await c.put(url,n.clone()); }catch(e){} } return n;
+    }catch(e){ return fetch(url); }
+  }
+  /* přepsat getBuf (Web Audio) na čtení z cache */
+  if(typeof getBuf==="function"){
+    window.getBuf=function(id){
+      if(bufCache[id]) return bufCache[id];
+      var p=cachedFetch(AUDIO_BASE+id+".mp3").then(function(r){ if(!r||!r.ok) throw 0; return r.arrayBuffer(); })
+        .then(function(ab){ return new Promise(function(res,rej){ try{ var x=actx.decodeAudioData(ab,res,rej); if(x&&x.then) x.then(res,rej); }catch(e){ rej(e); } }); });
+      bufCache[id]=p; p.catch(function(){ delete bufCache[id]; }); return p;
+    };
+  }
+  /* jednorázové stažení všech klipů do cache, s průběhem */
+  function overlay(){
+    var o=document.createElement("div");
+    o.style.cssText="position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:linear-gradient(160deg,#f3e2b8,#d9bd82);font-family:'Baloo 2',system-ui,sans-serif;color:#6f4423;padding:24px;text-align:center";
+    o.innerHTML='<div style="font-size:64px">🧭</div><div id="ppdl_l" style="font-weight:700;font-size:20px">Stahuji hlasy…</div>'+
+      '<div style="width:min(80vw,320px);height:16px;background:rgba(111,68,35,.2);border-radius:8px;overflow:hidden;border:2px solid #6f4423"><div id="ppdl_b" style="height:100%;width:0;background:linear-gradient(90deg,#ffcf4d,#e7a70f);transition:width .2s"></div></div>'+
+      '<div style="font-size:14px;color:#8a6a38;max-width:300px">Jen poprvé. Pak hra funguje bez internetu.</div>'+
+      '<button id="ppdl_s" style="margin-top:8px;border:2px dashed #c9a86a;background:transparent;color:#8a6a38;font-weight:700;border-radius:12px;padding:8px 16px;font-size:14px">Přeskočit, stáhne se při hraní</button>';
+    document.body.appendChild(o); return o;
+  }
+  async function firstRun(){
+    var done=false; try{ done=localStorage.getItem("pp_audio_dl")==="1"; }catch(e){}
+    if(done) return;
+    if(typeof AUDIO_IDS==="undefined"||!AUDIO_IDS.length) return;
+    if(!navigator.onLine) return;              /* offline: necháme na příště, zatím TTS */
+    var o=overlay(), bar=o.querySelector("#ppdl_b"), lab=o.querySelector("#ppdl_l");
+    var skipped=false; o.querySelector("#ppdl_s").onclick=function(){ skipped=true; o.remove(); };
+    var ids=AUDIO_IDS.slice(), n=0, i=0, CH=8;
+    var c; try{ c=await caches.open(AUD_CACHE); }catch(e){ o.remove(); return; }
+    async function one(id){
+      var u=AUDIO_BASE+id+".mp3";
+      try{ if(!(await c.match(u))){ var r=await fetch(u); if(r&&r.ok) await c.put(u,r.clone()); } }catch(e){}
+      n++; if(bar){ bar.style.width=(n/ids.length*100)+"%"; } if(lab){ lab.textContent="Stahuji hlasy… "+Math.round(n/ids.length*100)+" %"; }
+    }
+    while(i<ids.length){
+      var chunk=ids.slice(i,i+CH); i+=CH;
+      await Promise.all(chunk.map(one));
+      if(skipped){ /* dál na pozadí bez overlaye */ }
+    }
+    try{ localStorage.setItem("pp_audio_dl","1"); }catch(e){}
+    if(!skipped && o.parentNode) o.remove();
+  }
+  if(document.readyState==="complete"||document.readyState==="interactive") setTimeout(firstRun,400);
+  else window.addEventListener("DOMContentLoaded",function(){ setTimeout(firstRun,400); });
+})();
+</script>
+<script>
+/* Appka: tlačítko „Smazat stažené zvuky" na úvodní obrazovce (uvolní místo / vynutí
+   nové stažení). Dvojí klepnutí pro potvrzení (confirm() se v obalu nemusí zobrazit). */
+(function(){
+  function add(){
+    var host=document.getElementById("sc_start");
+    if(!host || document.getElementById("ppDelAudio")) return;
+    var b=document.createElement("button");
+    b.id="ppDelAudio"; b.className="reset"; b.style.marginTop="2px";
+    b.textContent="🗑️ Smazat stažené zvuky";
+    var armed=false,t=null;
+    b.onclick=async function(){
+      if(!armed){ armed=true; b.textContent="Opravdu smazat zvuky? Klepni znovu";
+        t=setTimeout(function(){ armed=false; b.textContent="🗑️ Smazat stažené zvuky"; },3000); return; }
+      clearTimeout(t); armed=false;
+      try{ await caches.delete("pp-audio-v1"); }catch(e){}
+      try{ localStorage.removeItem("pp_audio_dl"); }catch(e){}
+      try{ for(var k in bufCache) delete bufCache[k]; }catch(e){}
+      b.textContent="✅ Smazáno, stáhnou se znovu";
+      setTimeout(function(){ b.textContent="🗑️ Smazat stažené zvuky"; },3500);
+    };
+    host.appendChild(b);
+  }
+  if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",add); else add();
+})();
+</script>
+<script>
+/* Appka: upozornění na novou verzi (jako Nežer). Porovná svoje číslo buildu
+   (bundled version.json, zapsané při buildu) s build.json na serveru a nabídne
+   instalaci novější verze odkazem itms-services. Na webu bez version.json se nic nestane. */
+(function(){
+  var APPDIR="https://www.kukackovi.cz/piratsky-poklad/app";
+  function banner(manifestUrl){
+    if(document.getElementById("ppUpd")) return;
+    var b=document.createElement("div"); b.id="ppUpd";
+    b.style.cssText="position:fixed;left:0;right:0;bottom:0;z-index:998;background:#2f9e46;color:#fff;padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;font-family:'Baloo 2',system-ui,sans-serif;box-shadow:0 -4px 16px rgba(0,0,0,.25);padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))";
+    b.innerHTML='<span style="font-weight:800">🎉 Je tu nová verze hry!</span>'+
+      '<a href="itms-services://?action=download-manifest&url='+encodeURIComponent(manifestUrl)+'" style="background:#fff;color:#2f9e46;font-weight:800;padding:8px 18px;border-radius:999px;text-decoration:none">Nainstalovat</a>'+
+      '<button id="ppUpdX" aria-label="Zavřít" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">✕</button>';
+    document.body.appendChild(b);
+    document.getElementById("ppUpdX").onclick=function(){ b.remove(); };
+  }
+  async function check(){
+    try{
+      var cur=null;
+      try{ cur=await (await fetch("version.json",{cache:"no-store"})).json(); }catch(e){}
+      if(!cur||!cur.build) return;                 /* jen v appce (bundled version.json) */
+      var rem=await (await fetch("https://www.kukackovi.cz/piratsky-poklad/ota.php?akce=verze&t="+Date.now(),{cache:"no-store"})).json();
+      if(rem&&rem.build&&parseInt(rem.build,10)>parseInt(cur.build,10)){
+        banner(rem.manifest||(APPDIR+"/manifest.plist"));
+      }
+    }catch(e){}
+  }
+  if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",function(){ setTimeout(check,1500); });
+  else setTimeout(check,1500);
+})();
+</script>
+<script>
+/* Appka: diagnostický log zvuku. Tlačítko „🐞 Test zvuku / log" na úvodní obrazovce
+   zkusí přehrát klip (fetch → HTMLAudio → Web Audio) a vypíše, kde to vázne.
+   Zároveň při prvním klepnutí odemkne iOS audio (přehraje tichý buffer v gestu). */
+(function(){
+  var L=[];
+  function log(m){ try{ L.push(new Date().toLocaleTimeString()+" "+m); if(L.length>400)L.shift(); var p=document.getElementById("ppLogBody"); if(p){ p.textContent=L.join("\n"); p.scrollTop=p.scrollHeight; } }catch(e){} }
+  window.pplog=log;
+  window.addEventListener("error", function(e){ log("ERR "+(e.message||(e.error&&e.error.message)||e.filename||e)); });
+  window.addEventListener("unhandledrejection", function(e){ log("REJECT "+(e.reason&&(e.reason.message||e.reason))); });
+  log("start onLine="+navigator.onLine+" caches="+(typeof caches)+" AC="+(typeof(window.AudioContext||window.webkitAudioContext))+" muted="+(typeof muted!=="undefined"?muted:"?"));
+
+  if(typeof ensureAudio==="function"){ var _ea=ensureAudio; window.ensureAudio=function(){ _ea();
+    try{ if(typeof actx!=="undefined"&&actx){ if(actx.state==="suspended") actx.resume();
+      var b=actx.createBuffer(1,1,22050), s=actx.createBufferSource(); s.buffer=b; s.connect(actx.destination); s.start(0);
+      log("ensureAudio actx="+actx.state); } else log("ensureAudio actx=null"); }catch(e){ log("ensureAudio EX "+e); } }; }
+  if(typeof getBuf==="function"){ var _gb=getBuf; window.getBuf=function(id){ var p=_gb(id); try{ p.then(function(b){ log("buf OK "+id+" "+(b&&b.duration?b.duration.toFixed(2):"?")+"s"); }, function(e){ log("buf FAIL "+id+" "+e); }); }catch(_){ } return p; }; }
+  if(typeof play==="function"){ var _pl=play; window.play=function(ids,o){ log("play "+JSON.stringify(Array.isArray(ids)?ids:[ids])+" muted="+(typeof muted!=="undefined"?muted:"?")); return _pl(ids,o); }; }
+  if(typeof playSeq==="function"){ var _ps=playSeq; window.playSeq=function(a,b,c,d){ log("playSeq(fallback) "+JSON.stringify(a)); return _ps(a,b,c,d); }; }
+  if(typeof speakTTS==="function"){ var _st=speakTTS; window.speakTTS=function(t,o){ log("TTS "+String(t||"").slice(0,30)); return _st(t,o); }; }
+
+  function addUI(){
+    var host=document.getElementById("sc_start"); if(!host||document.getElementById("ppLogBtn")) return;
+    var btn=document.createElement("button"); btn.id="ppLogBtn"; btn.className="reset"; btn.style.marginTop="2px";
+    btn.textContent="🐞 Test zvuku / log";
+    var pn=document.createElement("div"); pn.id="ppLogPanel";
+    pn.style.cssText="display:none;position:fixed;inset:0;z-index:1000;background:#fffdf3;color:#222;flex-direction:column;padding:10px;padding-top:calc(10px + env(safe-area-inset-top,0px));font-family:ui-monospace,monospace;font-size:12px";
+    pn.innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="ppTest" style="padding:8px 14px;font-weight:700">🔊 Test</button><button id="ppCopy" style="padding:8px 14px">Kopírovat</button><button id="ppClose" style="padding:8px 14px">Zavřít</button></div><pre id="ppLogBody" style="flex:1;overflow:auto;white-space:pre-wrap;margin:8px 0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px"></pre>';
+    btn.onclick=function(){ pn.style.display="flex"; var p=document.getElementById("ppLogBody"); if(p) p.textContent=L.join("\n"); };
+    host.appendChild(btn); document.body.appendChild(pn);
+    document.getElementById("ppClose").onclick=function(){ pn.style.display="none"; };
+    document.getElementById("ppCopy").onclick=function(){ try{ navigator.clipboard.writeText(L.join("\n")); log("(zkopírováno do schránky)"); }catch(e){ log("copy EX "+e); } };
+    document.getElementById("ppTest").onclick=async function(){
+      log("--- TEST ---"); try{ ensureAudio(); }catch(e){ log("ensureAudio EX "+e); }
+      var id=(typeof AUDIO_IDS!=="undefined"&&AUDIO_IDS.indexOf("story_0")>=0)?"story_0":(typeof AUDIO_IDS!=="undefined"&&AUDIO_IDS.length?AUDIO_IDS[0]:null);
+      log("id="+id+" base="+(typeof AUDIO_BASE!=="undefined"?AUDIO_BASE:"?"));
+      if(!id) return;
+      try{ var r=await fetch(AUDIO_BASE+id+".mp3",{cache:"no-store"}); log("fetch "+r.status+" "+r.headers.get("content-type")); var ab=await r.arrayBuffer(); log("bytes "+ab.byteLength); }catch(e){ log("fetch EX "+e); }
+      try{ var a=new Audio(AUDIO_BASE+id+".mp3"); a.onplaying=function(){ log("HTMLAudio HRAJE"); }; a.onerror=function(){ log("HTMLAudio error "+(a.error&&a.error.code)); }; var pr=a.play(); if(pr&&pr.catch) pr.catch(function(e){ log("HTMLAudio play EX "+e); }); }catch(e){ log("HTMLAudio EX "+e); }
+      try{ play([id],{onend:function(){ log("Web Audio onend"); }}); }catch(e){ log("play EX "+e); }
+    };
+  }
+  if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",addUI); else addUI();
+})();
+</script>
+<script>
+/* Appka iOS: přehrávání přes HTMLAudio z Cache. Web Audio je ve WKWebView tiché,
+   HTMLAudio hraje. Sekvenčně s přednačtením dalšího klipu (malé mezery), klipy
+   jsou ořezané od ticha. Offline z Cache (blob URL). */
+(function(){
+  if(typeof play!=="function"||typeof AUDIO_BASE==="undefined") return;
+  var CACHE="pp-audio-v1", SILENT="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+  function logp(m){ try{ if(window.pplog) window.pplog(m); }catch(e){} }
+  /* odemčení HTMLAudio cesty tichým klipem v gestu */
+  if(typeof ensureAudio==="function"){ var _ea2=ensureAudio, unlocked=false;
+    window.ensureAudio=function(){ _ea2(); if(!unlocked){ unlocked=true; try{ var s=new Audio(SILENT); var p=s.play(); if(p&&p.catch)p.catch(function(){}); logp("HTMLAudio unlock"); }catch(e){} } }; }
+  var urlCache={};
+  function clipURL(id){
+    if(urlCache[id]) return Promise.resolve(urlCache[id]);
+    return caches.open(CACHE).then(function(c){ return c.match(AUDIO_BASE+id+".mp3"); }).then(function(r){
+      if(r) return r.blob().then(function(b){ var u=URL.createObjectURL(b); urlCache[id]=u; return u; });
+      return AUDIO_BASE+id+".mp3";
+    }).catch(function(){ return AUDIO_BASE+id+".mp3"; });
+  }
+  function mk(url){ var a=new Audio(url); a.preload="auto"; return a; }
+  window.play=function(ids,opts){
+    ids=(Array.isArray(ids)?ids:[ids]).filter(Boolean);
+    stopAudio(); var token=++playToken; opts=opts||{};
+    var called=false; function done(){ if(!called){ called=true; if(opts.onend) opts.onend(); } }
+    logp("play "+JSON.stringify(ids)+" muted="+(typeof muted!=="undefined"?muted:"?"));
+    if(muted){ setTimeout(function(){ if(token===playToken) done(); },350); return; }
+    try{ ensureAudio(); }catch(e){}
+    var i=0, nextEl=null;
+    /* klip chybí nebo nejde přehrát (např. nový text, který ještě není namluvený): přečte ho hlas prohlížeče */
+    function fallbackTTS(id){
+      if(token!==playToken) return;
+      curAudio=null;
+      speakTTS(textOf(id)||id,{onend:function(){ if(token===playToken) setTimeout(nextClip,0); }});
+    }
+    function run(el,id){
+      if(token!==playToken) return;
+      if(!el){ done(); return; }
+      curAudio=el;
+      var failed=false;   /* chyba načtení i odmítnuté play() mohou přijít obě, záloha se spustí jen jednou */
+      function fail(why){ if(failed||token!==playToken) return; failed=true; logp(why+" "+id); fallbackTTS(id); }
+      el.onended=function(){ if(token===playToken) setTimeout(nextClip,0); };
+      el.onerror=function(){ fail("HA error"); };
+      var pr=el.play(); if(pr&&pr.catch) pr.catch(function(e){ fail("HA play EX "+e); });
+    }
+    function nextClip(){
+      if(token!==playToken) return;
+      if(i>=ids.length){ done(); return; }
+      var id=ids[i++];
+      if(!AUDIO_SET.has(id)){ speakTTS(textOf(id)||id,{onend:function(){ setTimeout(nextClip,0); }}); return; }
+      var elP = nextEl ? Promise.resolve(nextEl) : clipURL(id).then(mk);
+      nextEl=null;
+      elP.then(function(el){
+        if(token!==playToken) return;
+        if(i<ids.length && AUDIO_SET.has(ids[i])) clipURL(ids[i]).then(function(u){ if(token===playToken) nextEl=mk(u); });
+        run(el,id);
+      });
+    }
+    nextClip();
+  };
+  logp("HTMLAudio přehrávač aktivní");
+})();
+</script>

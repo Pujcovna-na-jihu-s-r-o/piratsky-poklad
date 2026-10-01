@@ -3,7 +3,7 @@
 Sada výukových materiálů o čtení map a mapových značkách pro orientační běh,
 ve dvou verzích: **pro děti (2. třída ZŠ)** a **pro dospělé** (norma ISOM/ISSprOM).
 
-Poslední aktualizace: 2026-09-30 (hra v2.1: příběh, finále čtení mapy, 86 značek ISOM 2017-2 + popisy kontrol ISCD 2018).
+Poslední aktualizace: 2026-09-30 (hra v2.1: příběh, finále čtení mapy, 86 značek ISOM 2017-2 + popisy kontrol ISCD 2024).
 
 ## Struktura složek
 
@@ -73,9 +73,14 @@ každého moře je souboj s Mlhou na čas.
   a českými názvy podle překladu ČSOS; barvy podle PMS (hnědá 471, modrá 299,
   žlutá 136, zelená 361, fialová) včetně rastrů 30/50/60 %.
 - Každá značka má **tři podoby**: kartu, dílek mapy (pro režim „Mapa ostrova")
-  a **piktogram z popisů kontrol (ISCD 2018)** – 71 značek ho má, u zbylých
-  (značky tratě, barvy porostu, pole/sad…) hra řekne, že se v popisech
-  kontrol nepoužívají a jsou jen v mapě.
+  a **piktogram z popisů kontrol (ISCD 2024)** – 79 značek ho má, u zbylých
+  (značky tratě) hra řekne, že se v popisech kontrol nepoužívají a jsou jen
+  v mapě. Piktogramy se nekreslí ručně: `zdroje/trace_iscd.py` je vektorizuje
+  z originálu `ISCD-2024-IOF.pdf` do `zdroje/iscd_piktogramy.json`, přiřazení
+  značka → číslo piktogramu je v `ISCD_REF` v `gen_symbols.py` (značky, které
+  ISCD nerozlišuje, mají stejné číslo, tedy sdílený piktogram; přepínač
+  `ISCD_2024` vypne piktogramy platné až od 2024). Kontrolní list pro oči:
+  `zdroje/kontrola-piktogramu.html` (generuje `zdroje/build_kontrola.py`).
 - Opraveno oproti v1: **balvan je černá tečka (204)**, černý trojúhelník je
   **shluk balvanů (207)**; „kopec" jsou **vrstevnice (101)**; cesty rozlišeny
   na silnici (503), vozovou cestu (504), pěší cestu (505) a pěšinu (506).
@@ -105,7 +110,12 @@ každého moře je souboj s Mlhou na čas.
   k první kontrole), kroužky kontrol (703) s čísly (704), rovné spojnice od
   okraje ke kraji (705), cíl jako dva kroužky (706); mezi mořemi spojnice
   odbíhá z mapy. Úvod ostrova říká „Start trati“ / „Kontrola n z 22“ / „Cíl“.
-- **Sedm typů úkolů** (8 na ostrov, střídají se): *Najdi na mapě* (slyší
+- **Osm typů úkolů** (8 na ostrov, střídají se; osmý je *Jeden obrázek, víc
+  značek*: ukáže se piktogram, který sdílí víc mapových značek, a dítě najde
+  všechny, které zná; skupiny se počítají z dat, nasazuje se při aspoň 2
+  známých značkách skupiny, zhruba na každém třetím ostrově místo úkolu
+  *Popisy kontrol*, ve Volném moři s váhou 1, ve zkoušce moře ne; první
+  spuštění doprovodí Pepíkovo vysvětlení). Ostatní typy: *Najdi na mapě* (slyší
   jméno → klepne značku), *Co je to?* (vidí značku → vybere jméno), *Na rozum*
   („Kde si namočíš nohy?", „Co nesmíš přelézt?" – 22 otázek o tom, co značka
   znamená pro běžce), *Mapa ostrova* (mapka z dílků 4×4 s podkladem les/louka),
@@ -139,6 +149,16 @@ každého moře je souboj s Mlhou na čas.
 Ostrovy se samy rozdělí po šesti do moří, kousků mapy je tolik jako ostrovů,
 známé značky se na dalších ostrovech sčítají. Sprintový klíč ISSprOM 2019-2
 (školní/parkové mapy) zatím není zvlášť – dá se přidat jako další moře.
+
+### iPhone appka (generuje se ze zdroje)
+
+`app/www/index.html` se **needitují ručně** – generuje se příkazem 
+`python zdroje/build_app.py` jako `app/wrapper/head.html` + jádro hry 
+(`zdroje/hra-piratsky-poklad.html`, s lokálními fonty a absolutní adresou zvuků) 
++ `app/wrapper/tail.html`. Jádro hry se mění ve zdroji, obal appky 
+(Capacitor, stahování zvuků, aktualizace) v `app/wrapper/`. Po změně spusť skript 
+a vygenerovaný soubor commitni; `python zdroje/build_app.py --check` ověří, 
+že je aktuální (kód 1 = neodpovídá).
 
 ## Tisknutelné obrázkové kartičky
 

@@ -1863,6 +1863,21 @@
   "text": "V popisech kontrol je tenhle obrázek. Najdi, jak to vypadá na mapě."
  },
  {
+  "id": "ui_shared",
+  "role": "ukol",
+  "text": "Kterým značkám na mapě patří tenhle obrázek? Najdi všechny."
+ },
+ {
+  "id": "ui_shared_intro",
+  "role": "pepik",
+  "text": "Pozor, plavčíku! Popis kontrol říká, co to je, a mapa ukazuje, jak to vypadá. Proto jeden obrázek v popisu někdy patří víc značkám na mapě."
+ },
+ {
+  "id": "ui_shared_more",
+  "role": "ukol",
+  "text": "Správně! Ještě nějaká chybí."
+ },
+ {
   "id": "ui_desc_yes",
   "role": "ukol",
   "text": "V popisech kontrol má svůj obrázek."
@@ -2061,6 +2076,61 @@
   "id": "res_map",
   "role": "pepik",
   "text": "Mapa je celá! Teď ji přečti a najdi poklad!"
+ },
+ {
+  "id": "exam_intro",
+  "role": "ukol",
+  "text": "Zkouška moře! Na každou značku se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!"
+ },
+ {
+  "id": "exam_round2",
+  "role": "ukol",
+  "text": "Ještě jednou projdeme ty, které se ti pletly. Tentokrát se zeptám obráceně."
+ },
+ {
+  "id": "exam_gold",
+  "role": "pepik",
+  "text": "Zlatá medaile! Tohle moře znáš jako své boty. Jsi opravdový kapitán!"
+ },
+ {
+  "id": "exam_silver",
+  "role": "pepik",
+  "text": "Stříbrná medaile! Skoro všechno si pamatuješ. Tak se pluje!"
+ },
+ {
+  "id": "exam_bronze",
+  "role": "pepik",
+  "text": "Bronzová medaile! Dobrý začátek. Pár značek ještě procvičíme a bude zlatá."
+ },
+ {
+  "id": "exam_none",
+  "role": "pepik",
+  "text": "Tentokrát bez medaile, ale nevěš hlavu! Procvičíme, co se pletlo, a zkusíš to znovu."
+ },
+ {
+  "id": "fix_intro",
+  "role": "ukol",
+  "text": "Pojď si procvičit značky, které ti dělaly potíže. Tentokrát ti pomůžu."
+ },
+ {
+  "id": "fix_done",
+  "role": "ukol",
+  "text": "Hotovo! Tyhle značky už půjdou líp. Můžeš zkusit zkoušku znovu."
+ },
+ {
+  "id": "review_offer",
+  "role": "pepik",
+  "text": "Co kdybychom si zopakovali značky z minulých ostrovů? Ať ti žádná neuplave!"
+ },
+ {
+  "id": "review_intro",
+  "role": "ukol",
+  "text": "Zopakujeme si značky z minulých ostrovů, hlavně ty, co se ti pletou."
+ },
+ {
+  "id": "review_done",
+  "role": "ukol",
+  "text": "Výborně, značky z minulých ostrovů máš zase čerstvé!"
  },
  {
   "id": "ui_shop_intro",
