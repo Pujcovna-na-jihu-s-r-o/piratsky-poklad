@@ -5,7 +5,7 @@ Pro každou značku hry ukáže mapovou značku, piktogram z popisů kontrol tak
 originální piktogram vyříznutý z ISCD 2024 (IOF), číslo piktogramu, český a anglický název, stranu ve specifikaci,
 se kterými značkami piktogram sdílí, stav změny a poznámku. Majitel tak může očima porovnat hru se specifikací.
 
-Data bere z gen_symbols.py (ISCD_REF, DESC, ISCD_2024), z iscd_piktogramy.json a z originálního PDF (trace_iscd.py).
+Data bere z gen_symbols.py (ISCD_REF, DESC, ISCD_2024, PD – nové piktogramy 5. moře), z iscd_piktogramy.json a z originálního PDF (trace_iscd.py).
 Spuštění:  python zdroje/build_kontrola.py
 """
 import base64, html, io, os, sys
@@ -40,6 +40,13 @@ NAMES = {
     "5.21": ("Zastřešení", "Canopy"), "5.22": ("Schodiště", "Stairway"), "5.23": ("Oblast se zákazem vstupu", "Out of Bounds area"),
     "5.24": ("Železnice", "Railway"), "6.1": ("Výrazný objekt / Zvláštní objekt", "Prominent feature / Special item"),
     "6.2": ("Výrazný objekt / Zvláštní objekt", "Prominent feature / Special item"), "8.8": ("Písčitý", "Sandy"),
+    # piktogramy sloupce D, které hra nemá jako mapovou značku (5. moře)
+    "1.1": ("Terasa", "Terrace"), "1.2": ("Hřbítek", "Spur"), "1.3": ("Údolíčko", "Re-entrant"), "1.5": ("Lom", "Quarry"),
+    "1.8": ("Malá rýha", "Small erosion gully"), "1.11": ("Sedlo", "Saddle"), "1.12": ("Prohlubeň", "Depression"),
+    "1.16": ("Mraveniště (termitiště)", "Ant hill (termite mound)"), "2.3": ("Jeskyně", "Cave"), "2.9": ("Úzký (skalní) průchod", "Narrow passage"),
+    "2.10": ("Příkop", "Trench"), "3.8": ("Pevná půda v bažině", "Firm ground in marsh"), "3.11": ("Vodní nádrž, vodní žlab", "Water tank, Water trough"),
+    "4.4": ("Světlina", "Clearing"), "4.6": ("Úzký hustník, živý plot", "Linear thicket"), "4.8": ("Skupina stromů", "Copse"),
+    "5.6": ("Sloup elektrického vedení", "Pylon"), "5.7": ("Tunel", "Tunnel"), "5.20": ("Pomník, socha", "Monument or Statue"),
     "13.1": ("Stanoviště první pomoci", "First Aid post"), "13.2": ("Občerstvovací stanice", "Refreshment point"),
     "15.3": ("Povinný bod přechodu/průběh", "Mandatory crossing point or points"),
 }
@@ -118,7 +125,8 @@ def section(s):
 
 def main():
     rasters = tr.glyph_images()
-    used = sorted({g.DESC_REF[s["id"]] for s in g.S if s["id"] in g.DESC_REF}, key=lambda r: [int(x) for x in r.split(".")])
+    newpd = [p for p in g.PD if p["new"]]
+    used = sorted({g.DESC_REF[s["id"]] for s in g.S if s["id"] in g.DESC_REF} | {p["num"] for p in newpd}, key=lambda r: [int(x) for x in r.split(".")])
     syms = ['<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>']
     for r in used:
         syms.append(f'<symbol id="n{r}" viewBox="0 0 100 100"><rect width="100" height="100" fill="#fff"/>{g.picto_svg(r)}</symbol>')
@@ -162,6 +170,17 @@ def main():
             f'<td class="c">{org}</td><td class="c">{pic}</td><td>{iscd}</td><td>{share}</td>'
             f'<td><span class="st">{st}</span></td><td class="note">{html.escape(note)}</td></tr>')
 
+    isl_name = {i["id"]: i["name"] for i in g.ISL5}
+    prow = []
+    for p in sorted(newpd, key=lambda p: [int(x) for x in p["num"].split(".")]):
+        r = p["num"]; cz, en = NAMES[r]
+        ill = f'<svg class="m" viewBox="0 0 100 100">{p["ill"]}</svg>' if p.get("ill") else '<span class="none">–</span>'
+        alt = f' <span class="en">({html.escape(p["alt"])})</span>' if p["alt"] else ""
+        prow.append(
+            f'<tr><td class="c"><svg class="p"><use href="#o{r}"/></svg></td><td class="c"><svg class="p"><use href="#n{r}"/></svg></td><td class="c">{ill}</td>'
+            f'<td><b>{r}</b> {html.escape(cz)}<br><span class="en">{html.escape(en)}</span><br><span class="pg">IOF s. {tr_page(rasters, r)}, ČSOS s. {tr_pagecz(r)}</span></td>'
+            f'<td><b>{html.escape(p["name"])}</b>{alt}<br><span class="isom">{html.escape(isl_name[p["isl"]])}</span></td>'
+            f'<td class="note">{html.escape(p["emoji"])} {html.escape(p["say"])}</td></tr>')
     groups = [[nm[x]["name"] for x in v] for r, v in sorted(byref.items(), key=lambda kv: [int(x) for x in kv[0].split(".")]) if len(v) > 1]
     glist = "".join(f"<li><b>{html.escape(r)}</b> {html.escape(NAMES[r][0])}: {html.escape(', '.join(nm[x]['name'] for x in v))}</li>"
                     for r, v in sorted(byref.items(), key=lambda kv: [int(x) for x in kv[0].split(".")]) if len(v) > 1)
@@ -200,6 +219,12 @@ Strany jsou z originálu IOF 2024. Stránku generuje <code>zdroje/build_kontrola
 <label><input type="checkbox" data-f="beze změny" checked> beze změny ({counts.get("beze změny",0)})</label></p>
 <h2>Značky se sdíleným piktogramem</h2>
 <ul>{glist}</ul>
+<h2>Nové piktogramy bez mapové značky ve hře ({len(newpd)}, 5. moře „Jak mluví popis I“)</h2>
+<p class="meta">Piktogramy sloupce D, které hra zatím zná jen z popisu kontrol (žádná mapová značka hry je nepoužívá). Sloupec <b>Na mapě</b> je kresba „jak to vypadá na mapě“
+(jen u terénních tvarů bez vlastní značky), nakreslená hnědými vrstevnicemi. Sloupec <b>Jméno ve hře</b> je mluvený název a ostrov, kde se piktogram probírá; vedle je výklad Pepíka.</p>
+<table><thead><tr><th>Originál ISCD 2024</th><th>V&nbsp;hře</th><th>Na mapě</th><th>Číslo ISCD, název, strana</th><th>Jméno ve hře, ostrov</th><th>Výklad Pepíka</th></tr></thead><tbody>
+{"".join(prow)}
+</tbody></table>
 <h2>Všechny značky hry ({len(g.S)}, z toho {len(g.DESC_REF)} s piktogramem)</h2>
 <table><thead><tr><th>Mapová značka</th><th>Název a ISOM</th><th>Originál ISCD 2024</th><th>V&nbsp;hře</th><th>Číslo ISCD, název, strana</th><th>Sdílí piktogram s</th><th>Stav</th><th>Poznámka</th></tr></thead><tbody>
 {"".join(rows)}
@@ -214,6 +239,9 @@ document.querySelectorAll(".filter input").forEach(i=>i.onchange=()=>{{ const on
 
 
 def tr_page(rasters, r): return rasters[r]["page"]
+
+
+def tr_pagecz(r): return g.PICTO[r].get("pageCZ", "?")
 
 
 if __name__ == "__main__":

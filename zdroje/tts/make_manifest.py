@@ -4,7 +4,7 @@ Vyrobí manifest klipů pro Gemini TTS (manifest.json) a vloží do hry blok tex
 (`const T={...}; const AUDIO_IDS=[...];` mezi značky /*AUDIO-DATA-START*/ a /*AUDIO-DATA-END*/).
 Jediný zdroj textů: gen_symbols.py (značky, ostrovy, otázky, posádka, moře, chvály) + tabulka UI níže.
 Klipy: n_<id> jméno značky, say_<id> výklad, cheer_<id> povzbuzení, intro_<ostrov>, iname_<ostrov>,
-crew_<člen>, q_<k>/hint_<k> otázky, praise_<k>, sea_<k>, seadone_<k>, rank_<k>, story_<n>, quest_<n>,
+crew_<člen>, les_<n> výklad popisu kontrol, pdn_<číslo>/pds_<číslo> jména a výklady piktogramů, q_<k>/hint_<k> otázky, praise_<k>, sea_<k>, seadone_<k>, rank_<k>, story_<n>, quest_<n>,
 qhint_<n>, qok_<n>, qwrong_*, ui_* a fragmenty fr_* pro skládané věty.
 """
 import io, json, os, re, sys
@@ -137,6 +137,38 @@ UI = {
  "ui_final": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový kapitán! Na Volném moři na tebe čekají další dobrodružství.",
 }
 
+# 5. moře „Jak mluví popis I“ – zadání a zpětná vazba nových typů úkolů (id jsou závazná pro herní logiku).
+# Jména piktogramů se za fragmenty skládají z klipů PD[i].clip (znovupoužité n_<značka>, jinak pdn_<číslo>).
+UI5 = {
+ # mapa × popis
+ "ui_mp": "Je tohle značka z mapy, nebo obrázek z popisu kontrol?",
+ "fr_zmapy": "To je značka z mapy.",
+ "fr_zpopisu": "To je obrázek z popisu kontrol.",
+ # piktogram ↔ jméno
+ "ui_pd_name": "Co znamená tenhle obrázek v popisu kontrol?",
+ "ui_pd_pic": "Najdi v popisu kontrol:",
+ "fr_vpopisu": "V popisu kontrol je to",
+ # řádek popisu: dítě ťuká na část lístku
+ "ui_row_a": "Ťukni na pořadí kontroly.",
+ "ui_row_b": "Ťukni na kód kontroly.",
+ "ui_row_d": "Ťukni na obrázek, který říká, co na kontrole najdeš.",
+ "ui_row_len": "Ťukni na délku tratě.",
+ "ui_row_climb": "Ťukni na převýšení.",
+ "ui_row_name": "Ťukni na název tratě.",
+ "fr_row_a": "To je pořadí kontroly. Stejné číslo najdeš na mapě u kolečka.",
+ "fr_row_b": "To je kód kontroly. Stejné číslo najdeš na lampionu.",
+ "fr_row_d": "To je obrázek, který říká, co na kontrole najdeš.",
+ "fr_row_len": "To je délka tratě. Říká, kolik kilometrů poběžíš.",
+ "fr_row_climb": "To je převýšení. Říká, kolik metrů celkem vystoupáš do kopce.",
+ "fr_row_name": "To je název tratě.",
+ # navíc: stávající texty říkají „značka“, tady jde o obrázky z popisu
+ "ui_locked5": "Druhá plavba se otevře, až najdeš Zlatý kompas. Nejdřív dohraj a přečti pirátskou mapu!",
+ "ui_newpds": "Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!",
+ "ui_boss_rules5": "Já ti řeknu jméno a ty rychle klepni na jeho obrázek v popisu kontrol. Vyhraje ten, kdo jich najde víc, než dohoří svíčka.",
+ "ui_duel_pd": "Souboj! Najdi v popisu kontrol správný obrázek dřív než Mlha, než dohoří svíčka.",
+ "exam5_intro": "Zkouška moře! Na každý obrázek z popisu kontrol se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!",
+}
+
 def build():
     items = []
     def add(id, text, role="pepik", style=None):
@@ -159,13 +191,26 @@ def build():
     for k in range(max(0, nseas - 1)): add("seadone_%d" % k, "Proplul jsi celé %s! Otevírá se %s." % (g.SEAS[k], g.SEAS[k + 1]))
     for k in range(1, len(RANKS)): add("rank_%d" % k, "Povýšení! Teď jsi %s!" % RANKS[k])
     for id, text in UI.items(): add(id, text, role=("mlha" if id.startswith("mlha_") else "pepik"))
+    # 5. moře: ostrovy (úvod, jméno, posádka), kroky výkladu, jména a výklady piktogramů, mapová značka 704, zadání úkolů
+    for isl in g.ISL5:
+        add("intro_" + isl["id"], isl["intro"])
+        add("iname_" + isl["id"], isl["name"], style=NAME_STYLE)
+        add("crew_" + isl["crew"]["id"], isl["crew"]["say"])
+        for les in isl.get("lesson", []): add(les["id"], les["text"])
+    for pd in g.PD:
+        if pd["clip"].startswith("pdn_"): add(pd["clip"], pd["name"], style=NAME_STYLE)
+        if pd["new"]: add(pd["sclip"], pd["say"])
+    add("n_" + g.SYM704["id"], g.SYM704["name"], style=NAME_STYLE)
+    add("say_" + g.SYM704["id"], g.SYM704["say"])
+    for id, text in UI5.items(): add(id, text)
     # Rozdělení hlasů: kapitán Mlha (mlha_*), "ukol" = hlas, který během úkolů čte zadání
     # a jména značek (ty se skládají do jedné věty, musí být jedním hlasem), Pepík = zbytek.
-    TASK_UI = {"ui_what", "ui_pexeso", "ui_pexeso_done", "ui_desc_a", "ui_desc_yes", "ui_desc_no", "ui_shared", "ui_shared_more", "ui_duel", "ui_endless",
+    TASK_UI = {"ui_mp", "ui_pd_name", "ui_pd_pic", "ui_row_a", "ui_row_b", "ui_row_d", "ui_row_len", "ui_row_climb", "ui_row_name",
+               "ui_duel_pd", "exam5_intro", "ui_what", "ui_pexeso", "ui_pexeso_done", "ui_desc_a", "ui_desc_yes", "ui_desc_no", "ui_shared", "ui_shared_more", "ui_duel", "ui_endless",
                "exam_intro", "exam_round2", "fix_intro", "fix_done", "review_intro", "review_done"}
     def role_for(i):
         if i.startswith("mlha_"): return "mlha"
-        if i.startswith(("fr_", "n_", "q_", "hint_", "praise_", "cheer_")) or i in TASK_UI: return "ukol"
+        if i.startswith(("fr_", "n_", "pdn_", "q_", "hint_", "praise_", "cheer_")) or i in TASK_UI: return "ukol"
         return "pepik"
     for it in items: it["role"] = role_for(it["id"])
     ids = [it["id"] for it in items]

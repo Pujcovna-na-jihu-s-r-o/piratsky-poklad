@@ -156,7 +156,7 @@ add(id="kupka", name="Kupka", isom="109 Malá kupka", emoji="🐜", col="brown",
 add(id="protahla_kupka", name="Protáhlá kupka", isom="110 Malá protáhlá kupka", emoji="🥖", col="brown",
     say="Hnědá protáhlá tečka je podlouhlá kupka, jako veka ležící na zemi. Pomůcka: protáhlá tečka, protáhlý kopeček!",
     svg=f'<ellipse cx="50" cy="50" rx="14" ry="6.5" fill="{br}"/>')
-add(id="prohluben", name="Prohlubeň", isom="111 Malá prohlubeň", emoji="🥣", col="brown",
+add(id="prohluben", name="Malá prohlubeň", isom="111 Malá prohlubeň", emoji="🥣", col="brown",
     say="Hnědá miska, půlkroužek otevřený nahoru, je malá prohlubeň, mělký dolík. Pomůcka: hnědá miska, dolík jako mistička!",
     svg=f'<path d="M34 42 a16 16 0 0 0 32 0" stroke="{br}" stroke-width="5" fill="none" stroke-linecap="round"/>')
 add(id="jama", name="Jáma", isom="112 Jáma", emoji="🕳️", col="brown",
@@ -539,6 +539,228 @@ assert not missing, ("nezařazené značky", missing)
 for i in ISL:
     for s in i["syms"]: assert s in ids, s
 
+# ---------- 5. MOŘE „JAK MLUVÍ POPIS I“ – výuka popisů kontrol (sloupec D) ----------
+# Tato data jsou zatím SAMOSTATNÁ (PD, ISLANDS5, SYM704): hra je do ISLANDS/SY nezapojuje, dělá to až herní logika.
+# PD = všech 73 piktogramů sloupce D (ISCD 2024, 1.1–6.2) s českým názvem podle překladu ČSOS (ISCD-2024-cz-CSOS.pdf).
+# Kresby piktogramů se berou z iscd_piktogramy.json (vektorizace trace_iscd.py), v jádře hry jsou v PICTO[číslo].
+import math
+
+def _spline(pts, n=12):
+    """Uzavřená Catmull-Romova křivka přes body (pro kreslení terénních tvarů)."""
+    out, m = [], len(pts)
+    for i in range(m):
+        p0, p1, p2, p3 = pts[(i - 1) % m], pts[i], pts[(i + 1) % m], pts[(i + 2) % m]
+        for k in range(n):
+            t = k / n
+            out.append(tuple(0.5 * (2 * p1[j] + (-p0[j] + p2[j]) * t + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * t * t
+                                    + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * t ** 3) for j in (0, 1)))
+    return out
+
+def _closed_path(pts): return "M" + "L".join(f"{x:.1f} {y:.1f}" for x, y in pts) + "Z"
+
+def _inward_ticks(pts, step, length, color, w):
+    """Spádové čárky (šrafy) po obvodu uzavřeného tvaru, směřují dovnitř (k těžišti) – jako u zemního srázu."""
+    cx = sum(p[0] for p in pts) / len(pts); cy = sum(p[1] for p in pts) / len(pts)
+    out, acc, nxt = [], 0.0, step / 2
+    for i in range(len(pts)):
+        a, b = pts[i], pts[(i + 1) % len(pts)]
+        seg = math.hypot(b[0] - a[0], b[1] - a[1]); acc += seg
+        if acc >= nxt:
+            nxt += step
+            dx, dy = cx - b[0], cy - b[1]; d = math.hypot(dx, dy) or 1
+            out.append(f'<line x1="{b[0]:.1f}" y1="{b[1]:.1f}" x2="{b[0] + dx / d * length:.1f}" y2="{b[1] + dy / d * length:.1f}" stroke="{color}" stroke-width="{w}" stroke-linecap="round"/>')
+    return "".join(out)
+
+def _dotted(pts, step=8.0, r=2.5):
+    """Tečkovaná čára (hnědé tečky) podél spojité kubické křivky: pts = P0, C1, C2, P3 [, C4, C5, P6 …]."""
+    dots_ = []
+    for k in range(0, len(pts) - 3, 3):
+        p0, p1, p2, p3 = pts[k:k + 4]
+        poly = [tuple((1 - t) ** 3 * p0[j] + 3 * (1 - t) ** 2 * t * p1[j] + 3 * (1 - t) * t * t * p2[j] + t ** 3 * p3[j] for j in (0, 1)) for t in [i / 80 for i in range(81)]]
+        acc, nxt = 0.0, (0.0 if k == 0 else step * 0.8)   # na styku úseků se tečka neopakuje
+        for a, b in zip(poly, poly[1:]):
+            if acc >= nxt:
+                dots_.append(f'<circle cx="{a[0]:.1f}" cy="{a[1]:.1f}" r="{r}" fill="{br}"/>'); nxt += step
+            acc += math.hypot(b[0] - a[0], b[1] - a[1])
+    return "".join(dots_)
+
+def _wavy(y, w=3.4):
+    return f'<path d="M0 {y} C 30 {y-6}, 70 {y+6}, 100 {y}" stroke="{br}" stroke-width="{w}" fill="none"/>'
+
+def _u_down(x0, x1, ytop, ybot):   # vrstevnice tvaru U otevřeného nahoru (špička dolů = ze svahu ven)
+    return f'<path d="M{x0} {ytop} C {x0} {ybot}, {x1} {ybot}, {x1} {ytop}" stroke="{br}" stroke-width="3.4" fill="none"/>'
+
+def _u_up(x0, x1, ybot, ytop):     # vrstevnice tvaru U otevřeného dolů (špička nahoru = do kopce)
+    return f'<path d="M{x0} {ybot} C {x0} {ytop}, {x1} {ytop}, {x1} {ybot}" stroke="{br}" stroke-width="3.4" fill="none"/>'
+
+_quarry = _spline([(22, 44), (38, 28), (62, 26), (80, 40), (78, 60), (60, 74), (38, 72), (24, 60)])
+_pit_cx, _pit_cy, _pit_rx, _pit_ry = 50, 50, 32, 23
+def _pit_tick(deg):
+    a = math.radians(deg); x = _pit_cx + _pit_rx * math.cos(a); y = _pit_cy + _pit_ry * math.sin(a)
+    dx, dy = _pit_cx - x, _pit_cy - y; d = math.hypot(dx, dy)
+    return f'<line x1="{x:.1f}" y1="{y:.1f}" x2="{x + dx / d * 11:.1f}" y2="{y + dy / d * 11:.1f}" stroke="{br}" stroke-width="2.6" stroke-linecap="round"/>'
+
+# Kresby „jak to vypadá na mapě“ pro terénní tvary, které nemají vlastní mapovou značku (hnědé vrstevnice jako u značky Vrstevnice)
+PD_ILL = {
+    # terasa: vrstevnice jsou nahoře i dole těsně u sebe (svah), uprostřed velký rozestup = rovná plošina
+    "1.1": "".join(_wavy(y) for y in (12, 22, 32, 68, 78, 88)),
+    # hřbítek: vrstevnice vybíhají z kopce ven (U se špičkou dolů); nahoře je kopec
+    "1.2": _u_down(14, 86, 4, 84) + _u_down(30, 70, 4, 66) + _u_down(43, 57, 4, 46),
+    # údolíčko: vrstevnice vybíhají do kopce (U se špičkou nahoru); opak hřbítku
+    "1.3": _u_up(14, 86, 96, 16) + _u_up(30, 70, 96, 34) + _u_up(43, 57, 96, 52),
+    # lom: uzavřený zemní sráz (hnědý obrys) se spádovými čárkami dovnitř
+    "1.5": f'<path d="{_closed_path(_quarry)}" stroke="{br}" stroke-width="3.4" fill="none" stroke-linejoin="round"/>' + _inward_ticks(_quarry, 17, 9, br, 2.8),
+    # malá rýha: hnědá tečkovaná čára, na jednom konci rozvětvená (ISOM 108)
+    "1.8": _dotted([(12, 78), (30, 66), (38, 44), (58, 40), (72, 37), (80, 28), (90, 16)]) + _dotted([(42, 50), (50, 62), (62, 66), (74, 82)]),
+    # sedlo: dvě kupy proti sobě (každá s vlastní vrstevnicí), mezi nimi nižší místo; společná vrstevnice má „pas“
+    "1.11": f'<g fill="none" stroke="{br}" stroke-width="3.4" stroke-linejoin="round"><path d="M8 50 C 8 16, 36 22, 50 40 C 64 22, 92 16, 92 50 C 92 84, 64 78, 50 60 C 36 78, 8 84, 8 50 Z"/><ellipse cx="26" cy="50" rx="11" ry="14"/><ellipse cx="74" cy="50" rx="11" ry="14"/></g>',
+    # prohlubeň: uzavřená vrstevnice s čárkami (spádnice) směřujícími dovnitř
+    "1.12": f'<ellipse cx="{_pit_cx}" cy="{_pit_cy}" rx="{_pit_rx}" ry="{_pit_ry}" stroke="{br}" stroke-width="3.4" fill="none"/>' + _pit_tick(270) + _pit_tick(140) + _pit_tick(40),
+}
+
+# (číslo, mluvený název pro děti, druhý název „alt“) – český název podle překladu ČSOS; u dvojitých názvů je první tvar mluvený
+_PDN = [
+ ("1.1","Terasa",""),("1.2","Hřbítek",""),("1.3","Údolíčko",""),("1.4","Zemní sráz",""),("1.5","Lom",""),("1.6","Zemní val",""),
+ ("1.7","Rýha",""),("1.8","Malá rýha",""),("1.9","Kupa",""),("1.10","Kupka",""),("1.11","Sedlo",""),("1.12","Prohlubeň",""),
+ ("1.13","Malá prohlubeň",""),("1.14","Jáma",""),("1.15","Rozbitý povrch",""),("1.16","Mraveniště","termitiště"),
+ ("2.1","Skalní sráz","sráz"),("2.2","Skalní věž","obrovský balvan"),("2.3","Jeskyně",""),("2.4","Balvan",""),("2.5","Balvanové pole",""),
+ ("2.6","Shluk balvanů",""),("2.7","Kamenitý povrch",""),("2.8","Holá skála",""),("2.9","Úzký průchod","úzký skalní průchod"),("2.10","Příkop",""),
+ ("3.1","Jezero",""),("3.2","Rybníček",""),("3.3","Jáma s vodou",""),("3.4","Potok","řeka"),("3.5","Malý vodní příkop","meliorační rýha"),
+ ("3.6","Úzká bažina",""),("3.7","Bažina",""),("3.8","Pevná půda v bažině",""),("3.9","Studna",""),("3.10","Pramen",""),("3.11","Vodní nádrž","vodní žlab"),
+ ("4.1","Otevřený prostor",""),("4.2","Polootevřený prostor",""),("4.3","Roh lesa",""),("4.4","Světlina",""),("4.5","Hustník",""),
+ ("4.6","Úzký hustník","živý plot"),("4.7","Hranice vegetace",""),("4.8","Skupina stromů",""),("4.9","Výrazný strom",""),("4.10","Vývrat","pařez"),
+ ("5.1","Silnice",""),("5.2","Cesta","pěšina"),("5.3","Průsek",""),("5.4","Most",""),("5.5","Elektrické vedení",""),
+ ("5.6","Sloup elektrického vedení",""),("5.7","Tunel",""),("5.8","Zeď",""),("5.9","Plot",""),("5.10","Průchod",""),("5.11","Budova",""),
+ ("5.12","Zpevněná plocha",""),("5.13","Zřícenina",""),("5.14","Potrubí","bobová dráha"),("5.15","Věž","stožár"),("5.16","Posed",""),
+ ("5.17","Hraniční kámen","mohyla"),("5.18","Krmelec",""),("5.19","Milíř","plošinka"),("5.20","Pomník","socha"),("5.21","Zastřešení",""),
+ ("5.22","Schodiště",""),("5.23","Oblast se zákazem vstupu",""),("5.24","Železnice",""),
+ ("6.1","Zvláštní objekt – křížek","výrazný objekt"),("6.2","Zvláštní objekt – kroužek","výrazný objekt"),
+]
+# Piktogramy sloupce D, které hra nemá jako mapovou značku, a ostrov 5. moře, kde se probírají (podle scénáře; 4.4 Světlina doplněna k vegetaci)
+_PD_NEW_ISL = {
+ "3.8": "hadanky", "3.11": "hadanky", "4.4": "hadanky", "4.6": "hadanky", "4.8": "hadanky",
+ "2.3": "skryse", "2.9": "skryse", "2.10": "skryse",
+ "1.1": "kopce", "1.2": "kopce", "1.3": "kopce", "1.5": "kopce", "1.8": "kopce", "1.11": "kopce", "1.12": "kopce", "1.16": "kopce",
+ "5.6": "pstavby", "5.7": "pstavby", "5.20": "pstavby",
+}
+_PD_GRP_ISL = {"1": "kopce", "2": "skryse", "3": "hadanky", "4": "hadanky", "5": "pstavby", "6": "pstavby"}
+_PD_GRP = {"1": "teren", "2": "skaly", "3": "voda", "4": "vegetace", "5": "stavby", "6": "zvlastni"}
+# Výklad Pepíka a obrázková nápověda jen u nových piktogramů (1–2 krátké věty: co to v lese je, jak to dítě pozná)
+_PD_SAY = {
+ "1.1": ("📏", "Terasa je rovná plošinka na svahu, takový obří schod. Na mapě poznáš, že tu jsou vrstevnice daleko od sebe."),
+ "1.2": ("👃", "Hřbítek je výběžek kopce, jako nos vystrčený do údolí. Vrstevnice na mapě z kopce vybíhají ven."),
+ "1.3": ("🏞️", "Údolíčko je zářez do kopce, malé údolí, opak hřbítku. Vrstevnice na mapě v něm vybíhají do kopce."),
+ "1.5": ("⛏️", "Lom je místo, kde lidé vytěžili kámen, písek nebo štěrk. Má strmé stěny, jako by někdo ukousl kus kopce."),
+ "1.8": ("🌧️", "Malá rýha je úzká brázda vymletá vodou, většinou suchá. Je menší a mělčí než rýha."),
+ "1.11": ("🐴", "Sedlo je nižší místo mezi dvěma kopci, jako sedlo mezi dvěma hrby. Na mapě stojí dvě kupy vrstevnic proti sobě."),
+ "1.12": ("🥣", "Prohlubeň je dolík, ze kterého jde terén odevšad jen nahoru. Na mapě ji kreslí uzavřená vrstevnice s čárkami dovnitř, malá prohlubeň má jen hnědou misku."),
+ "1.16": ("🐜", "Mraveniště je velký kopeček z jehličí a větviček, který postavili mravenci. Na mapě bývá jako malá hnědá tečka, jako kupka."),
+ "2.3": ("🦇", "Jeskyně je díra ve skále nebo v úbočí kopce, může vést pod zem. Na mapě ji kreslí černé véčko, stejně jako kamennou jámu."),
+ "2.9": ("🚶", "Úzký průchod je štěrbina mezi dvěma skalami, které stojí proti sobě. Na mapě ho poznáš podle dvou černých srázů vedle sebe."),
+ "2.10": ("🕳️", "Příkop je úzký zářez ve skále nebo v zemi, často ho vykopali lidé. Je hluboký aspoň metr, takže ho nepřehlédneš."),
+ "3.8": ("🏝️", "Pevná půda v bažině je suchý ostrůvek uprostřed mokřiny, nebo pevný pás mezi dvěma bažinami. Tudy se dá bažinou projít a nezapadneš."),
+ "3.11": ("🚰", "Vodní nádrž je kamenná nebo betonová nádoba na vodu, kterou postavili lidé. Může to být i žlab, ze kterého pijí zvířata."),
+ "4.4": ("☀️", "Světlina je malá louka uprostřed lesa, kde nerostou stromy. Poznáš ji tak, že je tam světlo a dobře se tam vidí."),
+ "4.6": ("🌿", "Úzký hustník je řada keřů nebo stromů, kterou někdo vysázel a nejde přes ni snadno projít. Často je to živý plot."),
+ "4.8": ("🌳", "Skupina stromů je malá skupinka stromů uprostřed otevřeného místa, třeba na louce. Může to být i průchodnější kousek lesa mezi hustším porostem."),
+ "5.6": ("⚡", "Sloup drží dráty elektrického nebo telefonního vedení, někdy i lanovku. Dráty už znáš a kontrola může být na jednom ze sloupů."),
+ "5.7": ("🚇", "Tunel je podchod pod silnicí nebo pod železnicí. Dá se jím projít na druhou stranu."),
+ "5.20": ("🗽", "Pomník je památník nebo socha, kterou lidé postavili na památku. Mívá kamenný podstavec."),
+}
+assert len(_PDN) == 73 and len({n for n, _, _ in _PDN}) == 73, "PD musí mít 73 piktogramů s unikátními čísly"
+
+def _pd_build():
+    by_ref = {}
+    for sid, r in DESC_REF.items(): by_ref.setdefault(r, []).append(sid)
+    sname_to_sid = {}
+    for s in S: sname_to_sid.setdefault(sname(s).lower(), s["id"])
+    out = []
+    for num, name, alt in _PDN:
+        key = num.replace(".", "_")
+        syms = by_ref.get(num, [])
+        new = not syms
+        # klip se jménem: když mluvený název přesně sedí na text existujícího klipu n_<značka>, použije se ten, jinak nový pdn_<číslo>
+        reuse = sname_to_sid.get(name.lower())
+        d = dict(num=num, id="pd_" + key, name=name, alt=alt, grp=_PD_GRP[num.split(".")[0]], syms=syms, new=new,
+                 isl=_PD_NEW_ISL[num] if new else _PD_GRP_ISL[num.split(".")[0]],
+                 clip=("n_" + reuse) if reuse else "pdn_" + key)
+        if new:
+            d["emoji"], d["say"] = _PD_SAY[num]; d["sclip"] = "pds_" + key
+            if num in PD_ILL: d["ill"] = PD_ILL[num]
+        out.append(d)
+    return out
+PD = _pd_build()
+PD_BY = {p["num"]: p for p in PD}
+
+# Ostrovy 5. moře (v ISLANDS by byly pod indexy 24–29; id člena posádky proto „crew24“…, jako to dělá crewOf(i) v jádře)
+ISL5 = [
+ dict(id="sifry", name="Ostrov šifer", emoji="📜", syms=["cislo_kontroly"], pds=[],
+      intro="Na Ostrově šifer leží pirátský lístek plný řádků a čísel. Říká se mu popis kontrol. Pojď, naučím tě ho číst!",
+      crew=dict(id="crew24", emoji="🦝", name="Mýval Mates", say="Mýval Mates se přidává k posádce! Luští šifry jako oříšky."),
+      lesson=[
+       dict(id="les_1", text="Piráti si trasu píšou na lístek. Říká se mu popis kontrol. Je to tabulka a každý řádek v ní patří jedné kontrole."),
+       dict(id="les_2", text="Nahoře je hlavička. Je v ní název trati, její délka v kilometrech a převýšení. To je, kolik metrů celkem vystoupáš do kopce."),
+       dict(id="les_3", text="Pod hlavičkou jsou řádky. Jeden řádek, jedna kontrola. Čtou se shora dolů, tak jak poběžíš."),
+       dict(id="les_4", text="Ve sloupci A je pořadí kontroly. Stejné číslo najdeš na mapě vedle fialového kolečka. První řádek je první kolečko."),
+       dict(id="les_5", text="Ve sloupci B je kód kontroly. To je číslo napsané na lampionu. Podle něj poznáš, že jsi doběhl ke správné kontrole. Kód je vždycky větší než třicet."),
+       dict(id="les_6", text="Ve sloupci D je obrázek, který říká, co na kontrole najdeš. Třeba balvan, studnu nebo kopec."),
+       dict(id="les_7", text="Pozor! Značka na mapě a obrázek v popisu kontrol nejsou totéž. Mapa ti ukáže, kde to je. Obrázek v popisu ti řekne, co to je. Proto vypadají jinak."),
+      ]),
+ dict(id="hadanky", name="Ostrov hádanek", emoji="🧩", syms=[],
+      intro="Na Ostrově hádanek jsou obrázky z popisu kontrol. Hádej, co znamenají: voda, bažina, strom nebo světlina uprostřed lesa.",
+      crew=dict(id="crew25", emoji="🦦", name="Vydra Vanda", say="Vydra Vanda se přidává k posádce! Zná každou řeku i každý rybník.")),
+ dict(id="skryse", name="Ostrov skrýší", emoji="🗝️", syms=[],
+      intro="Mezi skalami jsou skrýše pirátů: jeskyně, úzký průchod i příkop. Poznáš jejich obrázky v popisu kontrol?",
+      crew=dict(id="crew26", emoji="🐊", name="Krokodýl Karel", say="Krokodýl Karel se přidává k posádce! Najde každou skrýš mezi skalami.")),
+ dict(id="kopce", name="Ostrov kopců", emoji="⛰️", syms=[],
+      intro="Na Ostrově kopců je samý kopec, hřbítek a údolíčko. Najdeš tu i sedlo, lom a mraveniště. Ukážu ti jejich obrázky z popisu!",
+      crew=dict(id="crew27", emoji="🐻", name="Medvěd Macek", say="Medvěd Macek se přidává k posádce! Vyleze na každý hřbítek.")),
+ dict(id="pstavby", name="Ostrov pirátských staveb", emoji="🏗️", syms=[],
+      intro="Na tomhle ostrově stojí stavby: sloup, tunel i pomník. Poznáš jejich obrázky v popisu kontrol?",
+      crew=dict(id="crew28", emoji="🦫", name="Bobr Bořek", say="Bobr Bořek se přidává k posádce! Postaví most i hráz.")),
+ dict(id="mlha5", name="Mlhova šifrovna", emoji="🌫️", syms=[], boss=True,
+      intro="Kapitán Mlha se ukrývá v šifrovně! Řekne ti jméno a ty rychle najdeš jeho obrázek v popisu kontrol. Kdo jich najde víc, než dohoří svíčka?",
+      crew=dict(id="crew29", emoji="🦢", name="Labuť Lída", say="Labuť Lída se přidává k posádce! Proplave každou mlhou.")),
+]
+_pd_isl = {}
+for _i in ISL5:
+    _i.setdefault("pds", [])
+# pořadí výuky: na ostrově napřed nové piktogramy, pak známé (obojí podle čísla)
+for _i in ISL5:
+    if _i["id"] in ("sifry", "mlha5"): continue
+    mine = [p for p in PD if p["isl"] == _i["id"]]
+    _i["pds"] = [p["num"] for p in mine if p["new"]] + [p["num"] for p in mine if not p["new"]]
+
+# Mapová značka 704 Číslo kontroly (ISOM 2017-2, kap. 7, s. 34): fialová číslice (Arial 4,0 mm, ne tučně) u kolečka kontroly.
+# Zatím NENÍ v S / SY (kvůli nezměněnému chování hry) – hra ji dostane jako SYM704.
+SYM704 = dict(
+    id="cislo_kontroly", name="Číslo kontroly", isom="704 Číslo kontroly", emoji="🔢", col="purple",
+    say="Fialová číslice vedle kolečka je číslo kontroly. Říká, kolikátá v pořadí to je. Pomůcka: kolečko má číslo, aby ses v pořadí nepletl!",
+    svg=f'<circle cx="34" cy="64" r="17" fill="none" stroke="{pu}" stroke-width="5"/>'
+        f'<text x="58" y="44" font-family="Arial,Helvetica,sans-serif" font-size="38" fill="{pu}">7</text>')
+
+# --- kontroly dat 5. moře ---
+_isl5_ids = [i["id"] for i in ISL5]
+assert len(_isl5_ids) == 6 and len(set(_isl5_ids)) == 6 and not set(_isl5_ids) & {i["id"] for i in ISL}, "ostrovy 5. moře: id"
+_crew_ids = [i["crew"]["id"] for i in ISL5] + [crew_of(k)["id"] for k in range(len(ISL))]
+assert len(_crew_ids) == len(set(_crew_ids)), "duplicitní id člena posádky"
+assert [i for i in ISL5 if i.get("boss")] == [ISL5[-1]]
+assert len([p for p in PD if p["new"]]) == len(_PD_NEW_ISL) and {p["num"] for p in PD if p["new"]} == set(_PD_NEW_ISL), "nové piktogramy"
+_seen = []
+for _i in ISL5:
+    for _n in _i["pds"]:
+        assert _n in PD_BY, ("pds: číslo není v PD", _n)
+        assert _n in PICTO and PICTO[_n]["d"], ("pds: chybí piktogram v iscd_piktogramy.json", _n)
+        assert PD_BY[_n]["isl"] == _i["id"], ("pds: piktogram patří jinému ostrovu", _n)
+    _seen += _i["pds"]
+assert sorted(_seen) == sorted(PD_BY), "každý piktogram právě na jednom ostrově"
+for _p in PD:
+    assert _p["num"] in PICTO, ("PD: chybí piktogram", _p["num"])
+    if _p["new"]: assert _p["emoji"] and _p["say"] and _seen.count(_p["num"]) == 1
+    if _p["clip"].startswith("n_"): assert _p["clip"][2:] in ids
+for _n in ("1.1", "1.2", "1.3", "1.5", "1.8", "1.11", "1.12"): assert "ill" in PD_BY[_n], ("chybí ill", _n)
+assert len({p["name"] for p in PD}) == 73, "mluvené názvy piktogramů musí být unikátní"
+
 # ---------- OTÁZKY NA ROZUM ----------
 CON = [
  dict(q="Kde si namočíš nohy?", emoji="🥾", ok=["voda","bazina","potok","melka_voda","jama_s_vodou","uzka_bazina","nezretelna_bazina","prikop"], no=["louka","les","housti","cesta","kopec","balvan","budova","silnice","divoky","pole","zpevnena"], hint="Mokro je tam, kde je na mapě modrá."),
@@ -606,7 +828,7 @@ def js_tpl(s):
 
 out = []
 out.append("/* Piktogramy popisů kontrol (ISCD 2024) podle čísla piktogramu; značky se shodným číslem sdílejí tentýž řetězec */")
-out.append("const PICTO={" + ",".join(f"{js_str(r)}:{js_tpl(picto_svg(r))}" for r in sorted(set(DESC_REF.values()), key=lambda x: [int(n) for n in x.split('.')])) + "};")
+out.append("const PICTO={" + ",".join(f"{js_str(r)}:{js_tpl(picto_svg(r))}" for r in sorted(set(DESC_REF.values()) | set(PD_BY), key=lambda x: [int(n) for n in x.split('.')])) + "};")
 out.append("const SY=[")
 for s in S:
     parts = [f'id:{js_str(s["id"])}', f'name:{js_str(s["name"])}', f'isom:{js_str(s["isom"])}', f'emoji:{js_str(s["emoji"])}', f'col:{js_str(s["col"])}']
@@ -639,6 +861,33 @@ out.append("const SEAS=[" + ",".join(js_str(x) for x in SEAS) + "];")
 out.append("const PRAISE=[" + ",".join(js_str(x) for x in PRAISE) + "];")
 out.append("/* Skupiny zaměnitelných značek (obtížnější nabídky od 2. moře) */")
 out.append("const CONF=[" + ",".join("[" + ",".join(js_str(x) for x in g) + "]" for g in CONF) + "];")
+out.append("/* 5. moře „Jak mluví popis I“ – DATA pro herní logiku (zatím nezapojená do ISLANDS/SY).")
+out.append("   PD: všech 73 piktogramů sloupce D {num, id, name, alt, grp, syms, new, isl, clip, desc; jen new: emoji, say, sclip, ill?}.")
+out.append("   ISLANDS5: 5 ostrovů + souboj {id, name, emoji, syms, pds, intro, crew, boss?, lesson?}. SYM704: mapová značka Číslo kontroly (ISOM 704). */")
+out.append("const PD=[")
+for p in PD:
+    parts = [f'num:{js_str(p["num"])}', f'id:{js_str(p["id"])}', f'name:{js_str(p["name"])}', f'alt:{js_str(p["alt"])}', f'grp:{js_str(p["grp"])}',
+             'syms:[' + ",".join(js_str(x) for x in p["syms"]) + ']', 'new:' + ("true" if p["new"] else "false"), f'isl:{js_str(p["isl"])}', f'clip:{js_str(p["clip"])}']
+    if p["new"]:
+        parts += [f'emoji:{js_str(p["emoji"])}', f'say:{js_str(p["say"])}', f'sclip:{js_str(p["sclip"])}']
+        if p.get("ill"): parts.append(f'ill:{js_tpl(p["ill"])}')
+    parts.append(f'desc:PICTO[{js_str(p["num"])}]')
+    out.append("  {" + ", ".join(parts) + "},")
+out.append("];")
+out.append("const ISLANDS5=[")
+for i in ISL5:
+    c = i["crew"]
+    parts = [f'id:{js_str(i["id"])}', f'name:{js_str(i["name"])}', f'emoji:{js_str(i["emoji"])}', 'syms:[' + ",".join(js_str(x) for x in i["syms"]) + ']',
+             'pds:[' + ",".join(js_str(x) for x in i["pds"]) + ']']
+    if i.get("boss"): parts.append("boss:true")
+    parts.append(f'intro:{js_str(i["intro"])}')
+    parts.append('crew:{' + f'id:{js_str(c["id"])}, emoji:{js_str(c["emoji"])}, name:{js_str(c["name"])}, say:{js_str(c["say"])}' + '}')
+    if i.get("lesson"): parts.append('lesson:[' + ",".join('{' + f'id:{js_str(l["id"])}, text:{js_str(l["text"])}' + '}' for l in i["lesson"]) + ']')
+    out.append("  {" + ", ".join(parts) + "},")
+out.append("];")
+_m = SYM704
+out.append("const SYM704={" + ", ".join([f'id:{js_str(_m["id"])}', f'name:{js_str(_m["name"])}', f'isom:{js_str(_m["isom"])}', f'emoji:{js_str(_m["emoji"])}',
+                                      f'col:{js_str(_m["col"])}', f'say:{js_str(_m["say"])}', f'svg:{js_tpl(_m["svg"])}']) + "};")
 SY_ISL_JS = "\n".join(out)
 
 out = ["const CONCEPTS=["]
@@ -659,7 +908,7 @@ def write_html():
     b = html.index("];", a) + 2
     html = html[:a] + CON_JS + html[b:]
     io.open(HTML, "w", encoding="utf-8", newline="\n").write(html)
-    print("symbols:", len(S), "islands:", len(ISL), "concepts:", len(CON), "html chars:", len(html))
+    print("symbols:", len(S), "islands:", len(ISL), "concepts:", len(CON), "| PD:", len(PD), "ISLANDS5:", len(ISL5), "| html chars:", len(html))
 
 if __name__ == "__main__":
     write_html()

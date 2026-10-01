@@ -362,7 +362,7 @@
  {
   "id": "n_prohluben",
   "role": "ukol",
-  "text": "Prohlubeň",
+  "text": "Malá prohlubeň",
   "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
  },
  {
@@ -2291,5 +2291,579 @@
   "id": "ui_final",
   "role": "pepik",
   "text": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový kapitán! Na Volném moři na tebe čekají další dobrodružství."
+ },
+ {
+  "id": "intro_sifry",
+  "role": "pepik",
+  "text": "Na Ostrově šifer leží pirátský lístek plný řádků a čísel. Říká se mu popis kontrol. Pojď, naučím tě ho číst!"
+ },
+ {
+  "id": "iname_sifry",
+  "role": "pepik",
+  "text": "Ostrov šifer",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "crew_crew24",
+  "role": "pepik",
+  "text": "Mýval Mates se přidává k posádce! Luští šifry jako oříšky."
+ },
+ {
+  "id": "les_1",
+  "role": "pepik",
+  "text": "Piráti si trasu píšou na lístek. Říká se mu popis kontrol. Je to tabulka a každý řádek v ní patří jedné kontrole."
+ },
+ {
+  "id": "les_2",
+  "role": "pepik",
+  "text": "Nahoře je hlavička. Je v ní název trati, její délka v kilometrech a převýšení. To je, kolik metrů celkem vystoupáš do kopce."
+ },
+ {
+  "id": "les_3",
+  "role": "pepik",
+  "text": "Pod hlavičkou jsou řádky. Jeden řádek, jedna kontrola. Čtou se shora dolů, tak jak poběžíš."
+ },
+ {
+  "id": "les_4",
+  "role": "pepik",
+  "text": "Ve sloupci A je pořadí kontroly. Stejné číslo najdeš na mapě vedle fialového kolečka. První řádek je první kolečko."
+ },
+ {
+  "id": "les_5",
+  "role": "pepik",
+  "text": "Ve sloupci B je kód kontroly. To je číslo napsané na lampionu. Podle něj poznáš, že jsi doběhl ke správné kontrole. Kód je vždycky větší než třicet."
+ },
+ {
+  "id": "les_6",
+  "role": "pepik",
+  "text": "Ve sloupci D je obrázek, který říká, co na kontrole najdeš. Třeba balvan, studnu nebo kopec."
+ },
+ {
+  "id": "les_7",
+  "role": "pepik",
+  "text": "Pozor! Značka na mapě a obrázek v popisu kontrol nejsou totéž. Mapa ti ukáže, kde to je. Obrázek v popisu ti řekne, co to je. Proto vypadají jinak."
+ },
+ {
+  "id": "intro_hadanky",
+  "role": "pepik",
+  "text": "Na Ostrově hádanek jsou obrázky z popisu kontrol. Hádej, co znamenají: voda, bažina, strom nebo světlina uprostřed lesa."
+ },
+ {
+  "id": "iname_hadanky",
+  "role": "pepik",
+  "text": "Ostrov hádanek",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "crew_crew25",
+  "role": "pepik",
+  "text": "Vydra Vanda se přidává k posádce! Zná každou řeku i každý rybník."
+ },
+ {
+  "id": "intro_skryse",
+  "role": "pepik",
+  "text": "Mezi skalami jsou skrýše pirátů: jeskyně, úzký průchod i příkop. Poznáš jejich obrázky v popisu kontrol?"
+ },
+ {
+  "id": "iname_skryse",
+  "role": "pepik",
+  "text": "Ostrov skrýší",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "crew_crew26",
+  "role": "pepik",
+  "text": "Krokodýl Karel se přidává k posádce! Najde každou skrýš mezi skalami."
+ },
+ {
+  "id": "intro_kopce",
+  "role": "pepik",
+  "text": "Na Ostrově kopců je samý kopec, hřbítek a údolíčko. Najdeš tu i sedlo, lom a mraveniště. Ukážu ti jejich obrázky z popisu!"
+ },
+ {
+  "id": "iname_kopce",
+  "role": "pepik",
+  "text": "Ostrov kopců",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "crew_crew27",
+  "role": "pepik",
+  "text": "Medvěd Macek se přidává k posádce! Vyleze na každý hřbítek."
+ },
+ {
+  "id": "intro_pstavby",
+  "role": "pepik",
+  "text": "Na tomhle ostrově stojí stavby: sloup, tunel i pomník. Poznáš jejich obrázky v popisu kontrol?"
+ },
+ {
+  "id": "iname_pstavby",
+  "role": "pepik",
+  "text": "Ostrov pirátských staveb",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "crew_crew28",
+  "role": "pepik",
+  "text": "Bobr Bořek se přidává k posádce! Postaví most i hráz."
+ },
+ {
+  "id": "intro_mlha5",
+  "role": "pepik",
+  "text": "Kapitán Mlha se ukrývá v šifrovně! Řekne ti jméno a ty rychle najdeš jeho obrázek v popisu kontrol. Kdo jich najde víc, než dohoří svíčka?"
+ },
+ {
+  "id": "iname_mlha5",
+  "role": "pepik",
+  "text": "Mlhova šifrovna",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "crew_crew29",
+  "role": "pepik",
+  "text": "Labuť Lída se přidává k posádce! Proplave každou mlhou."
+ },
+ {
+  "id": "pdn_1_1",
+  "role": "ukol",
+  "text": "Terasa",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_1_1",
+  "role": "pepik",
+  "text": "Terasa je rovná plošinka na svahu, takový obří schod. Na mapě poznáš, že tu jsou vrstevnice daleko od sebe."
+ },
+ {
+  "id": "pdn_1_2",
+  "role": "ukol",
+  "text": "Hřbítek",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_1_2",
+  "role": "pepik",
+  "text": "Hřbítek je výběžek kopce, jako nos vystrčený do údolí. Vrstevnice na mapě z kopce vybíhají ven."
+ },
+ {
+  "id": "pdn_1_3",
+  "role": "ukol",
+  "text": "Údolíčko",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_1_3",
+  "role": "pepik",
+  "text": "Údolíčko je zářez do kopce, malé údolí, opak hřbítku. Vrstevnice na mapě v něm vybíhají do kopce."
+ },
+ {
+  "id": "pdn_1_4",
+  "role": "ukol",
+  "text": "Zemní sráz",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_1_5",
+  "role": "ukol",
+  "text": "Lom",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_1_5",
+  "role": "pepik",
+  "text": "Lom je místo, kde lidé vytěžili kámen, písek nebo štěrk. Má strmé stěny, jako by někdo ukousl kus kopce."
+ },
+ {
+  "id": "pdn_1_8",
+  "role": "ukol",
+  "text": "Malá rýha",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_1_8",
+  "role": "pepik",
+  "text": "Malá rýha je úzká brázda vymletá vodou, většinou suchá. Je menší a mělčí než rýha."
+ },
+ {
+  "id": "pdn_1_9",
+  "role": "ukol",
+  "text": "Kupa",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_1_11",
+  "role": "ukol",
+  "text": "Sedlo",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_1_11",
+  "role": "pepik",
+  "text": "Sedlo je nižší místo mezi dvěma kopci, jako sedlo mezi dvěma hrby. Na mapě stojí dvě kupy vrstevnic proti sobě."
+ },
+ {
+  "id": "pdn_1_12",
+  "role": "ukol",
+  "text": "Prohlubeň",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_1_12",
+  "role": "pepik",
+  "text": "Prohlubeň je dolík, ze kterého jde terén odevšad jen nahoru. Na mapě ji kreslí uzavřená vrstevnice s čárkami dovnitř, malá prohlubeň má jen hnědou misku."
+ },
+ {
+  "id": "pdn_1_16",
+  "role": "ukol",
+  "text": "Mraveniště",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_1_16",
+  "role": "pepik",
+  "text": "Mraveniště je velký kopeček z jehličí a větviček, který postavili mravenci. Na mapě bývá jako malá hnědá tečka, jako kupka."
+ },
+ {
+  "id": "pdn_2_2",
+  "role": "ukol",
+  "text": "Skalní věž",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_2_3",
+  "role": "ukol",
+  "text": "Jeskyně",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_2_3",
+  "role": "pepik",
+  "text": "Jeskyně je díra ve skále nebo v úbočí kopce, může vést pod zem. Na mapě ji kreslí černé véčko, stejně jako kamennou jámu."
+ },
+ {
+  "id": "pdn_2_9",
+  "role": "ukol",
+  "text": "Úzký průchod",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_2_9",
+  "role": "pepik",
+  "text": "Úzký průchod je štěrbina mezi dvěma skalami, které stojí proti sobě. Na mapě ho poznáš podle dvou černých srázů vedle sebe."
+ },
+ {
+  "id": "pdn_2_10",
+  "role": "ukol",
+  "text": "Příkop",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_2_10",
+  "role": "pepik",
+  "text": "Příkop je úzký zářez ve skále nebo v zemi, často ho vykopali lidé. Je hluboký aspoň metr, takže ho nepřehlédneš."
+ },
+ {
+  "id": "pdn_3_1",
+  "role": "ukol",
+  "text": "Jezero",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_3_2",
+  "role": "ukol",
+  "text": "Rybníček",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_3_5",
+  "role": "ukol",
+  "text": "Malý vodní příkop",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_3_8",
+  "role": "ukol",
+  "text": "Pevná půda v bažině",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_3_8",
+  "role": "pepik",
+  "text": "Pevná půda v bažině je suchý ostrůvek uprostřed mokřiny, nebo pevný pás mezi dvěma bažinami. Tudy se dá bažinou projít a nezapadneš."
+ },
+ {
+  "id": "pdn_3_11",
+  "role": "ukol",
+  "text": "Vodní nádrž",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_3_11",
+  "role": "pepik",
+  "text": "Vodní nádrž je kamenná nebo betonová nádoba na vodu, kterou postavili lidé. Může to být i žlab, ze kterého pijí zvířata."
+ },
+ {
+  "id": "pdn_4_1",
+  "role": "ukol",
+  "text": "Otevřený prostor",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_4_2",
+  "role": "ukol",
+  "text": "Polootevřený prostor",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_4_3",
+  "role": "ukol",
+  "text": "Roh lesa",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_4_4",
+  "role": "ukol",
+  "text": "Světlina",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_4_4",
+  "role": "pepik",
+  "text": "Světlina je malá louka uprostřed lesa, kde nerostou stromy. Poznáš ji tak, že je tam světlo a dobře se tam vidí."
+ },
+ {
+  "id": "pdn_4_6",
+  "role": "ukol",
+  "text": "Úzký hustník",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_4_6",
+  "role": "pepik",
+  "text": "Úzký hustník je řada keřů nebo stromů, kterou někdo vysázel a nejde přes ni snadno projít. Často je to živý plot."
+ },
+ {
+  "id": "pdn_4_7",
+  "role": "ukol",
+  "text": "Hranice vegetace",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_4_8",
+  "role": "ukol",
+  "text": "Skupina stromů",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_4_8",
+  "role": "pepik",
+  "text": "Skupina stromů je malá skupinka stromů uprostřed otevřeného místa, třeba na louce. Může to být i průchodnější kousek lesa mezi hustším porostem."
+ },
+ {
+  "id": "pdn_4_9",
+  "role": "ukol",
+  "text": "Výrazný strom",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_5_2",
+  "role": "ukol",
+  "text": "Cesta",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_5_6",
+  "role": "ukol",
+  "text": "Sloup elektrického vedení",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_5_6",
+  "role": "pepik",
+  "text": "Sloup drží dráty elektrického nebo telefonního vedení, někdy i lanovku. Dráty už znáš a kontrola může být na jednom ze sloupů."
+ },
+ {
+  "id": "pdn_5_7",
+  "role": "ukol",
+  "text": "Tunel",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_5_7",
+  "role": "pepik",
+  "text": "Tunel je podchod pod silnicí nebo pod železnicí. Dá se jím projít na druhou stranu."
+ },
+ {
+  "id": "pdn_5_12",
+  "role": "ukol",
+  "text": "Zpevněná plocha",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_5_15",
+  "role": "ukol",
+  "text": "Věž",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_5_19",
+  "role": "ukol",
+  "text": "Milíř",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_5_20",
+  "role": "ukol",
+  "text": "Pomník",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pds_5_20",
+  "role": "pepik",
+  "text": "Pomník je památník nebo socha, kterou lidé postavili na památku. Mívá kamenný podstavec."
+ },
+ {
+  "id": "pdn_5_21",
+  "role": "ukol",
+  "text": "Zastřešení",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_5_22",
+  "role": "ukol",
+  "text": "Schodiště",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "pdn_5_23",
+  "role": "ukol",
+  "text": "Oblast se zákazem vstupu",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "n_cislo_kontroly",
+  "role": "ukol",
+  "text": "Číslo kontroly",
+  "style": "Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova."
+ },
+ {
+  "id": "say_cislo_kontroly",
+  "role": "pepik",
+  "text": "Fialová číslice vedle kolečka je číslo kontroly. Říká, kolikátá v pořadí to je. Pomůcka: kolečko má číslo, aby ses v pořadí nepletl!"
+ },
+ {
+  "id": "ui_mp",
+  "role": "ukol",
+  "text": "Je tohle značka z mapy, nebo obrázek z popisu kontrol?"
+ },
+ {
+  "id": "fr_zmapy",
+  "role": "ukol",
+  "text": "To je značka z mapy."
+ },
+ {
+  "id": "fr_zpopisu",
+  "role": "ukol",
+  "text": "To je obrázek z popisu kontrol."
+ },
+ {
+  "id": "ui_pd_name",
+  "role": "ukol",
+  "text": "Co znamená tenhle obrázek v popisu kontrol?"
+ },
+ {
+  "id": "ui_pd_pic",
+  "role": "ukol",
+  "text": "Najdi v popisu kontrol:"
+ },
+ {
+  "id": "fr_vpopisu",
+  "role": "ukol",
+  "text": "V popisu kontrol je to"
+ },
+ {
+  "id": "ui_row_a",
+  "role": "ukol",
+  "text": "Ťukni na pořadí kontroly."
+ },
+ {
+  "id": "ui_row_b",
+  "role": "ukol",
+  "text": "Ťukni na kód kontroly."
+ },
+ {
+  "id": "ui_row_d",
+  "role": "ukol",
+  "text": "Ťukni na obrázek, který říká, co na kontrole najdeš."
+ },
+ {
+  "id": "ui_row_len",
+  "role": "ukol",
+  "text": "Ťukni na délku tratě."
+ },
+ {
+  "id": "ui_row_climb",
+  "role": "ukol",
+  "text": "Ťukni na převýšení."
+ },
+ {
+  "id": "ui_row_name",
+  "role": "ukol",
+  "text": "Ťukni na název tratě."
+ },
+ {
+  "id": "fr_row_a",
+  "role": "ukol",
+  "text": "To je pořadí kontroly. Stejné číslo najdeš na mapě u kolečka."
+ },
+ {
+  "id": "fr_row_b",
+  "role": "ukol",
+  "text": "To je kód kontroly. Stejné číslo najdeš na lampionu."
+ },
+ {
+  "id": "fr_row_d",
+  "role": "ukol",
+  "text": "To je obrázek, který říká, co na kontrole najdeš."
+ },
+ {
+  "id": "fr_row_len",
+  "role": "ukol",
+  "text": "To je délka tratě. Říká, kolik kilometrů poběžíš."
+ },
+ {
+  "id": "fr_row_climb",
+  "role": "ukol",
+  "text": "To je převýšení. Říká, kolik metrů celkem vystoupáš do kopce."
+ },
+ {
+  "id": "fr_row_name",
+  "role": "ukol",
+  "text": "To je název tratě."
+ },
+ {
+  "id": "ui_locked5",
+  "role": "pepik",
+  "text": "Druhá plavba se otevře, až najdeš Zlatý kompas. Nejdřív dohraj a přečti pirátskou mapu!"
+ },
+ {
+  "id": "ui_newpds",
+  "role": "pepik",
+  "text": "Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!"
+ },
+ {
+  "id": "ui_boss_rules5",
+  "role": "pepik",
+  "text": "Já ti řeknu jméno a ty rychle klepni na jeho obrázek v popisu kontrol. Vyhraje ten, kdo jich najde víc, než dohoří svíčka."
+ },
+ {
+  "id": "ui_duel_pd",
+  "role": "ukol",
+  "text": "Souboj! Najdi v popisu kontrol správný obrázek dřív než Mlha, než dohoří svíčka."
+ },
+ {
+  "id": "exam5_intro",
+  "role": "ukol",
+  "text": "Zkouška moře! Na každý obrázek z popisu kontrol se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!"
  }
 ]
