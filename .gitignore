@@ -26,3 +26,9 @@ dospeli/prezentace.pdf
 
 # audio se hostuje na vlastním serveru, ne na GitHubu
 zdroje/tts/audio/
+
+# push token serveru – nikdy do gitu
+server/ota-token.txt
+
+# číslo buildu doplní CI
+app/www/version.json

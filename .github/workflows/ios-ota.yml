@@ -61,6 +61,8 @@ jobs:
         run: |
           npx cap add ios
           npx @capacitor/assets generate --ios || true
+          # číslo buildu do balíčku – appka podle něj pozná, že je na webu novější verze
+          printf '{"build":"%s"}' "${{ github.run_number }}" > www/version.json
           npx cap sync ios
 
       - name: Zvuk i při ztlumeném zvonku (AVAudioSession playback)

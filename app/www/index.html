@@ -1760,3 +1760,34 @@ renderCoins(); renderHome(); show("start");
   if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",add); else add();
 })();
 </script>
+<script>
+/* Appka: upozornění na novou verzi (jako Nežer). Porovná svoje číslo buildu
+   (bundled version.json, zapsané při buildu) s build.json na serveru a nabídne
+   instalaci novější verze odkazem itms-services. Na webu bez version.json se nic nestane. */
+(function(){
+  var APPDIR="https://www.kukackovi.cz/piratsky-poklad/app";
+  function banner(manifestUrl){
+    if(document.getElementById("ppUpd")) return;
+    var b=document.createElement("div"); b.id="ppUpd";
+    b.style.cssText="position:fixed;left:0;right:0;bottom:0;z-index:998;background:#2f9e46;color:#fff;padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;font-family:'Baloo 2',system-ui,sans-serif;box-shadow:0 -4px 16px rgba(0,0,0,.25);padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))";
+    b.innerHTML='<span style="font-weight:800">🎉 Je tu nová verze hry!</span>'+
+      '<a href="itms-services://?action=download-manifest&url='+encodeURIComponent(manifestUrl)+'" style="background:#fff;color:#2f9e46;font-weight:800;padding:8px 18px;border-radius:999px;text-decoration:none">Nainstalovat</a>'+
+      '<button id="ppUpdX" aria-label="Zavřít" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">✕</button>';
+    document.body.appendChild(b);
+    document.getElementById("ppUpdX").onclick=function(){ b.remove(); };
+  }
+  async function check(){
+    try{
+      var cur=null;
+      try{ cur=await (await fetch("version.json",{cache:"no-store"})).json(); }catch(e){}
+      if(!cur||!cur.build) return;                 /* jen v appce (bundled version.json) */
+      var rem=await (await fetch(APPDIR+"/build.json?t="+Date.now(),{cache:"no-store"})).json();
+      if(rem&&rem.build&&parseInt(rem.build,10)>parseInt(cur.build,10)){
+        banner(rem.manifest||(APPDIR+"/manifest.plist"));
+      }
+    }catch(e){}
+  }
+  if(document.readyState==="loading") window.addEventListener("DOMContentLoaded",function(){ setTimeout(check,1500); });
+  else setTimeout(check,1500);
+})();
+</script>
