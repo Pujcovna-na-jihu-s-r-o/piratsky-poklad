@@ -19,6 +19,15 @@
  */
 declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+
+// Veřejná kontrola verze (bez tokenu). Appka si odtud čte build.json; CORS je
+// nastavený v PHP, takže funguje i tam, kde statický .htaccess na /app/ neprojde.
+if (($_GET['akce'] ?? '') === 'verze') {
+    $bj = __DIR__ . '/app/build.json';
+    echo is_file($bj) ? (string) file_get_contents($bj) : '{}';
+    exit;
+}
 
 const POVOLENE = [
     'piratsky-poklad.ipa' => true,
@@ -49,9 +58,11 @@ if (!is_dir($appDir) && !mkdir($appDir, 0775, true) && !is_dir($appDir)) {
 }
 // CORS pro /app/ – appka si odtud čte build.json (kontrola nové verze). Bez toho
 // by cross-origin fetch z WKWebView (capacitor://) selhal a nabídka verze by se neukázala.
+// Přepisuje se vždy, ať je obsah zaručeně správný (ruční nahrání dotfile bývá vadné).
 $htaccess = $appDir . '/.htaccess';
-if (!is_file($htaccess)) {
-    @file_put_contents($htaccess, "<IfModule mod_headers.c>\n  Header set Access-Control-Allow-Origin \"*\"\n</IfModule>\nAddType application/json .json\n");
+$htobsah = "<IfModule mod_headers.c>\n  Header set Access-Control-Allow-Origin \"*\"\n</IfModule>\nAddType application/json .json\n";
+if (!is_file($htaccess) || (string) @file_get_contents($htaccess) !== $htobsah) {
+    @file_put_contents($htaccess, $htobsah);
 }
 
 // Veřejná adresa složky app/ (z aktuální URL)

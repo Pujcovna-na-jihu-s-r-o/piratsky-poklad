@@ -1781,7 +1781,7 @@ renderCoins(); renderHome(); show("start");
       var cur=null;
       try{ cur=await (await fetch("version.json",{cache:"no-store"})).json(); }catch(e){}
       if(!cur||!cur.build) return;                 /* jen v appce (bundled version.json) */
-      var rem=await (await fetch(APPDIR+"/build.json?t="+Date.now(),{cache:"no-store"})).json();
+      var rem=await (await fetch("https://www.kukackovi.cz/piratsky-poklad/ota.php?akce=verze&t="+Date.now(),{cache:"no-store"})).json();
       if(rem&&rem.build&&parseInt(rem.build,10)>parseInt(cur.build,10)){
         banner(rem.manifest||(APPDIR+"/manifest.plist"));
       }
