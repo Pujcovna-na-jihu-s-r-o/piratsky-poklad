@@ -2684,9 +2684,11 @@ renderCoins(); renderHome(); show("start");
 })();
 </script>
 <script>
-/* Appka iOS: přehrávání přes HTMLAudio z Cache. Web Audio je ve WKWebView tiché,
-   HTMLAudio hraje. Sekvenčně s přednačtením dalšího klipu (malé mezery), klipy
-   jsou ořezané od ticha. Offline z Cache (blob URL). */
+/* Appka iOS: přehrávání přes HTMLAudio. Web Audio je ve WKWebView TICHÉ (nehraje), ale
+   decodeAudioData funguje. Skládané věty (víc klipů) proto slepíme na úrovni vzorků do
+   JEDNOHO WAV blobu a přehrajeme jedním <audio> elementem – plynule, bez mezer, jedním
+   hlasem a jedním play() (iOS po odemčení neblokuje). Jeden klip se hraje přímo z cache.
+   Když nějaký klip chybí (nenadabovaný text), použije se sekvenční záloha s hlasem prohlížeče. */
 (function(){
   if(typeof play!=="function"||typeof AUDIO_BASE==="undefined") return;
   var CACHE="pp-audio-v1", SILENT="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
@@ -2703,26 +2705,43 @@ renderCoins(); renderHome(); show("start");
     }).catch(function(){ return AUDIO_BASE+id+".mp3"; });
   }
   function mk(url){ var a=new Audio(url); a.preload="auto"; return a; }
-  window.play=function(ids,opts){
-    ids=(Array.isArray(ids)?ids:[ids]).filter(Boolean);
-    stopAudio(); var token=++playToken; opts=opts||{};
-    var called=false; function done(){ if(!called){ called=true; if(opts.onend) opts.onend(); } }
-    logp("play "+JSON.stringify(ids)+" muted="+(typeof muted!=="undefined"?muted:"?"));
-    if(muted){ setTimeout(function(){ if(token===playToken) done(); },350); return; }
-    try{ ensureAudio(); }catch(e){}
+  /* ArrayBuffer klipu: z cache, jinak ze sítě */
+  function clipAB(id){
+    return caches.open(CACHE).then(function(c){ return c.match(AUDIO_BASE+id+".mp3"); })
+      .then(function(r){ return r||fetch(AUDIO_BASE+id+".mp3"); })
+      .then(function(r){ if(!r||!r.ok) throw 0; return r.arrayBuffer(); });
+  }
+  function decode(abuf){ return new Promise(function(res,rej){ try{ var x=actx.decodeAudioData(abuf,res,rej); if(x&&x.then)x.then(res,rej); }catch(e){ rej(e); } }); }
+  /* seznam AudioBufferů → jeden WAV blob (16bit PCM, mono, vzorkování z actx) */
+  function toWav(bufs){
+    var rate=bufs[0].sampleRate, total=0, i;
+    for(i=0;i<bufs.length;i++) total+=bufs[i].length;
+    var dv=new DataView(new ArrayBuffer(44+total*2));
+    function ws(o,s){ for(var k=0;k<s.length;k++) dv.setUint8(o+k,s.charCodeAt(k)); }
+    ws(0,"RIFF"); dv.setUint32(4,36+total*2,true); ws(8,"WAVE"); ws(12,"fmt ");
+    dv.setUint32(16,16,true); dv.setUint16(20,1,true); dv.setUint16(22,1,true);
+    dv.setUint32(24,rate,true); dv.setUint32(28,rate*2,true); dv.setUint16(32,2,true); dv.setUint16(34,16,true);
+    ws(36,"data"); dv.setUint32(40,total*2,true);
+    var p=44;
+    for(i=0;i<bufs.length;i++){ var ch=bufs[i].getChannelData(0);
+      for(var j=0;j<ch.length;j++){ var v=ch[j]<0?ch[j]*0x8000:ch[j]*0x7FFF; if(v>32767)v=32767; if(v<-32768)v=-32768; dv.setInt16(p,v,true); p+=2; } }
+    return new Blob([dv.buffer],{type:"audio/wav"});
+  }
+  var wavCache={};   /* klíč = spojená id → blob URL slepené věty */
+  function playUrl(url,token,done){
+    var a=new Audio(url); curAudio=a;
+    a.onended=function(){ if(token===playToken) done(); };
+    a.onerror=function(){ if(token===playToken) done(); };
+    var pr=a.play(); if(pr&&pr.catch) pr.catch(function(e){ logp("WAV play EX "+e); if(token===playToken) done(); });
+  }
+  /* sekvenční záloha: jednotlivé klipy za sebou, chybějící přečte hlas prohlížeče */
+  function seq(ids,token,done){
     var i=0, nextEl=null;
-    /* klip chybí nebo nejde přehrát (např. nový text, který ještě není namluvený): přečte ho hlas prohlížeče */
-    function fallbackTTS(id){
-      if(token!==playToken) return;
-      curAudio=null;
-      speakTTS(textOf(id)||id,{onend:function(){ if(token===playToken) setTimeout(nextClip,0); }});
-    }
     function run(el,id){
       if(token!==playToken) return;
       if(!el){ done(); return; }
-      curAudio=el;
-      var failed=false;   /* chyba načtení i odmítnuté play() mohou přijít obě, záloha se spustí jen jednou */
-      function fail(why){ if(failed||token!==playToken) return; failed=true; logp(why+" "+id); fallbackTTS(id); }
+      curAudio=el; var failed=false;
+      function fail(why){ if(failed||token!==playToken) return; failed=true; logp(why+" "+id); curAudio=null; speakTTS(textOf(id)||id,{onend:function(){ if(token===playToken) setTimeout(nextClip,0); }}); }
       el.onended=function(){ if(token===playToken) setTimeout(nextClip,0); };
       el.onerror=function(){ fail("HA error"); };
       var pr=el.play(); if(pr&&pr.catch) pr.catch(function(e){ fail("HA play EX "+e); });
@@ -2731,17 +2750,36 @@ renderCoins(); renderHome(); show("start");
       if(token!==playToken) return;
       if(i>=ids.length){ done(); return; }
       var id=ids[i++];
-      if(!AUDIO_SET.has(id)){ speakTTS(textOf(id)||id,{onend:function(){ setTimeout(nextClip,0); }}); return; }
+      if(!AUDIO_SET.has(id)){ speakTTS(textOf(id)||id,{onend:function(){ if(token===playToken) setTimeout(nextClip,0); }}); return; }
       var elP = nextEl ? Promise.resolve(nextEl) : clipURL(id).then(mk);
       nextEl=null;
-      elP.then(function(el){
-        if(token!==playToken) return;
+      elP.then(function(el){ if(token!==playToken) return;
         if(i<ids.length && AUDIO_SET.has(ids[i])) clipURL(ids[i]).then(function(u){ if(token===playToken) nextEl=mk(u); });
-        run(el,id);
-      });
+        run(el,id); });
     }
     nextClip();
+  }
+  window.play=function(ids,opts){
+    ids=(Array.isArray(ids)?ids:[ids]).filter(Boolean);
+    stopAudio(); var token=++playToken; opts=opts||{};
+    var called=false; function done(){ if(!called){ called=true; if(opts.onend) opts.onend(); } }
+    logp("play "+JSON.stringify(ids)+" muted="+(typeof muted!=="undefined"?muted:"?"));
+    if(!ids.length){ done(); return; }
+    if(muted){ setTimeout(function(){ if(token===playToken) done(); },350); return; }
+    try{ ensureAudio(); }catch(e){}
+    /* víc klipů a všechny namluvené → slepit do jednoho WAV a přehrát plynule */
+    if(ids.length>1 && actx && ids.every(function(id){ return AUDIO_SET.has(id); })){
+      var key=ids.join("|");
+      if(wavCache[key]){ playUrl(wavCache[key],token,done); return; }
+      Promise.all(ids.map(function(id){ return clipAB(id).then(decode); })).then(function(bufs){
+        if(token!==playToken) return;
+        var url=URL.createObjectURL(toWav(bufs)); wavCache[key]=url;
+        if(token===playToken) playUrl(url,token,done);
+      }).catch(function(e){ logp("concat FAIL "+e); if(token===playToken) seq(ids,token,done); });
+      return;
+    }
+    seq(ids,token,done);   /* jeden klip nebo něco nenadabovaného */
   };
-  logp("HTMLAudio přehrávač aktivní");
+  logp("HTMLAudio přehrávač aktivní (slepené věty)");
 })();
 </script>
