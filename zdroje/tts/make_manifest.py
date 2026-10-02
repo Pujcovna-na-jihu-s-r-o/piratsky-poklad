@@ -48,6 +48,11 @@ UI = {
  "ui_shared_more": "Správně! Ještě nějaká chybí.",
  "ui_desc_yes": "V popisech kontrol má svůj obrázek.",
  "ui_desc_no": "V popisech kontrol se tahle značka nepoužívá, je jen v mapě.",
+ "ui_order": "Kapitánův rozkaz! Klepni značky v tomhle pořadí.",
+ "ui_desc_b": "Tahle značka je na mapě. Najdi, jak vypadá v popisech kontrol.",
+ "no_0": "To ne, zkus to znovu.",
+ "no_1": "To není ono, hledej dál.",
+ "no_2": "Skoro! Zkus to ještě jednou.",
  # fragmenty (skládané věty: fragment + jméno značky + fragment)
  "fr_find": "Najdi na mapě:",
  "fr_toneni": "To není",
@@ -202,15 +207,22 @@ def build():
         if pd["new"]: add(pd["sclip"], pd["say"])
     add("n_" + g.SYM704["id"], g.SYM704["name"], style=NAME_STYLE)
     add("say_" + g.SYM704["id"], g.SYM704["say"])
+    # Prompty jako CELÁ věta = jeden klip (každá promluva jeden hlas). Otázka „Kde je…“ = jméno
+    # zůstává v 1. pádě (bez skloňování) a věta plyne bez pauzy (žádná dvojtečka).
+    for s in g.S:
+        add("ask_" + s["id"], "Kde je na mapě " + g.sname(s) + "?")
+    add("ask_" + g.SYM704["id"], "Kde je na mapě " + g.SYM704["name"] + "?")
+    for pd in g.PD:
+        add("askpd_" + pd["id"], "Kde je v popisu kontrol " + pd["name"] + "?")
     for id, text in UI5.items(): add(id, text)
     # Rozdělení hlasů: kapitán Mlha (mlha_*), "ukol" = hlas, který během úkolů čte zadání
     # a jména značek (ty se skládají do jedné věty, musí být jedním hlasem), Pepík = zbytek.
     TASK_UI = {"ui_mp", "ui_pd_name", "ui_pd_pic", "ui_row_a", "ui_row_b", "ui_row_d", "ui_row_len", "ui_row_climb", "ui_row_name",
                "ui_duel_pd", "exam5_intro", "ui_what", "ui_pexeso", "ui_pexeso_done", "ui_desc_a", "ui_desc_yes", "ui_desc_no", "ui_shared", "ui_shared_more", "ui_duel", "ui_endless",
-               "exam_intro", "exam_round2", "fix_intro", "fix_done", "review_intro", "review_done"}
+               "exam_intro", "exam_round2", "fix_intro", "fix_done", "review_intro", "review_done", "ui_order", "ui_desc_b"}
     def role_for(i):
         if i.startswith("mlha_"): return "mlha"
-        if i.startswith(("fr_", "n_", "pdn_", "q_", "hint_", "praise_", "cheer_")) or i in TASK_UI: return "ukol"
+        if i.startswith(("fr_", "n_", "pdn_", "q_", "hint_", "praise_", "cheer_", "ask_", "askpd_", "no_")) or i in TASK_UI: return "ukol"
         return "pepik"
     for it in items: it["role"] = role_for(it["id"])
     ids = [it["id"] for it in items]

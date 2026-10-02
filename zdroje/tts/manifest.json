@@ -1888,6 +1888,31 @@
   "text": "V popisech kontrol se tahle značka nepoužívá, je jen v mapě."
  },
  {
+  "id": "ui_order",
+  "role": "ukol",
+  "text": "Kapitánův rozkaz! Klepni značky v tomhle pořadí."
+ },
+ {
+  "id": "ui_desc_b",
+  "role": "ukol",
+  "text": "Tahle značka je na mapě. Najdi, jak vypadá v popisech kontrol."
+ },
+ {
+  "id": "no_0",
+  "role": "ukol",
+  "text": "To ne, zkus to znovu."
+ },
+ {
+  "id": "no_1",
+  "role": "ukol",
+  "text": "To není ono, hledej dál."
+ },
+ {
+  "id": "no_2",
+  "role": "ukol",
+  "text": "Skoro! Zkus to ještě jednou."
+ },
+ {
   "id": "fr_find",
   "role": "ukol",
   "text": "Najdi na mapě:"
@@ -2750,6 +2775,806 @@
   "id": "say_cislo_kontroly",
   "role": "pepik",
   "text": "Fialová číslice vedle kolečka je číslo kontroly. Říká, kolikátá v pořadí to je. Pomůcka: kolečko má číslo, aby ses v pořadí nepletl!"
+ },
+ {
+  "id": "ask_voda",
+  "role": "ukol",
+  "text": "Kde je na mapě Voda?"
+ },
+ {
+  "id": "ask_melka_voda",
+  "role": "ukol",
+  "text": "Kde je na mapě Mělká voda?"
+ },
+ {
+  "id": "ask_potok",
+  "role": "ukol",
+  "text": "Kde je na mapě Potok?"
+ },
+ {
+  "id": "ask_prikop",
+  "role": "ukol",
+  "text": "Kde je na mapě Vodní příkop?"
+ },
+ {
+  "id": "ask_bazina",
+  "role": "ukol",
+  "text": "Kde je na mapě Bažina?"
+ },
+ {
+  "id": "ask_nezretelna_bazina",
+  "role": "ukol",
+  "text": "Kde je na mapě Nezřetelná bažina?"
+ },
+ {
+  "id": "ask_uzka_bazina",
+  "role": "ukol",
+  "text": "Kde je na mapě Úzká bažina?"
+ },
+ {
+  "id": "ask_jama_s_vodou",
+  "role": "ukol",
+  "text": "Kde je na mapě Jáma s vodou?"
+ },
+ {
+  "id": "ask_studna",
+  "role": "ukol",
+  "text": "Kde je na mapě Studna?"
+ },
+ {
+  "id": "ask_pramen",
+  "role": "ukol",
+  "text": "Kde je na mapě Pramen?"
+ },
+ {
+  "id": "ask_vodni_objekt",
+  "role": "ukol",
+  "text": "Kde je na mapě Zvláštní vodní objekt?"
+ },
+ {
+  "id": "ask_louka",
+  "role": "ukol",
+  "text": "Kde je na mapě Louka?"
+ },
+ {
+  "id": "ask_roztrousene",
+  "role": "ukol",
+  "text": "Kde je na mapě Louka se stromy?"
+ },
+ {
+  "id": "ask_divoky",
+  "role": "ukol",
+  "text": "Kde je na mapě Paseka?"
+ },
+ {
+  "id": "ask_pole",
+  "role": "ukol",
+  "text": "Kde je na mapě Pole?"
+ },
+ {
+  "id": "ask_sad",
+  "role": "ukol",
+  "text": "Kde je na mapě Sad?"
+ },
+ {
+  "id": "ask_vinice",
+  "role": "ukol",
+  "text": "Kde je na mapě Vinice?"
+ },
+ {
+  "id": "ask_les",
+  "role": "ukol",
+  "text": "Kde je na mapě Běhací les?"
+ },
+ {
+  "id": "ask_zelena_svetla",
+  "role": "ukol",
+  "text": "Kde je na mapě Řídké křoví?"
+ },
+ {
+  "id": "ask_zelena_stredni",
+  "role": "ukol",
+  "text": "Kde je na mapě Hustší křoví?"
+ },
+ {
+  "id": "ask_housti",
+  "role": "ukol",
+  "text": "Kde je na mapě Hustník?"
+ },
+ {
+  "id": "ask_podrost",
+  "role": "ukol",
+  "text": "Kde je na mapě Podrost?"
+ },
+ {
+  "id": "ask_strom",
+  "role": "ukol",
+  "text": "Kde je na mapě Velký strom?"
+ },
+ {
+  "id": "ask_ker",
+  "role": "ukol",
+  "text": "Kde je na mapě Keř?"
+ },
+ {
+  "id": "ask_veg_x",
+  "role": "ukol",
+  "text": "Kde je na mapě Vývrat?"
+ },
+ {
+  "id": "ask_hranice_veg",
+  "role": "ukol",
+  "text": "Kde je na mapě Hranice porostu?"
+ },
+ {
+  "id": "ask_kopec",
+  "role": "ukol",
+  "text": "Kde je na mapě Vrstevnice?"
+ },
+ {
+  "id": "ask_doplnkova",
+  "role": "ukol",
+  "text": "Kde je na mapě Pomocná vrstevnice?"
+ },
+ {
+  "id": "ask_kupka",
+  "role": "ukol",
+  "text": "Kde je na mapě Kupka?"
+ },
+ {
+  "id": "ask_protahla_kupka",
+  "role": "ukol",
+  "text": "Kde je na mapě Protáhlá kupka?"
+ },
+ {
+  "id": "ask_prohluben",
+  "role": "ukol",
+  "text": "Kde je na mapě Malá prohlubeň?"
+ },
+ {
+  "id": "ask_jama",
+  "role": "ukol",
+  "text": "Kde je na mapě Jáma?"
+ },
+ {
+  "id": "ask_teren_objekt",
+  "role": "ukol",
+  "text": "Kde je na mapě Zvláštní terénní objekt?"
+ },
+ {
+  "id": "ask_rozbity",
+  "role": "ukol",
+  "text": "Kde je na mapě Rozbitý povrch?"
+ },
+ {
+  "id": "ask_zemni_sraz",
+  "role": "ukol",
+  "text": "Kde je na mapě Mez?"
+ },
+ {
+  "id": "ask_ryha",
+  "role": "ukol",
+  "text": "Kde je na mapě Rýha?"
+ },
+ {
+  "id": "ask_val",
+  "role": "ukol",
+  "text": "Kde je na mapě Zemní val?"
+ },
+ {
+  "id": "ask_balvan",
+  "role": "ukol",
+  "text": "Kde je na mapě Balvan?"
+ },
+ {
+  "id": "ask_velkybalvan",
+  "role": "ukol",
+  "text": "Kde je na mapě Velký balvan?"
+ },
+ {
+  "id": "ask_shluk",
+  "role": "ukol",
+  "text": "Kde je na mapě Shluk balvanů?"
+ },
+ {
+  "id": "ask_obrovsky",
+  "role": "ukol",
+  "text": "Kde je na mapě Obrovský balvan?"
+ },
+ {
+  "id": "ask_balvanove_pole",
+  "role": "ukol",
+  "text": "Kde je na mapě Balvanové pole?"
+ },
+ {
+  "id": "ask_kamenity",
+  "role": "ukol",
+  "text": "Kde je na mapě Kamenitý povrch?"
+ },
+ {
+  "id": "ask_skala",
+  "role": "ukol",
+  "text": "Kde je na mapě Holá skála?"
+ },
+ {
+  "id": "ask_sraz",
+  "role": "ukol",
+  "text": "Kde je na mapě Skalní sráz?"
+ },
+ {
+  "id": "ask_nepr_sraz",
+  "role": "ukol",
+  "text": "Kde je na mapě Nepřekonatelný sráz?"
+ },
+ {
+  "id": "ask_kamenna_jama",
+  "role": "ukol",
+  "text": "Kde je na mapě Kamenná jáma?"
+ },
+ {
+  "id": "ask_pisek",
+  "role": "ukol",
+  "text": "Kde je na mapě Písek?"
+ },
+ {
+  "id": "ask_zpevnena",
+  "role": "ukol",
+  "text": "Kde je na mapě Asfalt?"
+ },
+ {
+  "id": "ask_sirokasilnice",
+  "role": "ukol",
+  "text": "Kde je na mapě Široká silnice?"
+ },
+ {
+  "id": "ask_silnice",
+  "role": "ukol",
+  "text": "Kde je na mapě Silnice?"
+ },
+ {
+  "id": "ask_vozovka",
+  "role": "ukol",
+  "text": "Kde je na mapě Vozová cesta?"
+ },
+ {
+  "id": "ask_cesta",
+  "role": "ukol",
+  "text": "Kde je na mapě Pěší cesta?"
+ },
+ {
+  "id": "ask_pesina",
+  "role": "ukol",
+  "text": "Kde je na mapě Pěšina?"
+ },
+ {
+  "id": "ask_prusek",
+  "role": "ukol",
+  "text": "Kde je na mapě Průsek?"
+ },
+ {
+  "id": "ask_zeleznice",
+  "role": "ukol",
+  "text": "Kde je na mapě Železnice?"
+ },
+ {
+  "id": "ask_vedeni",
+  "role": "ukol",
+  "text": "Kde je na mapě Elektrické vedení?"
+ },
+ {
+  "id": "ask_most",
+  "role": "ukol",
+  "text": "Kde je na mapě Most?"
+ },
+ {
+  "id": "ask_zed",
+  "role": "ukol",
+  "text": "Kde je na mapě Zeď?"
+ },
+ {
+  "id": "ask_nepr_zed",
+  "role": "ukol",
+  "text": "Kde je na mapě Vysoká zeď?"
+ },
+ {
+  "id": "ask_plot",
+  "role": "ukol",
+  "text": "Kde je na mapě Plot?"
+ },
+ {
+  "id": "ask_nepr_plot",
+  "role": "ukol",
+  "text": "Kde je na mapě Vysoký plot?"
+ },
+ {
+  "id": "ask_pruchod_plot",
+  "role": "ukol",
+  "text": "Kde je na mapě Průchod v plotu?"
+ },
+ {
+  "id": "ask_budova",
+  "role": "ukol",
+  "text": "Kde je na mapě Budova?"
+ },
+ {
+  "id": "ask_zakaz",
+  "role": "ukol",
+  "text": "Kde je na mapě Zakázaný prostor?"
+ },
+ {
+  "id": "ask_zricenina",
+  "role": "ukol",
+  "text": "Kde je na mapě Zřícenina?"
+ },
+ {
+  "id": "ask_zastreseni",
+  "role": "ukol",
+  "text": "Kde je na mapě Přístřešek?"
+ },
+ {
+  "id": "ask_veza",
+  "role": "ukol",
+  "text": "Kde je na mapě Vysoká věž?"
+ },
+ {
+  "id": "ask_posed",
+  "role": "ukol",
+  "text": "Kde je na mapě Posed?"
+ },
+ {
+  "id": "ask_schody",
+  "role": "ukol",
+  "text": "Kde je na mapě Schody?"
+ },
+ {
+  "id": "ask_mohyla",
+  "role": "ukol",
+  "text": "Kde je na mapě Hraniční kámen?"
+ },
+ {
+  "id": "ask_krmelec",
+  "role": "ukol",
+  "text": "Kde je na mapě Krmelec?"
+ },
+ {
+  "id": "ask_krouzek",
+  "role": "ukol",
+  "text": "Kde je na mapě Zvláštní objekt – kroužek?"
+ },
+ {
+  "id": "ask_krizek",
+  "role": "ukol",
+  "text": "Kde je na mapě Zvláštní objekt – křížek?"
+ },
+ {
+  "id": "ask_potrubi",
+  "role": "ukol",
+  "text": "Kde je na mapě Potrubí?"
+ },
+ {
+  "id": "ask_nepr_potrubi",
+  "role": "ukol",
+  "text": "Kde je na mapě Vysoké potrubí?"
+ },
+ {
+  "id": "ask_start",
+  "role": "ukol",
+  "text": "Kde je na mapě Start?"
+ },
+ {
+  "id": "ask_kontrola",
+  "role": "ukol",
+  "text": "Kde je na mapě Kontrola?"
+ },
+ {
+  "id": "ask_cil",
+  "role": "ukol",
+  "text": "Kde je na mapě Cíl?"
+ },
+ {
+  "id": "ask_spojnice",
+  "role": "ukol",
+  "text": "Kde je na mapě Spojnice?"
+ },
+ {
+  "id": "ask_znaceny",
+  "role": "ukol",
+  "text": "Kde je na mapě Značený úsek?"
+ },
+ {
+  "id": "ask_nepristupna",
+  "role": "ukol",
+  "text": "Kde je na mapě Zakázaná oblast?"
+ },
+ {
+  "id": "ask_pruchod",
+  "role": "ukol",
+  "text": "Kde je na mapě Průchod?"
+ },
+ {
+  "id": "ask_prvni_pomoc",
+  "role": "ukol",
+  "text": "Kde je na mapě První pomoc?"
+ },
+ {
+  "id": "ask_obcerstveni",
+  "role": "ukol",
+  "text": "Kde je na mapě Občerstvení?"
+ },
+ {
+  "id": "ask_nepristupna_trasa",
+  "role": "ukol",
+  "text": "Kde je na mapě Zakázaná trasa?"
+ },
+ {
+  "id": "ask_cislo_kontroly",
+  "role": "ukol",
+  "text": "Kde je na mapě Číslo kontroly?"
+ },
+ {
+  "id": "askpd_pd_1_1",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Terasa?"
+ },
+ {
+  "id": "askpd_pd_1_2",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Hřbítek?"
+ },
+ {
+  "id": "askpd_pd_1_3",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Údolíčko?"
+ },
+ {
+  "id": "askpd_pd_1_4",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Zemní sráz?"
+ },
+ {
+  "id": "askpd_pd_1_5",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Lom?"
+ },
+ {
+  "id": "askpd_pd_1_6",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Zemní val?"
+ },
+ {
+  "id": "askpd_pd_1_7",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Rýha?"
+ },
+ {
+  "id": "askpd_pd_1_8",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Malá rýha?"
+ },
+ {
+  "id": "askpd_pd_1_9",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Kupa?"
+ },
+ {
+  "id": "askpd_pd_1_10",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Kupka?"
+ },
+ {
+  "id": "askpd_pd_1_11",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Sedlo?"
+ },
+ {
+  "id": "askpd_pd_1_12",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Prohlubeň?"
+ },
+ {
+  "id": "askpd_pd_1_13",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Malá prohlubeň?"
+ },
+ {
+  "id": "askpd_pd_1_14",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Jáma?"
+ },
+ {
+  "id": "askpd_pd_1_15",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Rozbitý povrch?"
+ },
+ {
+  "id": "askpd_pd_1_16",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Mraveniště?"
+ },
+ {
+  "id": "askpd_pd_2_1",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Skalní sráz?"
+ },
+ {
+  "id": "askpd_pd_2_2",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Skalní věž?"
+ },
+ {
+  "id": "askpd_pd_2_3",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Jeskyně?"
+ },
+ {
+  "id": "askpd_pd_2_4",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Balvan?"
+ },
+ {
+  "id": "askpd_pd_2_5",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Balvanové pole?"
+ },
+ {
+  "id": "askpd_pd_2_6",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Shluk balvanů?"
+ },
+ {
+  "id": "askpd_pd_2_7",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Kamenitý povrch?"
+ },
+ {
+  "id": "askpd_pd_2_8",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Holá skála?"
+ },
+ {
+  "id": "askpd_pd_2_9",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Úzký průchod?"
+ },
+ {
+  "id": "askpd_pd_2_10",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Příkop?"
+ },
+ {
+  "id": "askpd_pd_3_1",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Jezero?"
+ },
+ {
+  "id": "askpd_pd_3_2",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Rybníček?"
+ },
+ {
+  "id": "askpd_pd_3_3",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Jáma s vodou?"
+ },
+ {
+  "id": "askpd_pd_3_4",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Potok?"
+ },
+ {
+  "id": "askpd_pd_3_5",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Malý vodní příkop?"
+ },
+ {
+  "id": "askpd_pd_3_6",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Úzká bažina?"
+ },
+ {
+  "id": "askpd_pd_3_7",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Bažina?"
+ },
+ {
+  "id": "askpd_pd_3_8",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Pevná půda v bažině?"
+ },
+ {
+  "id": "askpd_pd_3_9",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Studna?"
+ },
+ {
+  "id": "askpd_pd_3_10",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Pramen?"
+ },
+ {
+  "id": "askpd_pd_3_11",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Vodní nádrž?"
+ },
+ {
+  "id": "askpd_pd_4_1",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Otevřený prostor?"
+ },
+ {
+  "id": "askpd_pd_4_2",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Polootevřený prostor?"
+ },
+ {
+  "id": "askpd_pd_4_3",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Roh lesa?"
+ },
+ {
+  "id": "askpd_pd_4_4",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Světlina?"
+ },
+ {
+  "id": "askpd_pd_4_5",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Hustník?"
+ },
+ {
+  "id": "askpd_pd_4_6",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Úzký hustník?"
+ },
+ {
+  "id": "askpd_pd_4_7",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Hranice vegetace?"
+ },
+ {
+  "id": "askpd_pd_4_8",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Skupina stromů?"
+ },
+ {
+  "id": "askpd_pd_4_9",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Výrazný strom?"
+ },
+ {
+  "id": "askpd_pd_4_10",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Vývrat?"
+ },
+ {
+  "id": "askpd_pd_5_1",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Silnice?"
+ },
+ {
+  "id": "askpd_pd_5_2",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Cesta?"
+ },
+ {
+  "id": "askpd_pd_5_3",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Průsek?"
+ },
+ {
+  "id": "askpd_pd_5_4",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Most?"
+ },
+ {
+  "id": "askpd_pd_5_5",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Elektrické vedení?"
+ },
+ {
+  "id": "askpd_pd_5_6",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Sloup elektrického vedení?"
+ },
+ {
+  "id": "askpd_pd_5_7",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Tunel?"
+ },
+ {
+  "id": "askpd_pd_5_8",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Zeď?"
+ },
+ {
+  "id": "askpd_pd_5_9",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Plot?"
+ },
+ {
+  "id": "askpd_pd_5_10",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Průchod?"
+ },
+ {
+  "id": "askpd_pd_5_11",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Budova?"
+ },
+ {
+  "id": "askpd_pd_5_12",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Zpevněná plocha?"
+ },
+ {
+  "id": "askpd_pd_5_13",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Zřícenina?"
+ },
+ {
+  "id": "askpd_pd_5_14",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Potrubí?"
+ },
+ {
+  "id": "askpd_pd_5_15",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Věž?"
+ },
+ {
+  "id": "askpd_pd_5_16",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Posed?"
+ },
+ {
+  "id": "askpd_pd_5_17",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Hraniční kámen?"
+ },
+ {
+  "id": "askpd_pd_5_18",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Krmelec?"
+ },
+ {
+  "id": "askpd_pd_5_19",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Milíř?"
+ },
+ {
+  "id": "askpd_pd_5_20",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Pomník?"
+ },
+ {
+  "id": "askpd_pd_5_21",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Zastřešení?"
+ },
+ {
+  "id": "askpd_pd_5_22",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Schodiště?"
+ },
+ {
+  "id": "askpd_pd_5_23",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Oblast se zákazem vstupu?"
+ },
+ {
+  "id": "askpd_pd_5_24",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Železnice?"
+ },
+ {
+  "id": "askpd_pd_6_1",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Zvláštní objekt – křížek?"
+ },
+ {
+  "id": "askpd_pd_6_2",
+  "role": "ukol",
+  "text": "Kde je v popisu kontrol Zvláštní objekt – kroužek?"
  },
  {
   "id": "ui_mp",
