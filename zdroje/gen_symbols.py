@@ -519,6 +519,47 @@ CREW = [
 ]
 SEAS = ["Papouščí moře","Mlžné moře","Bouřlivé moře","Ledové moře","Sluneční moře","Korálové moře","Půlnoční moře","Perlové moře"]
 PRAISE = ["Arr! Zlaťák do truhly!","Jupí! Máš zlatou minci!","Výborně, dobrodruhu!","Cink! Poklad se plní!","Paráda, správně čteš mapu!","Tak se čte mapa!"]
+# ---------- SBÍRKA NÁLEZŮ (deník hledače: truhla dne dává jeden nález; sada „kram" je jediná koupitelná) ----------
+FIND_SETS = [
+ dict(id="mlha", name="Mlhovy ztráty", emoji="🌫️"),
+ dict(id="more", name="Z moře", emoji="🌊"),
+ dict(id="les", name="Z lesa", emoji="🌲"),
+ dict(id="pirat", name="Pirátské", emoji="🏴‍☠️"),
+ dict(id="kram", name="Z krámu", emoji="🏪"),
+]
+FINDS = [
+ dict(id="mlha_bota", set="mlha", emoji="🥾", name="Mlhova bota", rare=False, say="Mlhova bota! Ztratil ji, když utíkal z bažiny. Druhou má pořád na noze."),
+ dict(id="mlha_ponozka", set="mlha", emoji="🧦", name="Mlhova ponožka", rare=False, say="Mlhova ponožka. Fuj, ta smrdí! Celá posádka couvla o krok."),
+ dict(id="mlha_kartacek", set="mlha", emoji="🪥", name="Mlhův kartáček", rare=False, say="Mlhův kartáček na zuby. Podle toho, jak vypadá, ho moc nepoužíval."),
+ dict(id="mlha_lzice", set="mlha", emoji="🥄", name="Mlhova lžíce", rare=False, say="Mlhova lžíce. Pirát bez lžíce jí polévku rukama. Cha chá!"),
+ dict(id="mlha_denik", set="mlha", emoji="📓", name="Mlhův deník", rare=False, say="Mlhův deník s dírou. Píše v něm: Dneska jsem v lese zase zabloudil."),
+ dict(id="mlha_kompas", set="mlha", emoji="🧭", name="Mlhův kompas", rare=True, say="Mlhův kompas bez střelky! Teď už víš, proč se v lese pořád ztrácí."),
+ dict(id="musle", set="more", emoji="🐚", name="Mušle", rare=False, say="Mušle z pláže. Přilož ji k uchu a uslyšíš moře."),
+ dict(id="zub", set="more", emoji="🦷", name="Žraločí zub", rare=False, say="Žraločí zub. Neboj, žralokovi už narostl nový."),
+ dict(id="hvezdice", set="more", emoji="⭐", name="Hvězdice", rare=False, say="Mořská hvězdice. Nesvítí, ale na poličce vypadá krásně."),
+ dict(id="lahev", set="more", emoji="🍾", name="Láhev se vzkazem", rare=False, say="Láhev se vzkazem! Uvnitř stojí: Kdo umí číst mapu, poklad najde."),
+ dict(id="kotva", set="more", emoji="⚓", name="Stará kotva", rare=False, say="Stará kotva. Těžká jako slon, zvířata ji tahala celý den."),
+ dict(id="perla", set="more", emoji="🦪", name="Perla", rare=True, say="Perla z ústřice! Takovou najde jen opravdový hledač pokladů."),
+ dict(id="siska", set="les", emoji="🌰", name="Šiška", rare=False, say="Šiška z nejvyšší borovice. Veverka Zrzka ji chtěla, ale tys byl rychlejší."),
+ dict(id="paroh", set="les", emoji="🦌", name="Jelení paroh", rare=False, say="Jelení paroh. Jelen ho shodil sám, nový mu zase naroste."),
+ dict(id="pirko", set="les", emoji="🪶", name="Sovičí pírko", rare=False, say="Sovičí pírko. Sova Moudrá říká, že jí vůbec nechybí."),
+ dict(id="kamen", set="les", emoji="🪨", name="Kámen s dírou", rare=False, say="Kámen s dírou. Podívej se skrz něj a uvidíš les úplně jinak."),
+ dict(id="houba", set="les", emoji="🍄", name="Muchomůrka", rare=False, say="Muchomůrka. Jen na koukání, jíst se nesmí!"),
+ dict(id="sovicka", set="les", emoji="🦉", name="Sovička z kůry", rare=True, say="Sovička vyřezaná z kůry. Vyřezal ji hledač pokladů dávno před tebou."),
+ dict(id="dublon", set="pirat", emoji="🪙", name="Zlatý dublon", rare=False, say="Zlatý dublon. Pravá pirátská mince, ještě voní mořem."),
+ dict(id="prsten_lebka", set="pirat", emoji="💍", name="Prsten s lebkou", rare=False, say="Prsten s lebkou. Nosil ho pirát, který tu mapu kreslil."),
+ dict(id="mapa_dira", set="pirat", emoji="🗺️", name="Mapa s dírou", rare=False, say="Mapa s dírou. Někdo z ní vystřihl poklad, ale značky zůstaly."),
+ dict(id="lampa", set="pirat", emoji="🪔", name="Stará lampa", rare=False, say="Stará lampa. Nesvítí a džin v ní nebydlí, zkoušeli jsme to."),
+ dict(id="pepik_pirko", set="pirat", emoji="🦜", name="Pepíkovo pírko", rare=False, say="Pepíkovo pírko! Pepík se červená. Jsem fakt zelený, říká."),
+ dict(id="mlha_vlajka", set="pirat", emoji="🏴‍☠️", name="Kousek Mlhovy vlajky", rare=True, say="Kousek Mlhovy vlajky. Utrhl se v bouři a Mlha o tom ještě neví."),
+ dict(id="tr_gem", set="kram", emoji="💎", name="Diamant", rare=False, price=15, say="Diamant. Třpytí se, i když je tma."),
+ dict(id="tr_ring", set="kram", emoji="💍", name="Prsten", rare=False, price=22, say="Prsten. Sedne na každý prst, i na papouščí."),
+ dict(id="tr_cup", set="kram", emoji="🏆", name="Zlatý pohár", rare=False, price=30, say="Zlatý pohár. Pro vítěze závodu, tedy pro tebe."),
+ dict(id="tr_scope", set="kram", emoji="🔭", name="Dalekohled", rare=False, price=38, say="Dalekohled. Uvidíš jím i ostrov, který je ještě daleko."),
+ dict(id="tr_statue", set="kram", emoji="🗿", name="Kamenná socha", rare=False, price=45, say="Kamenná socha. Těžká, tichá a trochu tajemná."),
+ dict(id="tr_key", set="kram", emoji="🗝️", name="Zlatý klíč", rare=False, price=55, say="Zlatý klíč. K čemu je? To se teprve uvidí."),
+]
+assert len({f["id"] for f in FINDS}) == len(FINDS)
 SYM_BY = {s["id"]: s for s in S}
 def sname(s): return re.sub(r"\s*\(.*?\)", "", s["name"]).strip()
 def crew_of(i):
@@ -888,6 +929,9 @@ out.append("];")
 _m = SYM704
 out.append("const SYM704={" + ", ".join([f'id:{js_str(_m["id"])}', f'name:{js_str(_m["name"])}', f'isom:{js_str(_m["isom"])}', f'emoji:{js_str(_m["emoji"])}',
                                       f'col:{js_str(_m["col"])}', f'say:{js_str(_m["say"])}', f'svg:{js_tpl(_m["svg"])}']) + "};")
+out.append("/* Sbírka nálezů (deník hledače) – generováno z gen_symbols.py (FIND_SETS, FINDS); texty vět = klipy find_<id> v T */")
+out.append("const FIND_SETS=[" + ",".join(json.dumps(x, ensure_ascii=False) for x in FIND_SETS) + "];")
+out.append("const FINDS=[" + ",".join(json.dumps({k: v for k, v in f.items() if k != "say"}, ensure_ascii=False) for f in FINDS) + "];")
 SY_ISL_JS = "\n".join(out)
 
 out = ["const CONCEPTS=["]

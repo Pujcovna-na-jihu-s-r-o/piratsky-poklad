@@ -141,6 +141,27 @@ UI = {
  "qwrong_nothing": "Tam nic není.",
  "qwrong_again": "Poslechni si to znovu.",
  "ui_final": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový mistr mapy! V Divočině na tebe čekají další dobrodružství.",
+ # deník hledače a sbírka nálezů
+ "ui_diary_intro": "Tohle je deník hledače. Každý den tě čekají tři úkoly. Až je splníš, otevře se truhla dne.",
+ "ui_diary_locked": "Deník se otevře, až vyluštíš první ostrov. Pak tu na tebe každý den čeká výprava.",
+ "ui_diary_hello": "Dnešní výprava čeká! Splň tři úkoly a truhla dne je tvoje.",
+ "ui_diary_progress": "Výborně! Ještě chvilku a truhla se otevře.",
+ "ui_diary_ready": "Všechny tři úkoly splněné! Otevři truhlu dne.",
+ "ui_diary_done": "Dneska máš hotovo. Přijď zítra, truhla bude zase plná.",
+ "ui_diary_symbol": "Značka dne! Poslechni si ji a pak mi ukaž, že ji poznáš.",
+ "ui_diary_quick": "Rychlá výprava! Šest otázek v řadě, ukaž, co si pamatuješ.",
+ "ui_diary_pexeso": "Pexeso dne! Dneska je větší než na ostrově.",
+ "ui_task_done": "Úkol dne splněn! Zapisuju do deníku.",
+ "ui_chest_open": "Truhla dne! Zlaťáky do truhly a jeden nález do sbírky.",
+ "ui_chest_weekly": "Sedm dní v řadě! Týdenní truhla má vzácný nález a dvacet zlaťáků navíc.",
+ "ui_chest_full": "Sbírka je úplná, tak dnes aspoň zlaťáky. Jsi mistr sběratel!",
+ "ui_teaser": "Zítra v truhle najdeš něco nového. Poznáš podle stínu, co to je?",
+ "ui_streak_lost": "Včera jsme na výpravě nebyli, tak řetěz začíná znovu. Nevadí, dneska ho zase nastartujeme!",
+ "ui_streak_free": "Včera jsme vynechali, ale jeden volný den v týdnu řetěz vydrží. Jedeme dál!",
+ "ui_album_intro": "Tohle je tvoje sbírka nálezů. Šedé stíny ještě chybí, najdeš je v truhle dne.",
+ "ui_album_locked": "Tenhle nález ještě nemáš. Najdeš ho v truhle dne.",
+ "ui_album_set": "Celá sada je tvoje! Máš odznak do deníku.",
+ "ui_album_all": "Máš úplně všechny nálezy! Jsi mistr sběratel!",
 }
 
 # 5. moře „Jak mluví popis I“ – zadání a zpětná vazba nových typů úkolů (id jsou závazná pro herní logiku).
@@ -192,6 +213,7 @@ def build():
     for k, c in enumerate(g.CON):
         add("q_%d" % k, c["q"]); add("hint_%d" % k, c["hint"])
     for k, p in enumerate(g.PRAISE): add("praise_%d" % k, p)
+    for f in g.FINDS: add("find_" + f["id"], f["say"])
     for k, sname_ in enumerate(g.SEAS): add("sea_%d" % k, sname_, style=NAME_STYLE)
     nseas = (N + 5) // 6
     for k in range(max(0, nseas - 1)): add("seadone_%d" % k, "Proplul jsi celé %s! Otevírá se %s." % (g.SEAS[k], g.SEAS[k + 1]))

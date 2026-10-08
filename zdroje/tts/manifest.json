@@ -1660,6 +1660,156 @@
   "text": "Tak se čte mapa!"
  },
  {
+  "id": "find_mlha_bota",
+  "role": "pepik",
+  "text": "Mlhova bota! Ztratil ji, když utíkal z bažiny. Druhou má pořád na noze."
+ },
+ {
+  "id": "find_mlha_ponozka",
+  "role": "pepik",
+  "text": "Mlhova ponožka. Fuj, ta smrdí! Celá posádka couvla o krok."
+ },
+ {
+  "id": "find_mlha_kartacek",
+  "role": "pepik",
+  "text": "Mlhův kartáček na zuby. Podle toho, jak vypadá, ho moc nepoužíval."
+ },
+ {
+  "id": "find_mlha_lzice",
+  "role": "pepik",
+  "text": "Mlhova lžíce. Pirát bez lžíce jí polévku rukama. Cha chá!"
+ },
+ {
+  "id": "find_mlha_denik",
+  "role": "pepik",
+  "text": "Mlhův deník s dírou. Píše v něm: Dneska jsem v lese zase zabloudil."
+ },
+ {
+  "id": "find_mlha_kompas",
+  "role": "pepik",
+  "text": "Mlhův kompas bez střelky! Teď už víš, proč se v lese pořád ztrácí."
+ },
+ {
+  "id": "find_musle",
+  "role": "pepik",
+  "text": "Mušle z pláže. Přilož ji k uchu a uslyšíš moře."
+ },
+ {
+  "id": "find_zub",
+  "role": "pepik",
+  "text": "Žraločí zub. Neboj, žralokovi už narostl nový."
+ },
+ {
+  "id": "find_hvezdice",
+  "role": "pepik",
+  "text": "Mořská hvězdice. Nesvítí, ale na poličce vypadá krásně."
+ },
+ {
+  "id": "find_lahev",
+  "role": "pepik",
+  "text": "Láhev se vzkazem! Uvnitř stojí: Kdo umí číst mapu, poklad najde."
+ },
+ {
+  "id": "find_kotva",
+  "role": "pepik",
+  "text": "Stará kotva. Těžká jako slon, zvířata ji tahala celý den."
+ },
+ {
+  "id": "find_perla",
+  "role": "pepik",
+  "text": "Perla z ústřice! Takovou najde jen opravdový hledač pokladů."
+ },
+ {
+  "id": "find_siska",
+  "role": "pepik",
+  "text": "Šiška z nejvyšší borovice. Veverka Zrzka ji chtěla, ale tys byl rychlejší."
+ },
+ {
+  "id": "find_paroh",
+  "role": "pepik",
+  "text": "Jelení paroh. Jelen ho shodil sám, nový mu zase naroste."
+ },
+ {
+  "id": "find_pirko",
+  "role": "pepik",
+  "text": "Sovičí pírko. Sova Moudrá říká, že jí vůbec nechybí."
+ },
+ {
+  "id": "find_kamen",
+  "role": "pepik",
+  "text": "Kámen s dírou. Podívej se skrz něj a uvidíš les úplně jinak."
+ },
+ {
+  "id": "find_houba",
+  "role": "pepik",
+  "text": "Muchomůrka. Jen na koukání, jíst se nesmí!"
+ },
+ {
+  "id": "find_sovicka",
+  "role": "pepik",
+  "text": "Sovička vyřezaná z kůry. Vyřezal ji hledač pokladů dávno před tebou."
+ },
+ {
+  "id": "find_dublon",
+  "role": "pepik",
+  "text": "Zlatý dublon. Pravá pirátská mince, ještě voní mořem."
+ },
+ {
+  "id": "find_prsten_lebka",
+  "role": "pepik",
+  "text": "Prsten s lebkou. Nosil ho pirát, který tu mapu kreslil."
+ },
+ {
+  "id": "find_mapa_dira",
+  "role": "pepik",
+  "text": "Mapa s dírou. Někdo z ní vystřihl poklad, ale značky zůstaly."
+ },
+ {
+  "id": "find_lampa",
+  "role": "pepik",
+  "text": "Stará lampa. Nesvítí a džin v ní nebydlí, zkoušeli jsme to."
+ },
+ {
+  "id": "find_pepik_pirko",
+  "role": "pepik",
+  "text": "Pepíkovo pírko! Pepík se červená. Jsem fakt zelený, říká."
+ },
+ {
+  "id": "find_mlha_vlajka",
+  "role": "pepik",
+  "text": "Kousek Mlhovy vlajky. Utrhl se v bouři a Mlha o tom ještě neví."
+ },
+ {
+  "id": "find_tr_gem",
+  "role": "pepik",
+  "text": "Diamant. Třpytí se, i když je tma."
+ },
+ {
+  "id": "find_tr_ring",
+  "role": "pepik",
+  "text": "Prsten. Sedne na každý prst, i na papouščí."
+ },
+ {
+  "id": "find_tr_cup",
+  "role": "pepik",
+  "text": "Zlatý pohár. Pro vítěze závodu, tedy pro tebe."
+ },
+ {
+  "id": "find_tr_scope",
+  "role": "pepik",
+  "text": "Dalekohled. Uvidíš jím i ostrov, který je ještě daleko."
+ },
+ {
+  "id": "find_tr_statue",
+  "role": "pepik",
+  "text": "Kamenná socha. Těžká, tichá a trochu tajemná."
+ },
+ {
+  "id": "find_tr_key",
+  "role": "pepik",
+  "text": "Zlatý klíč. K čemu je? To se teprve uvidí."
+ },
+ {
   "id": "sea_0",
   "role": "pepik",
   "text": "Papouščí moře",
@@ -2321,6 +2471,106 @@
   "id": "ui_final",
   "role": "pepik",
   "text": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový mistr mapy! V Divočině na tebe čekají další dobrodružství."
+ },
+ {
+  "id": "ui_diary_intro",
+  "role": "pepik",
+  "text": "Tohle je deník hledače. Každý den tě čekají tři úkoly. Až je splníš, otevře se truhla dne."
+ },
+ {
+  "id": "ui_diary_locked",
+  "role": "pepik",
+  "text": "Deník se otevře, až vyluštíš první ostrov. Pak tu na tebe každý den čeká výprava."
+ },
+ {
+  "id": "ui_diary_hello",
+  "role": "pepik",
+  "text": "Dnešní výprava čeká! Splň tři úkoly a truhla dne je tvoje."
+ },
+ {
+  "id": "ui_diary_progress",
+  "role": "pepik",
+  "text": "Výborně! Ještě chvilku a truhla se otevře."
+ },
+ {
+  "id": "ui_diary_ready",
+  "role": "pepik",
+  "text": "Všechny tři úkoly splněné! Otevři truhlu dne."
+ },
+ {
+  "id": "ui_diary_done",
+  "role": "pepik",
+  "text": "Dneska máš hotovo. Přijď zítra, truhla bude zase plná."
+ },
+ {
+  "id": "ui_diary_symbol",
+  "role": "pepik",
+  "text": "Značka dne! Poslechni si ji a pak mi ukaž, že ji poznáš."
+ },
+ {
+  "id": "ui_diary_quick",
+  "role": "pepik",
+  "text": "Rychlá výprava! Šest otázek v řadě, ukaž, co si pamatuješ."
+ },
+ {
+  "id": "ui_diary_pexeso",
+  "role": "pepik",
+  "text": "Pexeso dne! Dneska je větší než na ostrově."
+ },
+ {
+  "id": "ui_task_done",
+  "role": "pepik",
+  "text": "Úkol dne splněn! Zapisuju do deníku."
+ },
+ {
+  "id": "ui_chest_open",
+  "role": "pepik",
+  "text": "Truhla dne! Zlaťáky do truhly a jeden nález do sbírky."
+ },
+ {
+  "id": "ui_chest_weekly",
+  "role": "pepik",
+  "text": "Sedm dní v řadě! Týdenní truhla má vzácný nález a dvacet zlaťáků navíc."
+ },
+ {
+  "id": "ui_chest_full",
+  "role": "pepik",
+  "text": "Sbírka je úplná, tak dnes aspoň zlaťáky. Jsi mistr sběratel!"
+ },
+ {
+  "id": "ui_teaser",
+  "role": "pepik",
+  "text": "Zítra v truhle najdeš něco nového. Poznáš podle stínu, co to je?"
+ },
+ {
+  "id": "ui_streak_lost",
+  "role": "pepik",
+  "text": "Včera jsme na výpravě nebyli, tak řetěz začíná znovu. Nevadí, dneska ho zase nastartujeme!"
+ },
+ {
+  "id": "ui_streak_free",
+  "role": "pepik",
+  "text": "Včera jsme vynechali, ale jeden volný den v týdnu řetěz vydrží. Jedeme dál!"
+ },
+ {
+  "id": "ui_album_intro",
+  "role": "pepik",
+  "text": "Tohle je tvoje sbírka nálezů. Šedé stíny ještě chybí, najdeš je v truhle dne."
+ },
+ {
+  "id": "ui_album_locked",
+  "role": "pepik",
+  "text": "Tenhle nález ještě nemáš. Najdeš ho v truhle dne."
+ },
+ {
+  "id": "ui_album_set",
+  "role": "pepik",
+  "text": "Celá sada je tvoje! Máš odznak do deníku."
+ },
+ {
+  "id": "ui_album_all",
+  "role": "pepik",
+  "text": "Máš úplně všechny nálezy! Jsi mistr sběratel!"
  },
  {
   "id": "intro_sifry",
