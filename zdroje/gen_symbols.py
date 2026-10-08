@@ -345,9 +345,9 @@ add(id="start", name="Start", isom="701 Start", emoji="🚩", col="purple",
     say="Fialový trojúhelník je start, odtud tvá trať začíná. Pomůcka: trojúhelník ukazuje špičkou vpřed, vyraz jako raketa na výzvěd!", cheer="Zorientuj mapu, nadechni se a vyraz za dobrodružstvím!",
     svg=f'<path d="M50 26 L73 68 L27 68 Z" fill="none" stroke="{pu}" stroke-width="6.5" stroke-linejoin="round"/>')
 add(id="kontrola", name="Kontrola", isom="703 Kontrola", emoji="🎯", col="purple",
-    say="Fialové kolečko je kontrola, je tam oranžovo-bílý lampionek a čip. Pomůcka: kolečko je jako lampionek, oraž si ho za okamžik!", cheer="Skvělá práce, další kontrolu máš v kapse!",
+    say="Fialové kolečko je kontrola, visí tam oranžovo-bílý lampion a krabička, kde si orazíš. Pomůcka: kolečko je jako lampion, oraž si ho za okamžik!", cheer="Skvělá práce, další kontrolu máš v kapse!",
     svg=f'<circle cx="50" cy="50" r="24" fill="none" stroke="{pu}" stroke-width="6.5"/>')
-add(id="cil", name="Cíl", isom="706 Cíl", emoji="💎", col="purple",
+add(id="cil", name="Cíl", isom="706 Cíl", emoji="🏁", col="purple",
     say="Dvě fialová kolečka jsou cíl, konec trati a schovaný poklad. Pomůcka: dvě kolečka jako medaile, v cíli tě každý pochválí!", cheer="Zvládl jsi to úžasně, užij si zasloužený potlesk!",
     svg=f'<circle cx="50" cy="50" r="25" fill="none" stroke="{pu}" stroke-width="6"/><circle cx="50" cy="50" r="15" fill="none" stroke="{pu}" stroke-width="6"/>')
 add(id="spojnice", name="Spojnice", isom="705 Spojnice", emoji="➖", col="purple",
@@ -496,14 +496,14 @@ ISL = [
 ]
 # Fond posádky (ostrov bez vlastní crew dostane člena podle pořadí), moře a chvály
 CREW = [
- ("🐒","Opička Kiki","Opička Kiki se přidává k posádce! Umí šplhat na stěžeň a hlídat zlaťáky."),
+ ("🐒","Opička Kiki","Opička Kiki se přidává k posádce! Umí šplhat na stromy a hlídat zlaťáky."),
  ("🐢","Želva Ferda","Želva Ferda se přidává k posádce! Je pomalá, ale nikdy nezabloudí."),
  ("🦀","Krab Klepeto","Krab Klepeto se přidává k posádce! Klepety otevře každou truhlu."),
- ("🐙","Chobotnice Ola","Chobotnice Ola se přidává k posádce! Osmi rukama vytáhne kotvu jako nic."),
- ("🐬","Delfín Dan","Delfín Dan se přidává k posádce! Plave rychleji než každá loď."),
+ ("🐙","Chobotnice Ola","Chobotnice Ola se přidává k posádce! Osmi rukama prohrabe každou skrýš."),
+ ("🐬","Delfín Dan","Delfín Dan se přidává k posádce! Převeze tě přes každou řeku."),
  ("🐈‍⬛","Kocour Kompas","Kocour Kompas se přidává k posádce! Vždycky ví, kde je sever."),
  ("🦭","Tuleň Tonda","Tuleň Tonda se přidává k posádce! Zatleská ploutvemi při každém zlaťáku."),
- ("🐧","Tučňák Pája","Tučňák Pája se přidává k posádce! Chodí v obleku i na palubě."),
+ ("🐧","Tučňák Pája","Tučňák Pája se přidává k posádce! Chodí v obleku i v lese."),
  ("🦜","Papouščice Rózi","Papouščice Rózi se přidává k posádce! Je to Pepíkova sestřenice a umí zpívat."),
  ("🐕","Pes Bublina","Pes Bublina se přidává k posádce! Vyčenichá každý poklad."),
  ("🐸","Žába Kuňka","Žába Kuňka se přidává k posádce! Zná každou bažinu."),
@@ -514,11 +514,11 @@ CREW = [
  ("🦊","Liška Ryška","Liška Ryška se přidává k posádce! Zná všechny lesní pěšinky."),
  ("🐝","Včelka Bzum","Včelka Bzum se přidává k posádce! Miluje louky plné květin."),
  ("🦩","Plameňák Filip","Plameňák Filip se přidává k posádce! Stojí na jedné noze i v bouři."),
- ("🐨","Koala Kuba","Koala Kuba se přidává k posádce! Prospí celou plavbu."),
+ ("🐨","Koala Kuba","Koala Kuba se přidává k posádce! Prospí celou výpravu."),
  ("🦁","Lev Leo","Lev Leo se přidává k posádce! Jeho řev zažene každého piráta."),
 ]
 SEAS = ["Papouščí moře","Mlžné moře","Bouřlivé moře","Ledové moře","Sluneční moře","Korálové moře","Půlnoční moře","Perlové moře"]
-PRAISE = ["Arr! Zlaťák do truhly!","Jupí! Máš zlatou minci!","Výborně, námořníku!","Cink! Poklad se plní!","Paráda, správně čteš mapu!","Tak se čte mapa!"]
+PRAISE = ["Arr! Zlaťák do truhly!","Jupí! Máš zlatou minci!","Výborně, dobrodruhu!","Cink! Poklad se plní!","Paráda, správně čteš mapu!","Tak se čte mapa!"]
 SYM_BY = {s["id"]: s for s in S}
 def sname(s): return re.sub(r"\s*\(.*?\)", "", s["name"]).strip()
 def crew_of(i):
@@ -772,8 +772,8 @@ CON = [
  dict(q="Kde bydlí lidi?", emoji="🏠", ok=["budova"], no=["louka","les","voda","bazina","housti","balvan","veza","posed","zricenina"], hint="Lidi bydlí v černé budově."),
  dict(q="Kudy jezdí auta?", emoji="🚗", ok=["silnice","sirokasilnice","vozovka"], no=["pesina","cesta","potok","plot","zed","vedeni","zeleznice"], hint="Auta jezdí po silnici, to je plná černá čára, nebo po vozové cestě."),
  dict(q="Kde závod začíná?", emoji="🚩", ok=["start"], no=["kontrola","cil","louka","les","voda","spojnice"], hint="Závod začíná na fialovém trojúhelníku."),
- dict(q="Kde si cvakneš čipem?", emoji="📟", ok=["kontrola"], no=["start","cil","louka","les","balvan","spojnice"], hint="Čipem cvakneš na kontrole, to je jedno kolečko."),
- dict(q="Kde je schovaný poklad?", emoji="💎", ok=["cil"], no=["start","kontrola","louka","les","budova","spojnice"], hint="Poklad je v cíli, to jsou dvě kolečka."),
+ dict(q="Kde cestou hledáš lampion?", emoji="🎯", ok=["kontrola"], no=["start","cil","louka","les","balvan","spojnice"], hint="Lampion visí na kontrole, to je jedno kolečko. Tam si ho orazíš."),
+ dict(q="Kde závod končí?", emoji="🏁", ok=["cil"], no=["start","kontrola","louka","les","budova","spojnice"], hint="Závod končí v cíli, to jsou dvě kolečka. A tam je i poklad."),
  dict(q="Kam nesmíš vůbec vstoupit?", emoji="🚫", ok=["zakaz","nepristupna"], no=["louka","les","cesta","zpevnena","divoky","pole","sad"], hint="Zákaz je olivová plocha nebo fialová mřížka."),
  dict(q="Co nesmíš přelézt?", emoji="🧗", ok=["nepr_plot","nepr_zed","nepr_sraz","nepr_potrubi"], no=["plot","zed","sraz","cesta","louka","potrubi","pruchod_plot"], hint="Nepřekonatelné je to tlusté nebo s dvojitými čárkami."),
  dict(q="Kudy projdeš přes plot?", emoji="🚪", ok=["pruchod_plot"], no=["plot","nepr_plot","zed","nepr_zed","potrubi"], hint="Průchod je mezera v plotu se dvěma čárkami."),

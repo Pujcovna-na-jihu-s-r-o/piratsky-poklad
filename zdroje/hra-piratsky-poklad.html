@@ -40,9 +40,9 @@ img,svg,canvas{-webkit-user-drag:none; user-drag:none}
 </script>
 
 <title>Pirátský poklad</title>
-<meta name="description" content="Mluvící pirátská hra pro děti: pluj po šesti ostrovech, čti orienťáckou mapu, sbírej posádku a zlaťáky a poraz kapitána Mlhu v cestě za Zlatým kompasem.">
+<meta name="description" content="Mluvící hra pro děti: hledač pokladů putuje po ostrovech, čte orienťáckou mapu, sbírá posádku a zlaťáky a poráží piráta Mlhu v cestě za Zlatým kompasem.">
 <style>
-/* Layout: jedna obrazovka na výšku – nahoře truhla se zlaťáky, uprostřed scéna (loď / mapa ostrovů / úkol), dole velká dřevěná tlačítka.
+/* Layout: jedna obrazovka na výšku – nahoře truhla se zlaťáky, uprostřed scéna (tábor / mapa ostrovů / úkol), dole velká dřevěná tlačítka.
    Jeden pirátský svět na pergamenu, záměrně jediné světlé téma (barvy natvrdo). */
 :root{
   --paper:#f3e2b8; --paper2:#e6cd92; --panel:#fffdf3; --panel-edge:#c9a86a;
@@ -116,6 +116,16 @@ h2.h{font-family:var(--font-title); font-weight:400; font-size:clamp(30px,9vw,44
 .bigbtn.pulse{animation:btnpulse 1.5s ease-in-out infinite}
 @keyframes btnpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
 .btnrow{display:flex; flex-direction:column; gap:14px; align-items:center; width:100%}
+/* hlavní tlačítko akce přilepené dole na displeji; obsah pod lištou se jemně vytrácí */
+.btnrow.stickyact{position:sticky; bottom:calc(env(safe-area-inset-bottom,0px) + 8px); z-index:4; padding:10px 0 4px; margin-top:2px;
+  background:linear-gradient(180deg, rgba(243,226,184,0) 0%, #f3e2b8 40%)}
+/* „můžeš pokračovat" (po doposlouchání Pepíka): pulz + zlatý zářící prstenec (zvlášť v ::after, takže 3D stín tlačítka zůstává) + poskakující ikona */
+.bigbtn.ready{position:relative; animation:btnready .9s ease-in-out infinite}
+.bigbtn.ready::after{content:""; position:absolute; inset:-3px; border-radius:inherit; pointer-events:none; animation:readyring .9s ease-out infinite}
+.bigbtn.ready .bi{display:inline-block; animation:readybob .9s ease-in-out infinite}
+@keyframes btnready{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes readyring{0%{box-shadow:0 0 0 0 rgba(231,167,15,.8)}100%{box-shadow:0 0 0 16px rgba(231,167,15,0)}}
+@keyframes readybob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .linkback{background:transparent; border:none; color:var(--wood); font-weight:800; font-family:var(--font-d); font-size:17px; cursor:pointer; padding:8px}
 .smallbtn{border:3px solid var(--wood-deep); background:var(--wood); color:#ffe9b8; font-weight:700; font-family:var(--font-d);
   border-radius:12px; padding:8px 12px; font-size:15px; cursor:pointer; box-shadow:0 4px 0 var(--wood-deep)}
@@ -132,19 +142,30 @@ h2.h{font-family:var(--font-title); font-weight:400; font-size:clamp(30px,9vw,44
 .bubble .txt .ttl{font-family:var(--font-title); font-size:24px; color:var(--red); margin-bottom:3px; line-height:1}
 .bubble .txt .rd{margin-top:8px; display:flex; gap:8px; flex-wrap:wrap}
 
-/* Loď (domov) */
-.ship{position:relative; width:min(100%,370px); aspect-ratio:16/10; max-width:100%; margin-top:-4px}
-.ship svg{width:100%; height:100%; display:block}
-.ship .flag{position:absolute; left:52.5%; top:1%; font-size:28px; line-height:1; transform-origin:left center; animation:wave 1.6s ease-in-out infinite}
+/* Tábor (domov) */
+.camp{position:relative; width:min(100%,370px); aspect-ratio:16/10; max-width:100%; margin-top:-4px}
+.camp>svg{width:100%; height:100%; display:block}
+.camp .slot{position:absolute; line-height:1; display:flex; align-items:flex-end; justify-content:center}
+.camp .slot-tent{left:3%; top:26%; width:19%; height:30%; font-size:48px}
+.camp .slot-fire{left:11%; top:62%; width:13%; height:19%}
+.camp .slot-fire svg{width:100%; height:100%; display:block; overflow:visible}
+.camp .slot-flag{left:55.5%; top:12%; width:12%; height:12%; justify-content:flex-start; align-items:flex-start}
+.camp .slot-chest{left:79%; top:34%; width:14%; height:20%; font-size:34px}
+.camp .slot-bench{left:36%; top:60%; width:60%; height:26%; align-items:flex-end}
+.camp .flag{font-size:28px; line-height:1; transform-origin:left center; animation:wave 1.6s ease-in-out infinite}
 @keyframes wave{0%,100%{transform:skewY(-6deg)}50%{transform:skewY(6deg)}}
-.ship .avatar{position:absolute; left:23%; top:33%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; line-height:1}
-.ship .avatar .hat{font-size:30px; margin-bottom:-12px; min-height:30px; position:relative; z-index:2}
-.ship .avatar .face{font-size:54px; filter:drop-shadow(0 4px 4px rgba(78,47,22,.3))}
-.ship .crew{position:absolute; left:38%; right:5%; top:50%; display:flex; justify-content:center; gap:3px; font-size:26px; line-height:1; flex-wrap:wrap}
-.ship .crew span{animation:bob 2.2s ease-in-out infinite; display:inline-block}
-.ship .crew span:nth-child(2n){animation-delay:.5s}
-.ship .crew span:nth-child(3n){animation-delay:1s}
-.ship .crew span.empty{opacity:.22; filter:grayscale(1); animation:none}
+.camp .flame{transform-box:fill-box; transform-origin:50% 100%; animation:flicker .5s ease-in-out infinite}
+.camp .flame.f2{animation-delay:.17s; animation-duration:.43s}
+.camp .flame.f3{animation-delay:.31s; animation-duration:.37s}
+@keyframes flicker{0%,100%{transform:scale(1,1); opacity:1}50%{transform:scale(.88,1.14); opacity:.82}}
+.camp .avatar{position:absolute; left:32%; top:32%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; line-height:1}
+.camp .avatar .hat{font-size:30px; margin-bottom:-12px; min-height:30px; position:relative; z-index:2}
+.camp .avatar .face{font-size:54px; filter:drop-shadow(0 4px 4px rgba(78,47,22,.3))}
+.camp .crew{display:flex; justify-content:center; gap:3px; font-size:26px; line-height:1; flex-wrap:wrap; padding-bottom:6%}
+.camp .crew span{animation:bob 2.2s ease-in-out infinite; display:inline-block}
+.camp .crew span:nth-child(2n){animation-delay:.5s}
+.camp .crew span:nth-child(3n){animation-delay:1s}
+.camp .crew span.empty{opacity:.22; filter:grayscale(1); animation:none}
 .rank{font-family:var(--font-d); font-weight:700; font-size:19px; color:#fff5db; background:var(--sea-deep); border:3px solid #0e4f6d; border-radius:14px; padding:6px 14px; box-shadow:0 5px 0 #0e4f6d}
 .stats{display:flex; gap:8px 16px; flex-wrap:wrap; justify-content:center; font-family:var(--font-d); font-weight:700; color:var(--wood); font-size:16px}
 .chestline{font-family:var(--font-d); font-weight:700; color:var(--wood); font-size:16px; background:rgba(255,253,243,.6); border:2px dashed var(--panel-edge); border-radius:14px; padding:6px 12px}
@@ -233,7 +254,7 @@ h2.h{font-family:var(--font-title); font-weight:400; font-size:clamp(30px,9vw,44
 .namebtn .e{font-size:34px; line-height:1}
 .namebtn:active{transform:translateY(3px)}
 
-/* Režim „Kapitánův rozkaz" */
+/* Režim „Stopa za stopou" */
 .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:center}
 .chip{background:var(--panel); border:3px solid var(--panel-edge); border-radius:14px; padding:6px 10px; font-family:var(--font-d); font-weight:700; font-size:16px; display:flex; align-items:center; gap:6px}
 .chip .ce{font-size:22px; line-height:1}
@@ -254,9 +275,10 @@ h2.h{font-family:var(--font-title); font-weight:400; font-size:clamp(30px,9vw,44
 .pex.three{grid-template-columns:repeat(3,minmax(0,1fr)); width:min(85%,320px)}
 .pcard{aspect-ratio:1; border:4px solid var(--wood-deep); border-radius:16px; background:linear-gradient(180deg,#8a5628,#6f4423); cursor:pointer; box-shadow:var(--shadow);
   display:flex; align-items:center; justify-content:center; font-size:34px; padding:4px; color:#ffe9b8; overflow:hidden; position:relative}
-.pcard .front{display:none; width:100%; height:100%; flex-direction:column; align-items:center; justify-content:center; font-family:var(--font-d); font-weight:700; font-size:13px; line-height:1; color:var(--ink); gap:2px}
+.pcard .front{display:none; width:100%; height:100%; flex-direction:column; align-items:center; justify-content:center; font-family:var(--font-d); font-weight:700; font-size:12.5px; line-height:1.1; color:var(--ink); gap:2px; text-align:center}
 .pcard .front svg{width:82%; height:82%}
-.pcard .front .fe{font-size:32px; line-height:1}
+.pcard .front .fe{font-size:28px; line-height:1}
+.pcard .front .fn{display:block; max-width:100%; overflow-wrap:anywhere; hyphens:auto}
 .pcard.up{background:var(--panel); border-color:var(--panel-edge)}
 .pcard.up .front{display:flex}
 .pcard.up .back{display:none}
@@ -294,6 +316,8 @@ h2.h{font-family:var(--font-title); font-weight:400; font-size:clamp(30px,9vw,44
 .reward .rt small{display:block; font-size:13px; color:var(--muted); font-weight:700}
 .reward.crew{border-color:var(--good)}
 .reward.piece{border-color:var(--gold-deep)}
+.reward.piece{flex-wrap:wrap}   /* mřížka kousků mapy jde pod text, ať se text nemačká do úzkého sloupce */
+.reward.piece .pieces{flex:0 0 100%; margin-top:6px}   /* flex-basis 100 % = vždy na vlastní řádek (.rt má min-width:0 a jinak by se jen smrskl; max-width tu být nesmí, zalomení by zrušil) */
 .reward.lose{border-color:var(--fog); background:#eceef1}
 
 /* Popisy kontrol (piktogramy ISCD) */
@@ -376,6 +400,8 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
 .bigbtn.pressed{transform:translateY(6px); box-shadow:0 2px 0 var(--wood-deep); animation:none}
 .bigbtn.gold.pressed{box-shadow:0 2px 0 var(--gold-deep)}
 .bigbtn.sea.pressed{box-shadow:0 2px 0 var(--sea-deep)}
+.bigbtn.ready.pressed,.bigbtn.ready:active{animation:none}
+.bigbtn.ready.pressed::after,.bigbtn.ready:active::after,.bigbtn.ready.pressed .bi,.bigbtn.ready:active .bi{animation:none}
 .smallbtn.pressed{transform:translateY(3px); box-shadow:0 1px 0 var(--wood-deep)}
 .dailybtn.pressed{transform:translateY(4px); box-shadow:0 2px 0 var(--gold-deep); animation:none}
 .reset.pressed{transform:translateY(2px)}
@@ -394,7 +420,7 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
 .iconbtn.pressed,.bigbtn.pressed,.smallbtn.pressed,.navbtn.pressed,.replay.pressed,.dailybtn.pressed,.reset.pressed,.opt.pressed,.namebtn.pressed,.nsym.pressed,.pcard.pressed{filter:brightness(.92)}
 .bigbtn:active,.dailybtn:active{animation:none}
 
-/* 4 možnosti (moře 3–4, Volné moře): na výšku mřížka 2×2, na šířku jedna řada */
+/* 4 možnosti (moře 3–4, Divočina): na výšku mřížka 2×2, na šířku jedna řada */
 .options.g4{grid-template-columns:repeat(2,minmax(0,1fr)); width:min(90%,330px)}
 /* 6 možností (úkol „jeden obrázek, víc značek“ se čtyřmi správnými): 3×2, na šířku taky 3×2, aby se karty vešly na výšku */
 .options.g6{grid-template-columns:repeat(3,minmax(0,1fr)); width:min(100%,400px)}
@@ -430,9 +456,12 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
   .bigbtn.sea{box-shadow:0 5px 0 var(--sea-deep), 0 8px 14px rgba(19,106,144,.3)}
   .bigbtn .bi{font-size:22px}
   .btnrow{gap:10px}
-  .ship{width:min(100%,260px,44vh*1.6)}
-  .ship .avatar .face{font-size:38px}
-  .ship .crew{font-size:19px}
+  .camp{width:min(100%,260px,44vh*1.6)}
+  .camp .avatar .face{font-size:38px}
+  .camp .crew{font-size:19px}
+  .camp .slot-tent{font-size:34px}
+  .camp .slot-chest{font-size:24px}
+  .camp .flag{font-size:20px}
   .rank{font-size:16px; padding:3px 12px}
   .bubble .who{font-size:38px}
   .bubble .txt{font-size:15px; padding:8px 11px}
@@ -465,7 +494,9 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
   .mapgrid{width:min(100%,340px,max(220px,calc(100dvh - 190px)))}
   .pex{gap:6px; width:min(100%,400px,calc((100dvh - 150px)*1.15))}
   .pex.three{width:min(85%,320px,calc((100dvh - 150px)*1.15))}
-  .pcard{border-width:3px; border-radius:12px; font-size:26px}
+  .pcard{border-width:3px; border-radius:12px; font-size:26px; padding:2px}
+  .pcard .front{font-size:12px}
+  .pcard .front .fe{font-size:24px}
   .bigsym{width:min(50%,130px); flex:0 0 auto}
   .stage:has(>.bigsym){flex-direction:row; justify-content:center; gap:16px; max-width:100%}
   .stage:has(>.bigsym) .names{width:min(60%,380px)}
@@ -539,35 +570,50 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
   <div class="topbar">
     <div class="coins" id="coins"><span class="cimg">💰</span><span id="coinNum">0</span></div>
     <div class="grp">
-      <button class="iconbtn" id="homeBtn" title="Na loď" aria-label="Zpět na loď" hidden>🏠</button>
+      <button class="iconbtn" id="homeBtn" title="Do tábora" aria-label="Zpět do tábora" hidden>🏠</button>
       <button class="iconbtn" id="muteBtn" title="Zvuk" aria-label="Zapnout nebo vypnout zvuk">🔊</button>
     </div>
   </div>
 
-  <!-- LOĎ (domov) -->
+  <!-- TÁBOR (domov) -->
   <section class="screen" id="sc_start">
     <h1 class="title">Pirátský poklad</h1>
     <p class="subtitle">Cesta za Zlatým kompasem 🧭</p>
-    <div class="ship" id="ship">
+    <div class="camp" id="camp">
       <svg viewBox="0 0 320 200" aria-hidden="true">
-        <defs><linearGradient id="hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5628"/><stop offset="1" stop-color="#4e2f16"/></linearGradient></defs>
-        <path d="M0 176 q20 -12 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 V200 H0 Z" fill="#1f8fbf" opacity=".85"/>
-        <path d="M0 184 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 V200 H0 Z" fill="#136a90" opacity=".7"/>
-        <rect x="166" y="14" width="5" height="120" fill="#4e2f16"/>
-        <path d="M172 24 L262 60 L172 96 Z" fill="#fff5db" stroke="#c9a86a" stroke-width="3"/>
-        <path d="M164 30 L100 60 L164 90 Z" fill="#fff5db" stroke="#c9a86a" stroke-width="3"/>
-        <line x1="60" y1="112" x2="290" y2="112" stroke="#4e2f16" stroke-width="4"/>
-        <path d="M30 120 L300 120 L270 176 L60 176 Z" fill="url(#hull)" stroke="#3a2210" stroke-width="3"/>
-        <path d="M30 120 L10 100 L45 104 Z" fill="#6f4423" stroke="#3a2210" stroke-width="3"/>
-        <circle cx="100" cy="146" r="7" fill="#ffe9b8" stroke="#3a2210" stroke-width="2"/>
-        <circle cx="160" cy="146" r="7" fill="#ffe9b8" stroke="#3a2210" stroke-width="2"/>
-        <circle cx="220" cy="146" r="7" fill="#ffe9b8" stroke="#3a2210" stroke-width="2"/>
+        <defs><linearGradient id="campSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd6f0"/><stop offset="1" stop-color="#1f8fbf"/></linearGradient></defs>
+        <rect x="0" y="0" width="320" height="62" fill="url(#campSea)"/>
+        <line x1="0" y1="14" x2="320" y2="14" stroke="#fff5db" stroke-width="1.5" opacity=".6"/>
+        <path d="M0 52 q10 -5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 V64 H0 Z" fill="#136a90" opacity=".55"/>
+        <g transform="translate(250 34)"><path d="M0 12 L30 12 L26 22 L5 22 Z" fill="#6f4423" stroke="#3a2210" stroke-width="1.5"/><rect x="14" y="-6" width="2" height="18" fill="#4e2f16"/><path d="M16 -5 L26 6 L16 8 Z" fill="#fff5db" stroke="#c9a86a" stroke-width="1"/></g>
+        <path d="M0 60 Q80 52 160 58 T320 56 V200 H0 Z" fill="#f1d9a0"/>
+        <path d="M0 62 Q80 54 160 60 T320 58 V64 Q240 66 160 64 T0 66 Z" fill="#fff5db" opacity=".7"/>
+        <path d="M0 150 Q100 140 200 152 T320 148 V200 H0 Z" fill="#e6cd92"/>
+        <path d="M148 108 Q144 86 150 66" stroke="#6f4423" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M150 66 q-18 -4 -26 8 M150 66 q-4 -18 -20 -18 M150 66 q14 -14 28 -6 M150 66 q18 2 22 14" stroke="#3f8a3c" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M306 100 Q302 84 308 70" stroke="#6f4423" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M308 70 q-16 -4 -22 8 M308 70 q-4 -16 -18 -16 M308 70 q14 -12 26 -4" stroke="#3f8a3c" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <rect x="178" y="30" width="4" height="96" rx="1.5" fill="#4e2f16"/>
+        <rect x="112" y="168" width="196" height="14" rx="7" fill="#8a5628" stroke="#4e2f16" stroke-width="3"/>
+        <ellipse cx="112" cy="175" rx="4" ry="7" fill="#c9a86a" stroke="#4e2f16" stroke-width="2"/>
       </svg>
-      <span class="flag" id="shipFlag">🏴‍☠️</span>
+      <div class="slot slot-tent" id="slot-tent" data-slot="tent">⛺</div>
+      <div class="slot slot-fire" id="slot-fire" data-slot="fire">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="8" cy="35" r="5" fill="#8c8478" stroke="#4e4a42" stroke-width="1.5"/>
+          <circle cx="20" cy="37" r="5" fill="#a39b8d" stroke="#4e4a42" stroke-width="1.5"/>
+          <circle cx="32" cy="35" r="5" fill="#8c8478" stroke="#4e4a42" stroke-width="1.5"/>
+          <path class="flame" d="M20 34 C10 28 14 18 20 4 C26 16 30 28 20 34 Z" fill="#e8620c"/>
+          <path class="flame f2" d="M20 34 C13 30 16 22 20 12 C25 20 27 29 20 34 Z" fill="#f7a823"/>
+          <path class="flame f3" d="M20 34 C16 31 18 27 20 21 C23 26 24 30 20 34 Z" fill="#ffe27a"/>
+        </svg>
+      </div>
+      <div class="slot slot-flag" id="slot-flag" data-slot="flag"><span class="flag" id="shipFlag">🏴‍☠️</span></div>
+      <div class="slot slot-chest" id="slot-chest" data-slot="chest">🧰</div>
       <div class="avatar"><span class="hat" id="avHat"></span><span class="face">🧒</span></div>
-      <div class="crew" id="crewRow"></div>
+      <div class="slot slot-bench" id="slot-bench" data-slot="bench"><div class="crew" id="crewRow"></div></div>
     </div>
-    <div class="rank" id="rank">🧒 Plavčík</div>
+    <div class="rank" id="rank">🧒 Nováček</div>
     <div class="stats" id="stats"></div>
     <div class="chestline" id="chestLine"></div>
     <div class="bubble" id="homeBubble">
@@ -578,9 +624,9 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
     <button class="dailybtn" id="dailyBtn" hidden>🎁 Denní poklad!</button>
     <div class="btnrow">
       <button class="bigbtn gold pulse" id="storyBtn" hidden><span class="bi">📜</span> Začít příběh</button>
-      <button class="bigbtn gold pulse" id="sailBtn"><span class="bi">⛵</span> Vyplout na mapu</button>
-      <button class="bigbtn sea" id="freeBtn" hidden><span class="bi">🌊</span> Volné moře</button>
-      <button class="bigbtn" id="shopBtn"><span class="bi">🏪</span> Pirátský krám</button>
+      <button class="bigbtn gold pulse" id="sailBtn"><span class="bi">🗺️</span> Na výpravu!</button>
+      <button class="bigbtn sea" id="freeBtn" hidden><span class="bi">🌲</span> Divočina</button>
+      <button class="bigbtn" id="shopBtn"><span class="bi">🏪</span> Krám U Papouška</button>
       <button class="bigbtn" id="learnBtn"><span class="bi">🗺️</span> Prohlédnout značky</button>
     </div>
     <p class="hint">Číst nemusíš, Pepík ti všechno poví. A pozor: piráti cestou roní zlaťáky, chytej je! 🪙</p>
@@ -611,9 +657,9 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
       <button class="bigbtn gold" id="examBtn" hidden><span class="bi">📜</span> Zkouška moře</button>
       <button class="bigbtn" id="reviewBtn" hidden><span class="bi">🔁</span> Opakování</button>
       <button class="bigbtn gold" id="finalBtn" hidden><span class="bi">🧭</span> Zlatý kompas!</button>
-      <button class="bigbtn sea" id="freeBtn2" hidden><span class="bi">🌊</span> Volné moře</button>
+      <button class="bigbtn sea" id="freeBtn2" hidden><span class="bi">🌲</span> Divočina</button>
     </div>
-    <button class="linkback" data-home>🏠 Zpět na loď</button>
+    <button class="linkback" data-home>🏠 Zpět do tábora</button>
   </section>
 
   <!-- OSTROV – úvod -->
@@ -624,8 +670,8 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
       <div class="txt"><div id="islText"></div><div class="rd"><button class="smallbtn gold" id="islRead">🔊 Znovu</button></div></div></div>
     <div class="newsyms" id="newSyms"></div>
     <div class="hint" id="islNote"></div>
-    <div class="btnrow">
-      <button class="bigbtn gold pulse" id="goBtn"><span class="bi">⛵</span> Vyplout!</button>
+    <div class="btnrow stickyact">
+      <button class="bigbtn gold" id="goBtn"><span class="bi">🥾</span> Na výpravu!</button>
     </div>
     <button class="linkback" data-world>🗺️ Zpět na mapu</button>
   </section>
@@ -647,7 +693,8 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
     <h2 class="h" id="resTitle"></h2>
     <div class="stars" id="resStars"><span>⭐</span><span>⭐</span><span>⭐</span></div>
     <div class="rewards" id="resRewards"></div>
-    <div class="btnrow" id="resBtns"></div>
+    <div class="btnrow stickyact" id="resBtns"></div>
+    <div class="btnrow" id="resBtns2"></div>
   </section>
 
   <!-- ZKOUŠKA MOŘE – výsledek -->
@@ -656,7 +703,8 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
     <div class="xhead"><span class="xmedal" id="xMedal"></span><div class="xcount" id="xCount"></div></div>
     <div class="xnote" id="xNote"></div>
     <div class="xgrid" id="xGrid"></div>
-    <div class="btnrow" id="xBtns"></div>
+    <div class="btnrow stickyact" id="xBtns"></div>
+    <div class="btnrow" id="xBtns2"></div>
   </section>
 
   <!-- FINÁLE -->
@@ -665,9 +713,9 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
     <h2 class="h">Zlatý kompas je tvůj!</h2>
     <div class="bubble"><span class="who">🦜</span><div class="txt" id="finalText"></div></div>
     <div class="btnrow">
-      <button class="bigbtn sea" id="finalFree"><span class="bi">🌊</span> Volné moře</button>
+      <button class="bigbtn sea" id="finalFree"><span class="bi">🌲</span> Divočina</button>
       <button class="bigbtn" id="finalQuest"><span class="bi">🗺️</span> Cesta k pokladu znovu</button>
-      <button class="bigbtn" data-home><span class="bi">🏠</span> Na loď</button>
+      <button class="bigbtn" data-home><span class="bi">🏠</span> Do tábora</button>
     </div>
   </section>
 
@@ -678,8 +726,8 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
     <div class="bubble"><span class="who" id="storyWho">🦜</span>
       <div class="txt"><div id="storyText"></div><div class="rd"><button class="smallbtn gold" id="storyRead">🔊 Znovu</button></div></div></div>
     <div class="storydots" id="storyDots"></div>
-    <div class="btnrow">
-      <button class="bigbtn gold pulse" id="storyNext"><span class="bi">➡️</span> Dál</button>
+    <div class="btnrow stickyact">
+      <button class="bigbtn gold" id="storyNext"><span class="bi">➡️</span> Dál</button>
     </div>
     <button class="linkback" id="storySkip">⏩ Přeskočit příběh</button>
   </section>
@@ -712,15 +760,15 @@ button:focus-visible{outline:4px solid var(--sea); outline-offset:2px}
       <div class="count" id="learnCount">1 / 12</div>
       <button class="navbtn" id="nextBtn" aria-label="Další">➡️</button>
     </div>
-    <button class="linkback" data-home>🏠 Zpět na loď</button>
+    <button class="linkback" data-home>🏠 Zpět do tábora</button>
   </section>
 
   <!-- KRÁM -->
   <section class="screen" id="sc_shop" hidden>
-    <h2 class="h">Pirátský krám</h2>
+    <h2 class="h">Krám U Papouška</h2>
     <div class="bubble"><span class="who">🦜</span><div class="txt" id="shopText"></div></div>
     <div id="shopBody" style="display:flex; flex-direction:column; align-items:center; gap:14px; width:100%"></div>
-    <button class="linkback" data-home>🏠 Zpět na loď</button>
+    <button class="linkback" data-home>🏠 Zpět do tábora</button>
   </section>
 </div>
 
@@ -822,8 +870,8 @@ const SY=[
   {id:"potrubi", name:"Potrubí", isom:"528 Výrazný liniový objekt", emoji:"🔩", col:"black", say:"Černá čára se šipkami je potrubí nebo jiná dlouhá věc od lidí, kterou překročíš. Co to přesně je, řekne legenda mapy. Pomůcka: šipky ukazují, kudy trubka vede!", svg:`<line x1="14" y1="50" x2="86" y2="50" stroke="#000000" stroke-width="2.5"/><path d="M26 44 L32 50 L26 56" stroke="#000000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M46 44 L52 50 L46 56" stroke="#000000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M66 44 L72 50 L66 56" stroke="#000000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`, tile:`<line x1="0" y1="50" x2="100" y2="50" stroke="#000000" stroke-width="2.5"/><path d="M10 44 L16 50 L10 56" stroke="#000000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 44 L40 50 L34 56" stroke="#000000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M58 44 L64 50 L58 56" stroke="#000000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M82 44 L88 50 L82 56" stroke="#000000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`, desc:PICTO["5.14"]},
   {id:"nepr_potrubi", name:"Vysoké potrubí", isom:"529 Výrazný nepřekonatelný liniový objekt", emoji:"🏗️", col:"black", say:"Tlustá černá čára s dvojitými šipkami je vysoké potrubí nebo jiná dlouhá překážka, přes kterou se nedostaneš. Pomůcka: dvojité šipky, dvakrát stop!", svg:`<line x1="14" y1="50" x2="86" y2="50" stroke="#000000" stroke-width="4.5"/><path d="M22 44 L28 50 L22 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 44 L34 50 L28 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M46 44 L52 50 L46 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M52 44 L58 50 L52 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M70 44 L76 50 L70 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M76 44 L82 50 L76 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`, tile:`<line x1="0" y1="50" x2="100" y2="50" stroke="#000000" stroke-width="4.5"/><path d="M8 44 L14 50 L8 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 44 L20 50 L14 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M38 44 L44 50 L38 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 44 L50 50 L44 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M68 44 L74 50 L68 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M74 44 L80 50 L74 56" stroke="#000000" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`, desc:PICTO["5.14"]},
   {id:"start", name:"Start", isom:"701 Start", emoji:"🚩", col:"purple", say:"Fialový trojúhelník je start, odtud tvá trať začíná. Pomůcka: trojúhelník ukazuje špičkou vpřed, vyraz jako raketa na výzvěd!", cheer:"Zorientuj mapu, nadechni se a vyraz za dobrodružstvím!", svg:`<path d="M50 26 L73 68 L27 68 Z" fill="none" stroke="#BB29BB" stroke-width="6.5" stroke-linejoin="round"/>`},
-  {id:"kontrola", name:"Kontrola", isom:"703 Kontrola", emoji:"🎯", col:"purple", say:"Fialové kolečko je kontrola, je tam oranžovo-bílý lampionek a čip. Pomůcka: kolečko je jako lampionek, oraž si ho za okamžik!", cheer:"Skvělá práce, další kontrolu máš v kapse!", svg:`<circle cx="50" cy="50" r="24" fill="none" stroke="#BB29BB" stroke-width="6.5"/>`},
-  {id:"cil", name:"Cíl", isom:"706 Cíl", emoji:"💎", col:"purple", say:"Dvě fialová kolečka jsou cíl, konec trati a schovaný poklad. Pomůcka: dvě kolečka jako medaile, v cíli tě každý pochválí!", cheer:"Zvládl jsi to úžasně, užij si zasloužený potlesk!", svg:`<circle cx="50" cy="50" r="25" fill="none" stroke="#BB29BB" stroke-width="6"/><circle cx="50" cy="50" r="15" fill="none" stroke="#BB29BB" stroke-width="6"/>`},
+  {id:"kontrola", name:"Kontrola", isom:"703 Kontrola", emoji:"🎯", col:"purple", say:"Fialové kolečko je kontrola, visí tam oranžovo-bílý lampion a krabička, kde si orazíš. Pomůcka: kolečko je jako lampion, oraž si ho za okamžik!", cheer:"Skvělá práce, další kontrolu máš v kapse!", svg:`<circle cx="50" cy="50" r="24" fill="none" stroke="#BB29BB" stroke-width="6.5"/>`},
+  {id:"cil", name:"Cíl", isom:"706 Cíl", emoji:"🏁", col:"purple", say:"Dvě fialová kolečka jsou cíl, konec trati a schovaný poklad. Pomůcka: dvě kolečka jako medaile, v cíli tě každý pochválí!", cheer:"Zvládl jsi to úžasně, užij si zasloužený potlesk!", svg:`<circle cx="50" cy="50" r="25" fill="none" stroke="#BB29BB" stroke-width="6"/><circle cx="50" cy="50" r="15" fill="none" stroke="#BB29BB" stroke-width="6"/>`},
   {id:"spojnice", name:"Spojnice", isom:"705 Spojnice", emoji:"➖", col:"purple", say:"Fialová rovná čára spojuje kontroly a ukazuje, v jakém pořadí je máš hledat. Pomůcka: čára vede od kolečka ke kolečku!", svg:`<line x1="18" y1="72" x2="82" y2="28" stroke="#BB29BB" stroke-width="5" stroke-linecap="round"/>`, tile:`<line x1="0" y1="80" x2="100" y2="20" stroke="#BB29BB" stroke-width="5"/>`},
   {id:"znaceny", name:"Značený úsek", isom:"707 Značený úsek", emoji:"🎗️", col:"purple", say:"Fialová přerušovaná čára je značený úsek. Tudy musíš běžet po fáborkách. Pomůcka: čárky jako fáborky na stromech!", svg:`<line x1="18" y1="72" x2="82" y2="28" stroke="#BB29BB" stroke-width="5" stroke-dasharray="11 7" stroke-linecap="round"/>`, tile:`<line x1="0" y1="80" x2="100" y2="20" stroke="#BB29BB" stroke-width="5" stroke-dasharray="11 7"/>`},
   {id:"nepristupna", name:"Zakázaná oblast", isom:"709 Nepřístupná oblast", emoji:"⛔", col:"purple", say:"Fialové šrafování je oblast, kam se při závodě nesmí. Pomůcka: fialová mřížka, zamčeno!", svg:`<rect x="20" y="28" width="60" height="44" fill="none" stroke="#BB29BB" stroke-width="3"/><line x1="30" y1="28" x2="8" y2="72" stroke="#BB29BB" stroke-width="2.6"/><line x1="41" y1="28" x2="19" y2="72" stroke="#BB29BB" stroke-width="2.6"/><line x1="52" y1="28" x2="30" y2="72" stroke="#BB29BB" stroke-width="2.6"/><line x1="63" y1="28" x2="41" y2="72" stroke="#BB29BB" stroke-width="2.6"/><line x1="74" y1="28" x2="52" y2="72" stroke="#BB29BB" stroke-width="2.6"/><line x1="85" y1="28" x2="63" y2="72" stroke="#BB29BB" stroke-width="2.6"/><line x1="96" y1="28" x2="74" y2="72" stroke="#BB29BB" stroke-width="2.6"/><rect x="12" y="20" width="76" height="60" fill="#FFFFFF" fill-opacity="0" stroke="none"/>`, tile:`<line x1="0" y1="0" x2="-50" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="12" y1="0" x2="-38" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="24" y1="0" x2="-26" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="36" y1="0" x2="-14" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="48" y1="0" x2="-2" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="60" y1="0" x2="10" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="72" y1="0" x2="22" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="84" y1="0" x2="34" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="96" y1="0" x2="46" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="108" y1="0" x2="58" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="120" y1="0" x2="70" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="132" y1="0" x2="82" y2="100" stroke="#BB29BB" stroke-width="2.8"/><line x1="144" y1="0" x2="94" y2="100" stroke="#BB29BB" stroke-width="2.8"/>`},
@@ -862,9 +910,9 @@ const ISLANDS=[
   {id:"mlha4", name:"Ostrov kapitána Mlhy", emoji:"🌫️", syms:[], boss:true, intro:"Kapitán Mlha má poslední kousek mapy! Vyzývá tě na rozhodující souboj o Zlatý kompas.", crew:{id:"kompas", emoji:"🐈‍⬛", name:"Kocour Kompas", say:"Mlhův kocour Kompas přeběhl k tobě! Teď je v tvé posádce a vždycky ví, kde je sever."}},
 ];
 /* Fond posádky – ostrov bez vlastní crew dostane člena podle pořadí */
-const CREW_POOL=[{emoji:"🐒",name:"Opička Kiki",say:"Opička Kiki se přidává k posádce! Umí šplhat na stěžeň a hlídat zlaťáky."},{emoji:"🐢",name:"Želva Ferda",say:"Želva Ferda se přidává k posádce! Je pomalá, ale nikdy nezabloudí."},{emoji:"🦀",name:"Krab Klepeto",say:"Krab Klepeto se přidává k posádce! Klepety otevře každou truhlu."},{emoji:"🐙",name:"Chobotnice Ola",say:"Chobotnice Ola se přidává k posádce! Osmi rukama vytáhne kotvu jako nic."},{emoji:"🐬",name:"Delfín Dan",say:"Delfín Dan se přidává k posádce! Plave rychleji než každá loď."},{emoji:"🐈‍⬛",name:"Kocour Kompas",say:"Kocour Kompas se přidává k posádce! Vždycky ví, kde je sever."},{emoji:"🦭",name:"Tuleň Tonda",say:"Tuleň Tonda se přidává k posádce! Zatleská ploutvemi při každém zlaťáku."},{emoji:"🐧",name:"Tučňák Pája",say:"Tučňák Pája se přidává k posádce! Chodí v obleku i na palubě."},{emoji:"🦜",name:"Papouščice Rózi",say:"Papouščice Rózi se přidává k posádce! Je to Pepíkova sestřenice a umí zpívat."},{emoji:"🐕",name:"Pes Bublina",say:"Pes Bublina se přidává k posádce! Vyčenichá každý poklad."},{emoji:"🐸",name:"Žába Kuňka",say:"Žába Kuňka se přidává k posádce! Zná každou bažinu."},{emoji:"🦔",name:"Ježek Bodlinka",say:"Ježek Bodlinka se přidává k posádce! Nikdo mu mapu nesebere."},{emoji:"🐿️",name:"Veverka Zrzka",say:"Veverka Zrzka se přidává k posádce! Schovává oříšky i zlaťáky."},{emoji:"🦉",name:"Sova Moudrá",say:"Sova Moudrá se přidává k posádce! Vidí i v noci."},{emoji:"🐐",name:"Koza Líza",say:"Koza Líza se přidává k posádce! Vyleze na každý kopec."},{emoji:"🦊",name:"Liška Ryška",say:"Liška Ryška se přidává k posádce! Zná všechny lesní pěšinky."},{emoji:"🐝",name:"Včelka Bzum",say:"Včelka Bzum se přidává k posádce! Miluje louky plné květin."},{emoji:"🦩",name:"Plameňák Filip",say:"Plameňák Filip se přidává k posádce! Stojí na jedné noze i v bouři."},{emoji:"🐨",name:"Koala Kuba",say:"Koala Kuba se přidává k posádce! Prospí celou plavbu."},{emoji:"🦁",name:"Lev Leo",say:"Lev Leo se přidává k posádce! Jeho řev zažene každého piráta."}];
+const CREW_POOL=[{emoji:"🐒",name:"Opička Kiki",say:"Opička Kiki se přidává k posádce! Umí šplhat na stromy a hlídat zlaťáky."},{emoji:"🐢",name:"Želva Ferda",say:"Želva Ferda se přidává k posádce! Je pomalá, ale nikdy nezabloudí."},{emoji:"🦀",name:"Krab Klepeto",say:"Krab Klepeto se přidává k posádce! Klepety otevře každou truhlu."},{emoji:"🐙",name:"Chobotnice Ola",say:"Chobotnice Ola se přidává k posádce! Osmi rukama prohrabe každou skrýš."},{emoji:"🐬",name:"Delfín Dan",say:"Delfín Dan se přidává k posádce! Převeze tě přes každou řeku."},{emoji:"🐈‍⬛",name:"Kocour Kompas",say:"Kocour Kompas se přidává k posádce! Vždycky ví, kde je sever."},{emoji:"🦭",name:"Tuleň Tonda",say:"Tuleň Tonda se přidává k posádce! Zatleská ploutvemi při každém zlaťáku."},{emoji:"🐧",name:"Tučňák Pája",say:"Tučňák Pája se přidává k posádce! Chodí v obleku i v lese."},{emoji:"🦜",name:"Papouščice Rózi",say:"Papouščice Rózi se přidává k posádce! Je to Pepíkova sestřenice a umí zpívat."},{emoji:"🐕",name:"Pes Bublina",say:"Pes Bublina se přidává k posádce! Vyčenichá každý poklad."},{emoji:"🐸",name:"Žába Kuňka",say:"Žába Kuňka se přidává k posádce! Zná každou bažinu."},{emoji:"🦔",name:"Ježek Bodlinka",say:"Ježek Bodlinka se přidává k posádce! Nikdo mu mapu nesebere."},{emoji:"🐿️",name:"Veverka Zrzka",say:"Veverka Zrzka se přidává k posádce! Schovává oříšky i zlaťáky."},{emoji:"🦉",name:"Sova Moudrá",say:"Sova Moudrá se přidává k posádce! Vidí i v noci."},{emoji:"🐐",name:"Koza Líza",say:"Koza Líza se přidává k posádce! Vyleze na každý kopec."},{emoji:"🦊",name:"Liška Ryška",say:"Liška Ryška se přidává k posádce! Zná všechny lesní pěšinky."},{emoji:"🐝",name:"Včelka Bzum",say:"Včelka Bzum se přidává k posádce! Miluje louky plné květin."},{emoji:"🦩",name:"Plameňák Filip",say:"Plameňák Filip se přidává k posádce! Stojí na jedné noze i v bouři."},{emoji:"🐨",name:"Koala Kuba",say:"Koala Kuba se přidává k posádce! Prospí celou výpravu."},{emoji:"🦁",name:"Lev Leo",say:"Lev Leo se přidává k posádce! Jeho řev zažene každého piráta."}];
 const SEAS=["Papouščí moře","Mlžné moře","Bouřlivé moře","Ledové moře","Sluneční moře","Korálové moře","Půlnoční moře","Perlové moře"];
-const PRAISE=["Arr! Zlaťák do truhly!","Jupí! Máš zlatou minci!","Výborně, námořníku!","Cink! Poklad se plní!","Paráda, správně čteš mapu!","Tak se čte mapa!"];
+const PRAISE=["Arr! Zlaťák do truhly!","Jupí! Máš zlatou minci!","Výborně, dobrodruhu!","Cink! Poklad se plní!","Paráda, správně čteš mapu!","Tak se čte mapa!"];
 /* Skupiny zaměnitelných značek (obtížnější nabídky od 2. moře) */
 const CONF=[["bazina","nezretelna_bazina","uzka_bazina"],["balvan","velkybalvan","obrovsky","shluk"],["zed","nepr_zed"],["plot","nepr_plot","pruchod_plot"],["sraz","nepr_sraz","zemni_sraz"],["louka","roztrousene","divoky"],["kupka","protahla_kupka"],["jama","kamenna_jama","prohluben"],["zelena_svetla","zelena_stredni","housti","podrost"],["silnice","sirokasilnice","zpevnena"],["vozovka","cesta","pesina"],["krouzek","krizek"],["voda","melka_voda"],["potok","prikop"],["potrubi","nepr_potrubi"],["start","kontrola","cil"],["zakaz","nepristupna","nepristupna_trasa"],["kopec","doplnkova"],["pole","sad","vinice"],["veza","posed"],["studna","pramen","vodni_objekt"]];
 /* 5. moře „Jak mluví popis I“ – DATA pro herní logiku (zatím nezapojená do ISLANDS/SY).
@@ -962,7 +1010,7 @@ function introOf(i){ const isl=ISLANDS[i]; if(isl.intro) return isl.intro; const
 function seaOf(i){ return Math.floor(i/SEA_SIZE); }
 function seaName(k){ return SEAS[k%SEAS.length]; }
 
-/* ===== DRUHÁ PLAVBA – 5. moře „Jak mluví popis I" =====
+/* ===== DRUHÁ VÝPRAVA – 5. moře „Jak mluví popis I" =====
    Data (ISLANDS5, SYM704, PD) generuje gen_symbols.py ODDĚLENĚ. Tady je za běhu napojíme do stávajících
    polí: pole jsou sice const, ale mutovatelná (push). Tím 5. moře zdarma využije renderWorld, crewOf,
    knownSyms, hvězdy, zkoušky i Učení. STAGE1 = původních 24 ostrovů (mapa Zlatého kompasu); tu si několik
@@ -989,8 +1037,8 @@ const CONCEPTS=[
   {q:"Kde bydlí lidi?", emoji:"🏠", ok:["budova"], no:["louka","les","voda","bazina","housti","balvan","veza","posed","zricenina"], hint:"Lidi bydlí v černé budově."},
   {q:"Kudy jezdí auta?", emoji:"🚗", ok:["silnice","sirokasilnice","vozovka"], no:["pesina","cesta","potok","plot","zed","vedeni","zeleznice"], hint:"Auta jezdí po silnici, to je plná černá čára, nebo po vozové cestě."},
   {q:"Kde závod začíná?", emoji:"🚩", ok:["start"], no:["kontrola","cil","louka","les","voda","spojnice"], hint:"Závod začíná na fialovém trojúhelníku."},
-  {q:"Kde si cvakneš čipem?", emoji:"📟", ok:["kontrola"], no:["start","cil","louka","les","balvan","spojnice"], hint:"Čipem cvakneš na kontrole, to je jedno kolečko."},
-  {q:"Kde je schovaný poklad?", emoji:"💎", ok:["cil"], no:["start","kontrola","louka","les","budova","spojnice"], hint:"Poklad je v cíli, to jsou dvě kolečka."},
+  {q:"Kde cestou hledáš lampion?", emoji:"🎯", ok:["kontrola"], no:["start","cil","louka","les","balvan","spojnice"], hint:"Lampion visí na kontrole, to je jedno kolečko. Tam si ho orazíš."},
+  {q:"Kde závod končí?", emoji:"🏁", ok:["cil"], no:["start","kontrola","louka","les","budova","spojnice"], hint:"Závod končí v cíli, to jsou dvě kolečka. A tam je i poklad."},
   {q:"Kam nesmíš vůbec vstoupit?", emoji:"🚫", ok:["zakaz","nepristupna"], no:["louka","les","cesta","zpevnena","divoky","pole","sad"], hint:"Zákaz je olivová plocha nebo fialová mřížka."},
   {q:"Co nesmíš přelézt?", emoji:"🧗", ok:["nepr_plot","nepr_zed","nepr_sraz","nepr_potrubi"], no:["plot","zed","sraz","cesta","louka","potrubi","pruchod_plot"], hint:"Nepřekonatelné je to tlusté nebo s dvojitými čárkami."},
   {q:"Kudy projdeš přes plot?", emoji:"🚪", ok:["pruchod_plot"], no:["plot","nepr_plot","zed","nepr_zed","potrubi"], hint:"Průchod je mezera v plotu se dvěma čárkami."},
@@ -1007,10 +1055,10 @@ const CONCEPTS=[
 ];
 
 /*AUDIO-DATA-START*/
-const T={"iname_papousci":"Ostrov papoušků","iname_bazina":"Bažinatý ostrov","iname_kameny":"Kamenný ostrov","iname_sopka":"Sopečný ostrov","iname_zavod":"Závodní ostrov","iname_mlha1":"Mlhova zátoka","iname_stiny":"Ostrov zelených stínů","iname_cesty":"Ostrov cest","iname_skaly":"Skalní ostrov","iname_pole":"Ostrov luk a polí","iname_vodni":"Vodní ostrov","iname_mlha2":"Mlhův útes","iname_ploty":"Ostrov plotů a zdí","iname_stavby":"Ostrov staveb","iname_draty":"Ostrov drátů","iname_teren":"Ostrov strání","iname_zahrady":"Ostrov zahrad","iname_mlha3":"Mlhova pevnost","iname_trat":"Ostrov závodníků","iname_melciny":"Ostrov mělčin","iname_balvany":"Balvanový ostrov","iname_tajemny":"Tajemný ostrov","iname_hnedy":"Hnědý ostrov","iname_mlha4":"Ostrov kapitána Mlhy","sea_0":"Papouščí moře","sea_1":"Mlžné moře","sea_2":"Bouřlivé moře","sea_3":"Ledové moře","sea_4":"Sluneční moře","sea_5":"Korálové moře","sea_6":"Půlnoční moře","sea_7":"Perlové moře","seadone_0":"Proplul jsi celé Papouščí moře! Otevírá se Mlžné moře.","seadone_1":"Proplul jsi celé Mlžné moře! Otevírá se Bouřlivé moře.","seadone_2":"Proplul jsi celé Bouřlivé moře! Otevírá se Ledové moře.","rank_1":"Povýšení! Teď jsi Námořník!","rank_2":"Povýšení! Teď jsi Lodník!","rank_3":"Povýšení! Teď jsi Kormidelník!","rank_4":"Povýšení! Teď jsi Kapitán!","rank_5":"Povýšení! Teď jsi Admirál!","ui_home_new":"Ahoj, plavčíku! Já jsem papoušek Pepík. Klepni na Začít příběh a dozvíš se, proč musí každý hledač pokladů umět číst mapu.","ui_home_first":"Vítej zpátky, plavčíku! Ještě nemáme žádný kousek mapy. Vyplujeme k Ostrovu papoušků?","ui_home_back":"Vítej zpátky, plavčíku! Další kousek mapy čeká na ostrově:","ui_home_won":"Vítej zpátky, kapitáne! Zlatý kompas máme, ale na Volném moři čeká další dobrodružství. Zvládneš delší sérii než minule?","ui_world":"Tohle je mapa ostrovů. Je nakreslená jako trať v orientačním běhu: start, kontroly a cíl. Na každém ostrově je schovaný kousek mapy. Klepni na první ostrov!","ui_locked":"Sem se dostaneš, až vyluštíš předchozí ostrov.","ui_daily":"Denní poklad! Zlaťáky navíc do truhly. Přijď zase zítra, bude jich ještě víc!","ui_newsyms":"Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!","ui_boss_rules":"Já ti vždycky řeknu jméno značky a ty na ni rychle klepni. Vyhraje ten, kdo jich najde víc, než dohoří svíčka.","mlha_challenge":"Arr! Tak ty chceš kousek mapy, plavčíku? Poraz mě v souboji, jestli to dokážeš!","ui_endless":"Volné moře! Kolik značek přečteš v řadě bez chyby?","ui_duel":"Souboj! Najdi značku dřív než Mlha, než dohoří svíčka.","ui_duel_start":"Souboj začíná! Tři, dva, jedna, teď!","mlha_score_0":"Cha chá, mám další!","mlha_score_1":"Jsi pomalý jako želva!","mlha_score_2":"Ten poklad bude můj!","mlha_gloat":"Cha chá! Tentokrát jsem vyhrál já!","mlha_lost":"Ne! To není možné! Tak dobře, tady máš ten kousek mapy.","res_lose":"Mlha tentokrát vyhrál o fous. Zkus to znovu, příště ho porazíš! Už je unavený.","ui_what":"Co je to za značku? Vyber správné jméno.","ui_pexeso":"Pexeso! Otoč dvě karty a najdi značku a její jméno. Za každou dvojici je zlaťák.","ui_pexeso_done":"Všechny dvojice! Bonus do truhly!","ui_desc_a":"V popisech kontrol je tenhle obrázek. Najdi, jak to vypadá na mapě.","ui_shared":"Kterým značkám na mapě patří tenhle obrázek? Najdi všechny.","ui_shared_intro":"Pozor, plavčíku! Popis kontrol říká, co to je, a mapa ukazuje, jak to vypadá. Proto jeden obrázek v popisu někdy patří víc značkám na mapě.","ui_shared_more":"Správně! Ještě nějaká chybí.","ui_desc_yes":"V popisech kontrol má svůj obrázek.","ui_desc_no":"V popisech kontrol se tahle značka nepoužívá, je jen v mapě.","ui_order":"Kapitánův rozkaz! Klepni značky v tomhle pořadí.","ui_desc_b":"Tahle značka je na mapě. Najdi, jak vypadá v popisech kontrol.","no_0":"To ne, zkus to znovu.","no_1":"To není ono, hledej dál.","no_2":"Skoro! Zkus to ještě jednou.","fr_find":"Najdi na mapě:","fr_toneni":"To není","fr_ale":"ale","fr_znovu":"Zkus to znovu.","fr_anojeto":"Ano, je to","fr_ne":"Ne,","fr_vypada":"vypadá jinak. Tohle je","fr_spravne":"Správně!","fr_netoje":"Ne, to je","fr_kdeje":"Kde je na mapě","fr_klepni":"Klepni na to.","fr_presnetam":"Přesně tam!","fr_toje":"To je","fr_hledej":"Hledej:","fr_rozkaz":"Kapitánův rozkaz! Nejdřív","fr_potom":"potom","fr_nakonec":"a nakonec","fr_ated":"A teď:","fr_tedhledej":"Teď hledej:","fr_splnen":"Rozkaz splněn!","fr_namapeje":"Na mapě je","fr_jaktovypada":"Jak to vypadá v popisech kontrol?","fr_anonamape":"Ano! Na mapě je to","fr_presnetak_popisy":"Přesně tak! V popisech kontrol je","fr_takhle":"takhle.","fr_tohlejevpopisech":"Tohle je v popisech","fr_learned1":"Jupí! Značku","fr_learned2":"už umíš!","ui_all_learned":"Hurá! Umíš všechny značky! Jsi opravdový čtenář map!","res_win_1":"Ostrov vyluštěn! Máš jednu hvězdu.","res_win_2":"Ostrov vyluštěn! Máš dvě hvězdy.","res_win_3":"Ostrov vyluštěn! Máš tři hvězdy!","res_retry":"Zahraj ho znovu bez chyb a budou tři.","res_duel_1":"Porazil jsi kapitána Mlhu! Máš jednu hvězdu.","res_duel_2":"Porazil jsi kapitána Mlhu! Máš dvě hvězdy.","res_duel_3":"Porazil jsi kapitána Mlhu! Máš tři hvězdy!","res_piece":"Získal jsi kousek mapy!","res_map":"Mapa je celá! Teď ji přečti a najdi poklad!","exam_intro":"Zkouška moře! Na každou značku se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!","exam_round2":"Ještě jednou projdeme ty, které se ti pletly. Tentokrát se zeptám obráceně.","exam_gold":"Zlatá medaile! Tohle moře znáš jako své boty. Jsi opravdový kapitán!","exam_silver":"Stříbrná medaile! Skoro všechno si pamatuješ. Tak se pluje!","exam_bronze":"Bronzová medaile! Dobrý začátek. Pár značek ještě procvičíme a bude zlatá.","exam_none":"Tentokrát bez medaile, ale nevěš hlavu! Procvičíme, co se pletlo, a zkusíš to znovu.","fix_intro":"Pojď si procvičit značky, které ti dělaly potíže. Tentokrát ti pomůžu.","fix_done":"Hotovo! Tyhle značky už půjdou líp. Můžeš zkusit zkoušku znovu.","review_offer":"Co kdybychom si zopakovali značky z minulých ostrovů? Ať ti žádná neuplave!","review_intro":"Zopakujeme si značky z minulých ostrovů, hlavně ty, co se ti pletou.","review_done":"Výborně, značky z minulých ostrovů máš zase čerstvé!","ui_shop_intro":"Vítej v krámu! Klobouk si nasadíš na hlavu, vlajku dáš na loď a poklady ti zůstanou v truhle.","ui_shop_poor":"Ještě nemáš dost zlaťáků. Vylušti další ostrov a budeš je mít!","ui_shop_bought":"Paráda! Je to tvoje!","ui_shop_treasure":"Krásný poklad! Už je v truhle.","ui_shop_equipped":"Hotovo, už je to na lodi.","ui_mute_on":"Zvuk je zapnutý, námořníku.","ui_reset":"Hotovo! Můžeš začít znovu od začátku.","story_0":"Před dávnými časy schovali piráti na ostrově poklad. Aby ho zase našli, nakreslili mapu. A hádej co: použili úplně stejné značky, jaké se dnes používají v orientačním běhu! Modrá je voda, žlutá louka, černá tečka balvan a křížek v kolečkách je poklad.","story_1":"Jenže zlý kapitán Mlha mapu ukradl, roztrhal ji na 24 kousků a každý schoval na jiném ostrově. Bez mapy poklad nikdo nenajde.","mlha_story":"Cha chá! Tu mapu už nikdy neuvidíte!","story_2":"Kdo chce poklad najít, musí umět značky číst: poznat, kde je voda, kde bažina a kudy vede cesta. A pak vymyslet, kudy se k pokladu dostat, aby nezapadl do bažiny a neztratil se v hustníku.","story_3":"Já jsem papoušek Pepík a budu ti pomáhat. Za každý vyluštěný ostrov získáš kousek mapy. Až budeš mít všechny, mapu přečteš, dojdeš k pokladu a Zlatý kompas bude tvůj!","quest_0":"Tohle je celá pirátská mapa pokladu. Každá cesta začíná na startu, to je fialový trojúhelník vlevo dole. Klepni na start.","quest_1":"Od startu vede pěší cesta, ta černá přerušovaná čára. Běž po ní až k balvanu, k černé tečce u kontroly jedna. Klepni na balvan.","qhint_1":"Drž se černé přerušované čáry, cesta tě dovede k balvanu.","quest_2":"Od balvanu vyběhni na kopec. Kopec poznáš podle hnědých vrstevnic, vrchol je uprostřed nejmenšího kroužku. Klepni na vrchol kopce.","qhint_2":"Hledej hnědé kroužky v sobě, to je kopec.","quest_3":"Z kopce vidíš žlutou louku a na ní velký strom, zelený kroužek u kontroly dva. Klepni na strom.","qhint_3":"Velký strom je zelený kroužek na žluté louce.","quest_4":"A teď pozor. Bažinu s modrými čárkami obejdi, ta je nebezpečná. Pod loukou jsou dvě fialová kolečka s křížkem. Tam je poklad! Klepni na něj.","qhint_4":"Poklad je v cíli, ve dvou fialových kolečkách s křížkem.","qok_0":"Správně!","qok_1":"Přesně tak!","qok_2":"Výborně, čteš mapu jako kapitán!","quest_done":"Hurá! Našel jsi poklad! Přečetl jsi celou mapu jako opravdový pirát. A v truhle je Zlatý kompas!","qwrong_bazina":"To je bažina, tam bys promokl a zapadl.","qwrong_voda":"To je voda, tam se neběží, tu obejdi.","qwrong_housti":"To je hustník, tam se zamotáš do větví.","qwrong_poklad":"Poklad je tam, ale nejdřív musíš doběhnout po trati.","qwrong_nothing":"Tam nic není.","qwrong_again":"Poslechni si to znovu.","ui_final":"Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový kapitán! Na Volném moři na tebe čekají další dobrodružství.","iname_sifry":"Ostrov šifer","les_1":"Piráti si trasu píšou na lístek. Říká se mu popis kontrol. Je to tabulka a každý řádek v ní patří jedné kontrole.","les_2":"Nahoře je hlavička. Je v ní název trati, její délka v kilometrech a převýšení. To je, kolik metrů celkem vystoupáš do kopce.","les_3":"Pod hlavičkou jsou řádky. Jeden řádek, jedna kontrola. Čtou se shora dolů, tak jak poběžíš.","les_4":"Ve sloupci A je pořadí kontroly. Stejné číslo najdeš na mapě vedle fialového kolečka. První řádek je první kolečko.","les_5":"Ve sloupci B je kód kontroly. To je číslo napsané na lampionu. Podle něj poznáš, že jsi doběhl ke správné kontrole. Kód je vždycky větší než třicet.","les_6":"Ve sloupci D je obrázek, který říká, co na kontrole najdeš. Třeba balvan, studnu nebo kopec.","les_7":"Pozor! Značka na mapě a obrázek v popisu kontrol nejsou totéž. Mapa ti ukáže, kde to je. Obrázek v popisu ti řekne, co to je. Proto vypadají jinak.","iname_hadanky":"Ostrov hádanek","iname_skryse":"Ostrov skrýší","iname_kopce":"Ostrov kopců","iname_pstavby":"Ostrov pirátských staveb","iname_mlha5":"Mlhova šifrovna","pdn_1_1":"Terasa","pds_1_1":"Terasa je rovná plošinka na svahu, takový obří schod. Na mapě poznáš, že tu jsou vrstevnice daleko od sebe.","pdn_1_2":"Hřbítek","pds_1_2":"Hřbítek je výběžek kopce, jako nos vystrčený do údolí. Vrstevnice na mapě z kopce vybíhají ven.","pdn_1_3":"Údolíčko","pds_1_3":"Údolíčko je zářez do kopce, malé údolí, opak hřbítku. Vrstevnice na mapě v něm vybíhají do kopce.","pdn_1_4":"Zemní sráz","pdn_1_5":"Lom","pds_1_5":"Lom je místo, kde lidé vytěžili kámen, písek nebo štěrk. Má strmé stěny, jako by někdo ukousl kus kopce.","pdn_1_8":"Malá rýha","pds_1_8":"Malá rýha je úzká brázda vymletá vodou, většinou suchá. Je menší a mělčí než rýha.","pdn_1_9":"Kupa","pdn_1_11":"Sedlo","pds_1_11":"Sedlo je nižší místo mezi dvěma kopci, jako sedlo mezi dvěma hrby. Na mapě stojí dvě kupy vrstevnic proti sobě.","pdn_1_12":"Prohlubeň","pds_1_12":"Prohlubeň je dolík, ze kterého jde terén odevšad jen nahoru. Na mapě ji kreslí uzavřená vrstevnice s čárkami dovnitř, malá prohlubeň má jen hnědou misku.","pdn_1_16":"Mraveniště","pds_1_16":"Mraveniště je velký kopeček z jehličí a větviček, který postavili mravenci. Na mapě bývá jako malá hnědá tečka, jako kupka.","pdn_2_2":"Skalní věž","pdn_2_3":"Jeskyně","pds_2_3":"Jeskyně je díra ve skále nebo v úbočí kopce, může vést pod zem. Na mapě ji kreslí černé véčko, stejně jako kamennou jámu.","pdn_2_9":"Úzký průchod","pds_2_9":"Úzký průchod je štěrbina mezi dvěma skalami, které stojí proti sobě. Na mapě ho poznáš podle dvou černých srázů vedle sebe.","pdn_2_10":"Příkop","pds_2_10":"Příkop je úzký zářez ve skále nebo v zemi, často ho vykopali lidé. Je hluboký aspoň metr, takže ho nepřehlédneš.","pdn_3_1":"Jezero","pdn_3_2":"Rybníček","pdn_3_5":"Malý vodní příkop","pdn_3_8":"Pevná půda v bažině","pds_3_8":"Pevná půda v bažině je suchý ostrůvek uprostřed mokřiny, nebo pevný pás mezi dvěma bažinami. Tudy se dá bažinou projít a nezapadneš.","pdn_3_11":"Vodní nádrž","pds_3_11":"Vodní nádrž je kamenná nebo betonová nádoba na vodu, kterou postavili lidé. Může to být i žlab, ze kterého pijí zvířata.","pdn_4_1":"Otevřený prostor","pdn_4_2":"Polootevřený prostor","pdn_4_3":"Roh lesa","pdn_4_4":"Světlina","pds_4_4":"Světlina je malá louka uprostřed lesa, kde nerostou stromy. Poznáš ji tak, že je tam světlo a dobře se tam vidí.","pdn_4_6":"Úzký hustník","pds_4_6":"Úzký hustník je řada keřů nebo stromů, kterou někdo vysázel a nejde přes ni snadno projít. Často je to živý plot.","pdn_4_7":"Hranice vegetace","pdn_4_8":"Skupina stromů","pds_4_8":"Skupina stromů je malá skupinka stromů uprostřed otevřeného místa, třeba na louce. Může to být i průchodnější kousek lesa mezi hustším porostem.","pdn_4_9":"Výrazný strom","pdn_5_2":"Cesta","pdn_5_6":"Sloup elektrického vedení","pds_5_6":"Sloup drží dráty elektrického nebo telefonního vedení, někdy i lanovku. Dráty už znáš a kontrola může být na jednom ze sloupů.","pdn_5_7":"Tunel","pds_5_7":"Tunel je podchod pod silnicí nebo pod železnicí. Dá se jím projít na druhou stranu.","pdn_5_12":"Zpevněná plocha","pdn_5_15":"Věž","pdn_5_19":"Milíř","pdn_5_20":"Pomník","pds_5_20":"Pomník je památník nebo socha, kterou lidé postavili na památku. Mívá kamenný podstavec.","pdn_5_21":"Zastřešení","pdn_5_22":"Schodiště","pdn_5_23":"Oblast se zákazem vstupu","ask_voda":"Kde je na mapě Voda?","ask_melka_voda":"Kde je na mapě Mělká voda?","ask_potok":"Kde je na mapě Potok?","ask_prikop":"Kde je na mapě Vodní příkop?","ask_bazina":"Kde je na mapě Bažina?","ask_nezretelna_bazina":"Kde je na mapě Nezřetelná bažina?","ask_uzka_bazina":"Kde je na mapě Úzká bažina?","ask_jama_s_vodou":"Kde je na mapě Jáma s vodou?","ask_studna":"Kde je na mapě Studna?","ask_pramen":"Kde je na mapě Pramen?","ask_vodni_objekt":"Kde je na mapě Zvláštní vodní objekt?","ask_louka":"Kde je na mapě Louka?","ask_roztrousene":"Kde je na mapě Louka se stromy?","ask_divoky":"Kde je na mapě Paseka?","ask_pole":"Kde je na mapě Pole?","ask_sad":"Kde je na mapě Sad?","ask_vinice":"Kde je na mapě Vinice?","ask_les":"Kde je na mapě Běhací les?","ask_zelena_svetla":"Kde je na mapě Řídké křoví?","ask_zelena_stredni":"Kde je na mapě Hustší křoví?","ask_housti":"Kde je na mapě Hustník?","ask_podrost":"Kde je na mapě Podrost?","ask_strom":"Kde je na mapě Velký strom?","ask_ker":"Kde je na mapě Keř?","ask_veg_x":"Kde je na mapě Vývrat?","ask_hranice_veg":"Kde je na mapě Hranice porostu?","ask_kopec":"Kde je na mapě Vrstevnice?","ask_doplnkova":"Kde je na mapě Pomocná vrstevnice?","ask_kupka":"Kde je na mapě Kupka?","ask_protahla_kupka":"Kde je na mapě Protáhlá kupka?","ask_prohluben":"Kde je na mapě Malá prohlubeň?","ask_jama":"Kde je na mapě Jáma?","ask_teren_objekt":"Kde je na mapě Zvláštní terénní objekt?","ask_rozbity":"Kde je na mapě Rozbitý povrch?","ask_zemni_sraz":"Kde je na mapě Mez?","ask_ryha":"Kde je na mapě Rýha?","ask_val":"Kde je na mapě Zemní val?","ask_balvan":"Kde je na mapě Balvan?","ask_velkybalvan":"Kde je na mapě Velký balvan?","ask_shluk":"Kde je na mapě Shluk balvanů?","ask_obrovsky":"Kde je na mapě Obrovský balvan?","ask_balvanove_pole":"Kde je na mapě Balvanové pole?","ask_kamenity":"Kde je na mapě Kamenitý povrch?","ask_skala":"Kde je na mapě Holá skála?","ask_sraz":"Kde je na mapě Skalní sráz?","ask_nepr_sraz":"Kde je na mapě Nepřekonatelný sráz?","ask_kamenna_jama":"Kde je na mapě Kamenná jáma?","ask_pisek":"Kde je na mapě Písek?","ask_zpevnena":"Kde je na mapě Asfalt?","ask_sirokasilnice":"Kde je na mapě Široká silnice?","ask_silnice":"Kde je na mapě Silnice?","ask_vozovka":"Kde je na mapě Vozová cesta?","ask_cesta":"Kde je na mapě Pěší cesta?","ask_pesina":"Kde je na mapě Pěšina?","ask_prusek":"Kde je na mapě Průsek?","ask_zeleznice":"Kde je na mapě Železnice?","ask_vedeni":"Kde je na mapě Elektrické vedení?","ask_most":"Kde je na mapě Most?","ask_zed":"Kde je na mapě Zeď?","ask_nepr_zed":"Kde je na mapě Vysoká zeď?","ask_plot":"Kde je na mapě Plot?","ask_nepr_plot":"Kde je na mapě Vysoký plot?","ask_pruchod_plot":"Kde je na mapě Průchod v plotu?","ask_budova":"Kde je na mapě Budova?","ask_zakaz":"Kde je na mapě Zakázaný prostor?","ask_zricenina":"Kde je na mapě Zřícenina?","ask_zastreseni":"Kde je na mapě Přístřešek?","ask_veza":"Kde je na mapě Vysoká věž?","ask_posed":"Kde je na mapě Posed?","ask_schody":"Kde je na mapě Schody?","ask_mohyla":"Kde je na mapě Hraniční kámen?","ask_krmelec":"Kde je na mapě Krmelec?","ask_krouzek":"Kde je na mapě Zvláštní objekt – kroužek?","ask_krizek":"Kde je na mapě Zvláštní objekt – křížek?","ask_potrubi":"Kde je na mapě Potrubí?","ask_nepr_potrubi":"Kde je na mapě Vysoké potrubí?","ask_start":"Kde je na mapě Start?","ask_kontrola":"Kde je na mapě Kontrola?","ask_cil":"Kde je na mapě Cíl?","ask_spojnice":"Kde je na mapě Spojnice?","ask_znaceny":"Kde je na mapě Značený úsek?","ask_nepristupna":"Kde je na mapě Zakázaná oblast?","ask_pruchod":"Kde je na mapě Průchod?","ask_prvni_pomoc":"Kde je na mapě První pomoc?","ask_obcerstveni":"Kde je na mapě Občerstvení?","ask_nepristupna_trasa":"Kde je na mapě Zakázaná trasa?","ask_cislo_kontroly":"Kde je na mapě Číslo kontroly?","askpd_pd_1_1":"Kde je v popisu kontrol Terasa?","askpd_pd_1_2":"Kde je v popisu kontrol Hřbítek?","askpd_pd_1_3":"Kde je v popisu kontrol Údolíčko?","askpd_pd_1_4":"Kde je v popisu kontrol Zemní sráz?","askpd_pd_1_5":"Kde je v popisu kontrol Lom?","askpd_pd_1_6":"Kde je v popisu kontrol Zemní val?","askpd_pd_1_7":"Kde je v popisu kontrol Rýha?","askpd_pd_1_8":"Kde je v popisu kontrol Malá rýha?","askpd_pd_1_9":"Kde je v popisu kontrol Kupa?","askpd_pd_1_10":"Kde je v popisu kontrol Kupka?","askpd_pd_1_11":"Kde je v popisu kontrol Sedlo?","askpd_pd_1_12":"Kde je v popisu kontrol Prohlubeň?","askpd_pd_1_13":"Kde je v popisu kontrol Malá prohlubeň?","askpd_pd_1_14":"Kde je v popisu kontrol Jáma?","askpd_pd_1_15":"Kde je v popisu kontrol Rozbitý povrch?","askpd_pd_1_16":"Kde je v popisu kontrol Mraveniště?","askpd_pd_2_1":"Kde je v popisu kontrol Skalní sráz?","askpd_pd_2_2":"Kde je v popisu kontrol Skalní věž?","askpd_pd_2_3":"Kde je v popisu kontrol Jeskyně?","askpd_pd_2_4":"Kde je v popisu kontrol Balvan?","askpd_pd_2_5":"Kde je v popisu kontrol Balvanové pole?","askpd_pd_2_6":"Kde je v popisu kontrol Shluk balvanů?","askpd_pd_2_7":"Kde je v popisu kontrol Kamenitý povrch?","askpd_pd_2_8":"Kde je v popisu kontrol Holá skála?","askpd_pd_2_9":"Kde je v popisu kontrol Úzký průchod?","askpd_pd_2_10":"Kde je v popisu kontrol Příkop?","askpd_pd_3_1":"Kde je v popisu kontrol Jezero?","askpd_pd_3_2":"Kde je v popisu kontrol Rybníček?","askpd_pd_3_3":"Kde je v popisu kontrol Jáma s vodou?","askpd_pd_3_4":"Kde je v popisu kontrol Potok?","askpd_pd_3_5":"Kde je v popisu kontrol Malý vodní příkop?","askpd_pd_3_6":"Kde je v popisu kontrol Úzká bažina?","askpd_pd_3_7":"Kde je v popisu kontrol Bažina?","askpd_pd_3_8":"Kde je v popisu kontrol Pevná půda v bažině?","askpd_pd_3_9":"Kde je v popisu kontrol Studna?","askpd_pd_3_10":"Kde je v popisu kontrol Pramen?","askpd_pd_3_11":"Kde je v popisu kontrol Vodní nádrž?","askpd_pd_4_1":"Kde je v popisu kontrol Otevřený prostor?","askpd_pd_4_2":"Kde je v popisu kontrol Polootevřený prostor?","askpd_pd_4_3":"Kde je v popisu kontrol Roh lesa?","askpd_pd_4_4":"Kde je v popisu kontrol Světlina?","askpd_pd_4_5":"Kde je v popisu kontrol Hustník?","askpd_pd_4_6":"Kde je v popisu kontrol Úzký hustník?","askpd_pd_4_7":"Kde je v popisu kontrol Hranice vegetace?","askpd_pd_4_8":"Kde je v popisu kontrol Skupina stromů?","askpd_pd_4_9":"Kde je v popisu kontrol Výrazný strom?","askpd_pd_4_10":"Kde je v popisu kontrol Vývrat?","askpd_pd_5_1":"Kde je v popisu kontrol Silnice?","askpd_pd_5_2":"Kde je v popisu kontrol Cesta?","askpd_pd_5_3":"Kde je v popisu kontrol Průsek?","askpd_pd_5_4":"Kde je v popisu kontrol Most?","askpd_pd_5_5":"Kde je v popisu kontrol Elektrické vedení?","askpd_pd_5_6":"Kde je v popisu kontrol Sloup elektrického vedení?","askpd_pd_5_7":"Kde je v popisu kontrol Tunel?","askpd_pd_5_8":"Kde je v popisu kontrol Zeď?","askpd_pd_5_9":"Kde je v popisu kontrol Plot?","askpd_pd_5_10":"Kde je v popisu kontrol Průchod?","askpd_pd_5_11":"Kde je v popisu kontrol Budova?","askpd_pd_5_12":"Kde je v popisu kontrol Zpevněná plocha?","askpd_pd_5_13":"Kde je v popisu kontrol Zřícenina?","askpd_pd_5_14":"Kde je v popisu kontrol Potrubí?","askpd_pd_5_15":"Kde je v popisu kontrol Věž?","askpd_pd_5_16":"Kde je v popisu kontrol Posed?","askpd_pd_5_17":"Kde je v popisu kontrol Hraniční kámen?","askpd_pd_5_18":"Kde je v popisu kontrol Krmelec?","askpd_pd_5_19":"Kde je v popisu kontrol Milíř?","askpd_pd_5_20":"Kde je v popisu kontrol Pomník?","askpd_pd_5_21":"Kde je v popisu kontrol Zastřešení?","askpd_pd_5_22":"Kde je v popisu kontrol Schodiště?","askpd_pd_5_23":"Kde je v popisu kontrol Oblast se zákazem vstupu?","askpd_pd_5_24":"Kde je v popisu kontrol Železnice?","askpd_pd_6_1":"Kde je v popisu kontrol Zvláštní objekt – křížek?","askpd_pd_6_2":"Kde je v popisu kontrol Zvláštní objekt – kroužek?","ui_mp":"Je tohle značka z mapy, nebo obrázek z popisu kontrol?","fr_zmapy":"To je značka z mapy.","fr_zpopisu":"To je obrázek z popisu kontrol.","ui_pd_name":"Co znamená tenhle obrázek v popisu kontrol?","ui_pd_pic":"Najdi v popisu kontrol:","fr_vpopisu":"V popisu kontrol je to","ui_row_a":"Ťukni na pořadí kontroly.","ui_row_b":"Ťukni na kód kontroly.","ui_row_d":"Ťukni na obrázek, který říká, co na kontrole najdeš.","ui_row_len":"Ťukni na délku tratě.","ui_row_climb":"Ťukni na převýšení.","ui_row_name":"Ťukni na název tratě.","fr_row_a":"To je pořadí kontroly. Stejné číslo najdeš na mapě u kolečka.","fr_row_b":"To je kód kontroly. Stejné číslo najdeš na lampionu.","fr_row_d":"To je obrázek, který říká, co na kontrole najdeš.","fr_row_len":"To je délka tratě. Říká, kolik kilometrů poběžíš.","fr_row_climb":"To je převýšení. Říká, kolik metrů celkem vystoupáš do kopce.","fr_row_name":"To je název tratě.","ui_locked5":"Druhá plavba se otevře, až najdeš Zlatý kompas. Nejdřív dohraj a přečti pirátskou mapu!","ui_newpds":"Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!","ui_boss_rules5":"Já ti řeknu jméno a ty rychle klepni na jeho obrázek v popisu kontrol. Vyhraje ten, kdo jich najde víc, než dohoří svíčka.","ui_duel_pd":"Souboj! Najdi v popisu kontrol správný obrázek dřív než Mlha, než dohoří svíčka.","exam5_intro":"Zkouška moře! Na každý obrázek z popisu kontrol se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!"};
-const AUDIO_IDS=["n_voda","say_voda","cheer_voda","n_melka_voda","say_melka_voda","n_potok","say_potok","n_prikop","say_prikop","n_bazina","say_bazina","cheer_bazina","n_nezretelna_bazina","say_nezretelna_bazina","n_uzka_bazina","say_uzka_bazina","n_jama_s_vodou","say_jama_s_vodou","n_studna","say_studna","n_pramen","say_pramen","n_vodni_objekt","say_vodni_objekt","n_louka","say_louka","cheer_louka","n_roztrousene","say_roztrousene","n_divoky","say_divoky","n_pole","say_pole","n_sad","say_sad","n_vinice","say_vinice","n_les","say_les","cheer_les","n_zelena_svetla","say_zelena_svetla","n_zelena_stredni","say_zelena_stredni","n_housti","say_housti","cheer_housti","n_podrost","say_podrost","n_strom","say_strom","n_ker","say_ker","n_veg_x","say_veg_x","n_hranice_veg","say_hranice_veg","n_kopec","say_kopec","cheer_kopec","n_doplnkova","say_doplnkova","n_kupka","say_kupka","n_protahla_kupka","say_protahla_kupka","n_prohluben","say_prohluben","n_jama","say_jama","n_teren_objekt","say_teren_objekt","n_rozbity","say_rozbity","n_zemni_sraz","say_zemni_sraz","n_ryha","say_ryha","n_val","say_val","n_balvan","say_balvan","cheer_balvan","n_velkybalvan","say_velkybalvan","n_shluk","say_shluk","n_obrovsky","say_obrovsky","n_balvanove_pole","say_balvanove_pole","n_kamenity","say_kamenity","n_skala","say_skala","n_sraz","say_sraz","n_nepr_sraz","say_nepr_sraz","n_kamenna_jama","say_kamenna_jama","n_pisek","say_pisek","n_zpevnena","say_zpevnena","n_sirokasilnice","say_sirokasilnice","n_silnice","say_silnice","n_vozovka","say_vozovka","n_cesta","say_cesta","cheer_cesta","n_pesina","say_pesina","n_prusek","say_prusek","n_zeleznice","say_zeleznice","n_vedeni","say_vedeni","n_most","say_most","n_zed","say_zed","n_nepr_zed","say_nepr_zed","n_plot","say_plot","n_nepr_plot","say_nepr_plot","n_pruchod_plot","say_pruchod_plot","n_budova","say_budova","cheer_budova","n_zakaz","say_zakaz","n_zricenina","say_zricenina","n_zastreseni","say_zastreseni","n_veza","say_veza","n_posed","say_posed","n_schody","say_schody","n_mohyla","say_mohyla","n_krmelec","say_krmelec","n_krouzek","say_krouzek","n_krizek","say_krizek","n_potrubi","say_potrubi","n_nepr_potrubi","say_nepr_potrubi","n_start","say_start","cheer_start","n_kontrola","say_kontrola","cheer_kontrola","n_cil","say_cil","cheer_cil","n_spojnice","say_spojnice","n_znaceny","say_znaceny","n_nepristupna","say_nepristupna","n_pruchod","say_pruchod","n_prvni_pomoc","say_prvni_pomoc","n_obcerstveni","say_obcerstveni","n_nepristupna_trasa","say_nepristupna_trasa","intro_papousci","iname_papousci","crew_crew0","intro_bazina","iname_bazina","crew_crew1","intro_kameny","iname_kameny","crew_crew2","intro_sopka","iname_sopka","crew_crew3","intro_zavod","iname_zavod","crew_crew4","intro_mlha1","iname_mlha1","crew_crew5","intro_stiny","iname_stiny","crew_crew6","intro_cesty","iname_cesty","crew_crew7","intro_skaly","iname_skaly","crew_crew8","intro_pole","iname_pole","crew_crew9","intro_vodni","iname_vodni","crew_crew10","intro_mlha2","iname_mlha2","crew_crew11","intro_ploty","iname_ploty","crew_crew12","intro_stavby","iname_stavby","crew_crew13","intro_draty","iname_draty","crew_crew14","intro_teren","iname_teren","crew_crew15","intro_zahrady","iname_zahrady","crew_crew16","intro_mlha3","iname_mlha3","crew_crew17","intro_trat","iname_trat","crew_crew18","intro_melciny","iname_melciny","crew_crew19","intro_balvany","iname_balvany","crew_crew20","intro_tajemny","iname_tajemny","crew_crew21","intro_hnedy","iname_hnedy","crew_crew22","intro_mlha4","iname_mlha4","crew_kompas","q_0","hint_0","q_1","hint_1","q_2","hint_2","q_3","hint_3","q_4","hint_4","q_5","hint_5","q_6","hint_6","q_7","hint_7","q_8","hint_8","q_9","hint_9","q_10","hint_10","q_11","hint_11","q_12","hint_12","q_13","hint_13","q_14","hint_14","q_15","hint_15","q_16","hint_16","q_17","hint_17","q_18","hint_18","q_19","hint_19","q_20","hint_20","q_21","hint_21","q_22","hint_22","q_23","hint_23","praise_0","praise_1","praise_2","praise_3","praise_4","praise_5","sea_0","sea_1","sea_2","sea_3","sea_4","sea_5","sea_6","sea_7","seadone_0","seadone_1","seadone_2","rank_1","rank_2","rank_3","rank_4","rank_5","ui_home_new","ui_home_first","ui_home_back","ui_home_won","ui_world","ui_locked","ui_daily","ui_newsyms","ui_boss_rules","mlha_challenge","ui_endless","ui_duel","ui_duel_start","mlha_score_0","mlha_score_1","mlha_score_2","mlha_gloat","mlha_lost","res_lose","ui_what","ui_pexeso","ui_pexeso_done","ui_desc_a","ui_shared","ui_shared_intro","ui_shared_more","ui_desc_yes","ui_desc_no","ui_order","ui_desc_b","no_0","no_1","no_2","fr_find","fr_toneni","fr_ale","fr_znovu","fr_anojeto","fr_ne","fr_vypada","fr_spravne","fr_netoje","fr_kdeje","fr_klepni","fr_presnetam","fr_toje","fr_hledej","fr_rozkaz","fr_potom","fr_nakonec","fr_ated","fr_tedhledej","fr_splnen","fr_namapeje","fr_jaktovypada","fr_anonamape","fr_presnetak_popisy","fr_takhle","fr_tohlejevpopisech","fr_learned1","fr_learned2","ui_all_learned","res_win_1","res_win_2","res_win_3","res_retry","res_duel_1","res_duel_2","res_duel_3","res_piece","res_map","exam_intro","exam_round2","exam_gold","exam_silver","exam_bronze","exam_none","fix_intro","fix_done","review_offer","review_intro","review_done","ui_shop_intro","ui_shop_poor","ui_shop_bought","ui_shop_treasure","ui_shop_equipped","ui_mute_on","ui_reset","story_0","story_1","mlha_story","story_2","story_3","quest_0","quest_1","qhint_1","quest_2","qhint_2","quest_3","qhint_3","quest_4","qhint_4","qok_0","qok_1","qok_2","quest_done","qwrong_bazina","qwrong_voda","qwrong_housti","qwrong_poklad","qwrong_nothing","qwrong_again","ui_final","intro_sifry","iname_sifry","crew_crew24","les_1","les_2","les_3","les_4","les_5","les_6","les_7","intro_hadanky","iname_hadanky","crew_crew25","intro_skryse","iname_skryse","crew_crew26","intro_kopce","iname_kopce","crew_crew27","intro_pstavby","iname_pstavby","crew_crew28","intro_mlha5","iname_mlha5","crew_crew29","pdn_1_1","pds_1_1","pdn_1_2","pds_1_2","pdn_1_3","pds_1_3","pdn_1_4","pdn_1_5","pds_1_5","pdn_1_8","pds_1_8","pdn_1_9","pdn_1_11","pds_1_11","pdn_1_12","pds_1_12","pdn_1_16","pds_1_16","pdn_2_2","pdn_2_3","pds_2_3","pdn_2_9","pds_2_9","pdn_2_10","pds_2_10","pdn_3_1","pdn_3_2","pdn_3_5","pdn_3_8","pds_3_8","pdn_3_11","pds_3_11","pdn_4_1","pdn_4_2","pdn_4_3","pdn_4_4","pds_4_4","pdn_4_6","pds_4_6","pdn_4_7","pdn_4_8","pds_4_8","pdn_4_9","pdn_5_2","pdn_5_6","pds_5_6","pdn_5_7","pds_5_7","pdn_5_12","pdn_5_15","pdn_5_19","pdn_5_20","pds_5_20","pdn_5_21","pdn_5_22","pdn_5_23","n_cislo_kontroly","say_cislo_kontroly","ask_voda","ask_melka_voda","ask_potok","ask_prikop","ask_bazina","ask_nezretelna_bazina","ask_uzka_bazina","ask_jama_s_vodou","ask_studna","ask_pramen","ask_vodni_objekt","ask_louka","ask_roztrousene","ask_divoky","ask_pole","ask_sad","ask_vinice","ask_les","ask_zelena_svetla","ask_zelena_stredni","ask_housti","ask_podrost","ask_strom","ask_ker","ask_veg_x","ask_hranice_veg","ask_kopec","ask_doplnkova","ask_kupka","ask_protahla_kupka","ask_prohluben","ask_jama","ask_teren_objekt","ask_rozbity","ask_zemni_sraz","ask_ryha","ask_val","ask_balvan","ask_velkybalvan","ask_shluk","ask_obrovsky","ask_balvanove_pole","ask_kamenity","ask_skala","ask_sraz","ask_nepr_sraz","ask_kamenna_jama","ask_pisek","ask_zpevnena","ask_sirokasilnice","ask_silnice","ask_vozovka","ask_cesta","ask_pesina","ask_prusek","ask_zeleznice","ask_vedeni","ask_most","ask_zed","ask_nepr_zed","ask_plot","ask_nepr_plot","ask_pruchod_plot","ask_budova","ask_zakaz","ask_zricenina","ask_zastreseni","ask_veza","ask_posed","ask_schody","ask_mohyla","ask_krmelec","ask_krouzek","ask_krizek","ask_potrubi","ask_nepr_potrubi","ask_start","ask_kontrola","ask_cil","ask_spojnice","ask_znaceny","ask_nepristupna","ask_pruchod","ask_prvni_pomoc","ask_obcerstveni","ask_nepristupna_trasa","ask_cislo_kontroly","askpd_pd_1_1","askpd_pd_1_2","askpd_pd_1_3","askpd_pd_1_4","askpd_pd_1_5","askpd_pd_1_6","askpd_pd_1_7","askpd_pd_1_8","askpd_pd_1_9","askpd_pd_1_10","askpd_pd_1_11","askpd_pd_1_12","askpd_pd_1_13","askpd_pd_1_14","askpd_pd_1_15","askpd_pd_1_16","askpd_pd_2_1","askpd_pd_2_2","askpd_pd_2_3","askpd_pd_2_4","askpd_pd_2_5","askpd_pd_2_6","askpd_pd_2_7","askpd_pd_2_8","askpd_pd_2_9","askpd_pd_2_10","askpd_pd_3_1","askpd_pd_3_2","askpd_pd_3_3","askpd_pd_3_4","askpd_pd_3_5","askpd_pd_3_6","askpd_pd_3_7","askpd_pd_3_8","askpd_pd_3_9","askpd_pd_3_10","askpd_pd_3_11","askpd_pd_4_1","askpd_pd_4_2","askpd_pd_4_3","askpd_pd_4_4","askpd_pd_4_5","askpd_pd_4_6","askpd_pd_4_7","askpd_pd_4_8","askpd_pd_4_9","askpd_pd_4_10","askpd_pd_5_1","askpd_pd_5_2","askpd_pd_5_3","askpd_pd_5_4","askpd_pd_5_5","askpd_pd_5_6","askpd_pd_5_7","askpd_pd_5_8","askpd_pd_5_9","askpd_pd_5_10","askpd_pd_5_11","askpd_pd_5_12","askpd_pd_5_13","askpd_pd_5_14","askpd_pd_5_15","askpd_pd_5_16","askpd_pd_5_17","askpd_pd_5_18","askpd_pd_5_19","askpd_pd_5_20","askpd_pd_5_21","askpd_pd_5_22","askpd_pd_5_23","askpd_pd_5_24","askpd_pd_6_1","askpd_pd_6_2","ui_mp","fr_zmapy","fr_zpopisu","ui_pd_name","ui_pd_pic","fr_vpopisu","ui_row_a","ui_row_b","ui_row_d","ui_row_len","ui_row_climb","ui_row_name","fr_row_a","fr_row_b","fr_row_d","fr_row_len","fr_row_climb","fr_row_name","ui_locked5","ui_newpds","ui_boss_rules5","ui_duel_pd","exam5_intro"];
+const T={"iname_papousci":"Ostrov papoušků","iname_bazina":"Bažinatý ostrov","iname_kameny":"Kamenný ostrov","iname_sopka":"Sopečný ostrov","iname_zavod":"Závodní ostrov","iname_mlha1":"Mlhova zátoka","iname_stiny":"Ostrov zelených stínů","iname_cesty":"Ostrov cest","iname_skaly":"Skalní ostrov","iname_pole":"Ostrov luk a polí","iname_vodni":"Vodní ostrov","iname_mlha2":"Mlhův útes","iname_ploty":"Ostrov plotů a zdí","iname_stavby":"Ostrov staveb","iname_draty":"Ostrov drátů","iname_teren":"Ostrov strání","iname_zahrady":"Ostrov zahrad","iname_mlha3":"Mlhova pevnost","iname_trat":"Ostrov závodníků","iname_melciny":"Ostrov mělčin","iname_balvany":"Balvanový ostrov","iname_tajemny":"Tajemný ostrov","iname_hnedy":"Hnědý ostrov","iname_mlha4":"Ostrov kapitána Mlhy","sea_0":"Papouščí moře","sea_1":"Mlžné moře","sea_2":"Bouřlivé moře","sea_3":"Ledové moře","sea_4":"Sluneční moře","sea_5":"Korálové moře","sea_6":"Půlnoční moře","sea_7":"Perlové moře","seadone_0":"Proplul jsi celé Papouščí moře! Otevírá se Mlžné moře.","seadone_1":"Proplul jsi celé Mlžné moře! Otevírá se Bouřlivé moře.","seadone_2":"Proplul jsi celé Bouřlivé moře! Otevírá se Ledové moře.","rank_1":"Povýšení! Teď jsi Stopař!","rank_2":"Povýšení! Teď jsi Průzkumník!","rank_3":"Povýšení! Teď jsi Hledač pokladů!","rank_4":"Povýšení! Teď jsi Mistr mapy!","rank_5":"Povýšení! Teď jsi Legenda!","ui_home_new":"Ahoj, dobrodruhu! Já jsem papoušek Pepík. Klepni na Začít příběh a dozvíš se, proč musí každý hledač pokladů umět číst mapu.","ui_home_first":"Vítej zpátky, dobrodruhu! Ještě nemáme žádný kousek mapy. Vyrazíme na Ostrov papoušků?","ui_home_back":"Vítej zpátky, dobrodruhu! Další kousek mapy čeká na ostrově:","ui_home_won":"Vítej zpátky, mistře mapy! Zlatý kompas máme, ale v Divočině čeká další dobrodružství. Zvládneš delší sérii než minule?","ui_world":"Tohle je mapa ostrovů. Je nakreslená jako trať v orientačním běhu: start, kontroly a cíl. Na každém ostrově je schovaný kousek mapy. Klepni na první ostrov!","ui_locked":"Sem se dostaneš, až vyluštíš předchozí ostrov.","ui_daily":"Denní poklad! Zlaťáky navíc do truhly. Přijď zase zítra, bude jich ještě víc!","ui_newsyms":"Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vyraz na výpravu!","ui_boss_rules":"Já ti vždycky řeknu jméno značky a ty na ni rychle klepni. Vyhraje ten, kdo jich najde víc, než dohoří svíčka.","mlha_challenge":"Arr! Tak ty chceš kousek mapy, suchozemská kryso? Poraz mě v souboji, jestli to dokážeš!","ui_endless":"Divočina! Kolik značek přečteš v řadě bez chyby?","ui_duel":"Souboj! Najdi značku dřív než Mlha, než dohoří svíčka.","ui_duel_start":"Souboj začíná! Tři, dva, jedna, teď!","mlha_score_0":"Cha chá, mám další!","mlha_score_1":"Jsi pomalý jako želva!","mlha_score_2":"Ten poklad bude můj!","mlha_gloat":"Cha chá! Tentokrát jsem vyhrál já!","mlha_lost":"Ne! To není možné! Tak dobře, tady máš ten kousek mapy.","res_lose":"Mlha tentokrát vyhrál o fous. Zkus to znovu, příště ho porazíš! Už je unavený.","ui_what":"Co je to za značku? Vyber správné jméno.","ui_pexeso":"Pexeso! Otoč dvě karty a najdi značku a její jméno. Za každou dvojici je zlaťák.","ui_pexeso_done":"Všechny dvojice! Bonus do truhly!","ui_desc_a":"V popisech kontrol je tenhle obrázek. Najdi, jak to vypadá na mapě.","ui_shared":"Kterým značkám na mapě patří tenhle obrázek? Najdi všechny.","ui_shared_intro":"Pozor, dobrodruhu! Popis kontrol říká, co to je, a mapa ukazuje, jak to vypadá. Proto jeden obrázek v popisu někdy patří víc značkám na mapě.","ui_shared_more":"Správně! Ještě nějaká chybí.","ui_desc_yes":"V popisech kontrol má svůj obrázek.","ui_desc_no":"V popisech kontrol se tahle značka nepoužívá, je jen v mapě.","ui_order":"Stopa za stopou! Klepni značky v tomhle pořadí.","ui_desc_b":"Tahle značka je na mapě. Najdi, jak vypadá v popisech kontrol.","no_0":"To ne, zkus to znovu.","no_1":"To není ono, hledej dál.","no_2":"Skoro! Zkus to ještě jednou.","fr_find":"Najdi na mapě:","fr_toneni":"To není","fr_ale":"ale","fr_znovu":"Zkus to znovu.","fr_anojeto":"Ano, je to","fr_ne":"Ne,","fr_vypada":"vypadá jinak. Tohle je","fr_spravne":"Správně!","fr_netoje":"Ne, to je","fr_kdeje":"Kde je na mapě","fr_klepni":"Klepni na to.","fr_presnetam":"Přesně tam!","fr_toje":"To je","fr_hledej":"Hledej:","fr_rozkaz":"Stopa za stopou! Nejdřív","fr_potom":"potom","fr_nakonec":"a nakonec","fr_ated":"A teď:","fr_tedhledej":"Teď hledej:","fr_splnen":"Stopa nalezena!","fr_namapeje":"Na mapě je","fr_jaktovypada":"Jak to vypadá v popisech kontrol?","fr_anonamape":"Ano! Na mapě je to","fr_presnetak_popisy":"Přesně tak! V popisech kontrol je","fr_takhle":"takhle.","fr_tohlejevpopisech":"Tohle je v popisech","fr_learned1":"Jupí! Značku","fr_learned2":"už umíš!","ui_all_learned":"Hurá! Umíš všechny značky! Jsi opravdový čtenář map!","res_win_1":"Ostrov vyluštěn! Máš jednu hvězdu.","res_win_2":"Ostrov vyluštěn! Máš dvě hvězdy.","res_win_3":"Ostrov vyluštěn! Máš tři hvězdy!","res_retry":"Zahraj ho znovu bez chyb a budou tři.","res_duel_1":"Porazil jsi kapitána Mlhu! Máš jednu hvězdu.","res_duel_2":"Porazil jsi kapitána Mlhu! Máš dvě hvězdy.","res_duel_3":"Porazil jsi kapitána Mlhu! Máš tři hvězdy!","res_piece":"Získal jsi kousek mapy!","res_map":"Mapa je celá! Teď ji přečti a najdi poklad!","exam_intro":"Zkouška moře! Na každou značku se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, dobrodruhu!","exam_round2":"Ještě jednou projdeme ty, které se ti pletly. Tentokrát se zeptám obráceně.","exam_gold":"Zlatá medaile! Tohle moře znáš jako své boty. Jsi opravdový mistr mapy!","exam_silver":"Stříbrná medaile! Skoro všechno si pamatuješ. Tak se pluje!","exam_bronze":"Bronzová medaile! Dobrý začátek. Pár značek ještě procvičíme a bude zlatá.","exam_none":"Tentokrát bez medaile, ale nevěš hlavu! Procvičíme, co se pletlo, a zkusíš to znovu.","fix_intro":"Pojď si procvičit značky, které ti dělaly potíže. Tentokrát ti pomůžu.","fix_done":"Hotovo! Tyhle značky už půjdou líp. Můžeš zkusit zkoušku znovu.","review_offer":"Co kdybychom si zopakovali značky z minulých ostrovů? Ať ti žádná neuplave!","review_intro":"Zopakujeme si značky z minulých ostrovů, hlavně ty, co se ti pletou.","review_done":"Výborně, značky z minulých ostrovů máš zase čerstvé!","ui_shop_intro":"Vítej v krámu! Klobouk si nasadíš na hlavu, vlajku vyvěsíš nad tábor a poklady ti zůstanou v truhle.","ui_shop_poor":"Ještě nemáš dost zlaťáků. Vylušti další ostrov a budeš je mít!","ui_shop_bought":"Paráda! Je to tvoje!","ui_shop_treasure":"Krásný poklad! Už je v truhle.","ui_shop_equipped":"Hotovo, už to máš v táboře.","ui_mute_on":"Zvuk je zapnutý, dobrodruhu.","ui_reset":"Hotovo! Můžeš začít znovu od začátku.","story_0":"Před dávnými časy schovali piráti na ostrově poklad. Aby ho zase našli, nakreslili mapu. A hádej co: použili úplně stejné značky, jaké se dnes používají v orientačním běhu! Modrá je voda, žlutá louka, černá tečka balvan a křížek v kolečkách je poklad.","story_1":"Jenže zlý kapitán Mlha mapu ukradl, roztrhal ji na 24 kousků a každý schoval na jiném ostrově. Bez mapy poklad nikdo nenajde.","mlha_story":"Cha chá! Tu mapu už nikdy neuvidíte!","story_2":"Kdo chce poklad najít, musí umět značky číst: poznat, kde je voda, kde bažina a kudy vede cesta. A pak vymyslet, kudy se k pokladu dostat, aby nezapadl do bažiny a neztratil se v hustníku.","story_2b":"Kapitán Mlha umí plout po moři, ale v lese se ztratí hned za první borovicí. Proto poklad nikdy nenašel, i když měl mapu v ruce. Ty jsi hledač pokladů. Hledači nesedí na lodi, chodí po lese, přes kopce a louky, a mapu čtou jako knížku.","story_3":"Já jsem papoušek Pepík. Kdysi jsem seděl na rameni pirátovi, který tu mapu kreslil, a tak znám každou značku. Budu ti pomáhat. Za každý vyluštěný ostrov získáš kousek mapy. Až budeš mít všechny, mapu přečteš, dojdeš k pokladu a Zlatý kompas bude tvůj!","quest_0":"Tohle je celá pirátská mapa pokladu. Každá cesta začíná na startu, to je fialový trojúhelník vlevo dole. Klepni na start.","quest_1":"Od startu vede pěší cesta, ta černá přerušovaná čára. Běž po ní až k balvanu, k černé tečce u kontroly jedna. Klepni na balvan.","qhint_1":"Drž se černé přerušované čáry, cesta tě dovede k balvanu.","quest_2":"Od balvanu vyběhni na kopec. Kopec poznáš podle hnědých vrstevnic, vrchol je uprostřed nejmenšího kroužku. Klepni na vrchol kopce.","qhint_2":"Hledej hnědé kroužky v sobě, to je kopec.","quest_3":"Z kopce vidíš žlutou louku a na ní velký strom, zelený kroužek u kontroly dva. Klepni na strom.","qhint_3":"Velký strom je zelený kroužek na žluté louce.","quest_4":"A teď pozor. Bažinu s modrými čárkami obejdi, ta je nebezpečná. Pod loukou jsou dvě fialová kolečka s křížkem. Tam je poklad! Klepni na něj.","qhint_4":"Poklad je v cíli, ve dvou fialových kolečkách s křížkem.","qok_0":"Správně!","qok_1":"Přesně tak!","qok_2":"Výborně, čteš mapu jako opravdový hledač pokladů!","quest_done":"Hurá! Našel jsi poklad! Přečetl jsi celou mapu jako opravdový hledač pokladů. A v truhle je Zlatý kompas!","qwrong_bazina":"To je bažina, tam bys promokl a zapadl.","qwrong_voda":"To je voda, tam se neběží, tu obejdi.","qwrong_housti":"To je hustník, tam se zamotáš do větví.","qwrong_poklad":"Poklad je tam, ale nejdřív musíš doběhnout po trati.","qwrong_nothing":"Tam nic není.","qwrong_again":"Poslechni si to znovu.","ui_final":"Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový mistr mapy! V Divočině na tebe čekají další dobrodružství.","iname_sifry":"Ostrov šifer","les_1":"Piráti si trasu píšou na lístek. Říká se mu popis kontrol. Je to tabulka a každý řádek v ní patří jedné kontrole.","les_2":"Nahoře je hlavička. Je v ní název trati, její délka v kilometrech a převýšení. To je, kolik metrů celkem vystoupáš do kopce.","les_3":"Pod hlavičkou jsou řádky. Jeden řádek, jedna kontrola. Čtou se shora dolů, tak jak poběžíš.","les_4":"Ve sloupci A je pořadí kontroly. Stejné číslo najdeš na mapě vedle fialového kolečka. První řádek je první kolečko.","les_5":"Ve sloupci B je kód kontroly. To je číslo napsané na lampionu. Podle něj poznáš, že jsi doběhl ke správné kontrole. Kód je vždycky větší než třicet.","les_6":"Ve sloupci D je obrázek, který říká, co na kontrole najdeš. Třeba balvan, studnu nebo kopec.","les_7":"Pozor! Značka na mapě a obrázek v popisu kontrol nejsou totéž. Mapa ti ukáže, kde to je. Obrázek v popisu ti řekne, co to je. Proto vypadají jinak.","iname_hadanky":"Ostrov hádanek","iname_skryse":"Ostrov skrýší","iname_kopce":"Ostrov kopců","iname_pstavby":"Ostrov pirátských staveb","iname_mlha5":"Mlhova šifrovna","pdn_1_1":"Terasa","pds_1_1":"Terasa je rovná plošinka na svahu, takový obří schod. Na mapě poznáš, že tu jsou vrstevnice daleko od sebe.","pdn_1_2":"Hřbítek","pds_1_2":"Hřbítek je výběžek kopce, jako nos vystrčený do údolí. Vrstevnice na mapě z kopce vybíhají ven.","pdn_1_3":"Údolíčko","pds_1_3":"Údolíčko je zářez do kopce, malé údolí, opak hřbítku. Vrstevnice na mapě v něm vybíhají do kopce.","pdn_1_4":"Zemní sráz","pdn_1_5":"Lom","pds_1_5":"Lom je místo, kde lidé vytěžili kámen, písek nebo štěrk. Má strmé stěny, jako by někdo ukousl kus kopce.","pdn_1_8":"Malá rýha","pds_1_8":"Malá rýha je úzká brázda vymletá vodou, většinou suchá. Je menší a mělčí než rýha.","pdn_1_9":"Kupa","pdn_1_11":"Sedlo","pds_1_11":"Sedlo je nižší místo mezi dvěma kopci, jako sedlo mezi dvěma hrby. Na mapě stojí dvě kupy vrstevnic proti sobě.","pdn_1_12":"Prohlubeň","pds_1_12":"Prohlubeň je dolík, ze kterého jde terén odevšad jen nahoru. Na mapě ji kreslí uzavřená vrstevnice s čárkami dovnitř, malá prohlubeň má jen hnědou misku.","pdn_1_16":"Mraveniště","pds_1_16":"Mraveniště je velký kopeček z jehličí a větviček, který postavili mravenci. Na mapě bývá jako malá hnědá tečka, jako kupka.","pdn_2_2":"Skalní věž","pdn_2_3":"Jeskyně","pds_2_3":"Jeskyně je díra ve skále nebo v úbočí kopce, může vést pod zem. Na mapě ji kreslí černé véčko, stejně jako kamennou jámu.","pdn_2_9":"Úzký průchod","pds_2_9":"Úzký průchod je štěrbina mezi dvěma skalami, které stojí proti sobě. Na mapě ho poznáš podle dvou černých srázů vedle sebe.","pdn_2_10":"Příkop","pds_2_10":"Příkop je úzký zářez ve skále nebo v zemi, často ho vykopali lidé. Je hluboký aspoň metr, takže ho nepřehlédneš.","pdn_3_1":"Jezero","pdn_3_2":"Rybníček","pdn_3_5":"Malý vodní příkop","pdn_3_8":"Pevná půda v bažině","pds_3_8":"Pevná půda v bažině je suchý ostrůvek uprostřed mokřiny, nebo pevný pás mezi dvěma bažinami. Tudy se dá bažinou projít a nezapadneš.","pdn_3_11":"Vodní nádrž","pds_3_11":"Vodní nádrž je kamenná nebo betonová nádoba na vodu, kterou postavili lidé. Může to být i žlab, ze kterého pijí zvířata.","pdn_4_1":"Otevřený prostor","pdn_4_2":"Polootevřený prostor","pdn_4_3":"Roh lesa","pdn_4_4":"Světlina","pds_4_4":"Světlina je malá louka uprostřed lesa, kde nerostou stromy. Poznáš ji tak, že je tam světlo a dobře se tam vidí.","pdn_4_6":"Úzký hustník","pds_4_6":"Úzký hustník je řada keřů nebo stromů, kterou někdo vysázel a nejde přes ni snadno projít. Často je to živý plot.","pdn_4_7":"Hranice vegetace","pdn_4_8":"Skupina stromů","pds_4_8":"Skupina stromů je malá skupinka stromů uprostřed otevřeného místa, třeba na louce. Může to být i průchodnější kousek lesa mezi hustším porostem.","pdn_4_9":"Výrazný strom","pdn_5_2":"Cesta","pdn_5_6":"Sloup elektrického vedení","pds_5_6":"Sloup drží dráty elektrického nebo telefonního vedení, někdy i lanovku. Dráty už znáš a kontrola může být na jednom ze sloupů.","pdn_5_7":"Tunel","pds_5_7":"Tunel je podchod pod silnicí nebo pod železnicí. Dá se jím projít na druhou stranu.","pdn_5_12":"Zpevněná plocha","pdn_5_15":"Věž","pdn_5_19":"Milíř","pdn_5_20":"Pomník","pds_5_20":"Pomník je památník nebo socha, kterou lidé postavili na památku. Mívá kamenný podstavec.","pdn_5_21":"Zastřešení","pdn_5_22":"Schodiště","pdn_5_23":"Oblast se zákazem vstupu","ask_voda":"Kde je na mapě Voda?","ask_melka_voda":"Kde je na mapě Mělká voda?","ask_potok":"Kde je na mapě Potok?","ask_prikop":"Kde je na mapě Vodní příkop?","ask_bazina":"Kde je na mapě Bažina?","ask_nezretelna_bazina":"Kde je na mapě Nezřetelná bažina?","ask_uzka_bazina":"Kde je na mapě Úzká bažina?","ask_jama_s_vodou":"Kde je na mapě Jáma s vodou?","ask_studna":"Kde je na mapě Studna?","ask_pramen":"Kde je na mapě Pramen?","ask_vodni_objekt":"Kde je na mapě Zvláštní vodní objekt?","ask_louka":"Kde je na mapě Louka?","ask_roztrousene":"Kde je na mapě Louka se stromy?","ask_divoky":"Kde je na mapě Paseka?","ask_pole":"Kde je na mapě Pole?","ask_sad":"Kde je na mapě Sad?","ask_vinice":"Kde je na mapě Vinice?","ask_les":"Kde je na mapě Běhací les?","ask_zelena_svetla":"Kde je na mapě Řídké křoví?","ask_zelena_stredni":"Kde je na mapě Hustší křoví?","ask_housti":"Kde je na mapě Hustník?","ask_podrost":"Kde je na mapě Podrost?","ask_strom":"Kde je na mapě Velký strom?","ask_ker":"Kde je na mapě Keř?","ask_veg_x":"Kde je na mapě Vývrat?","ask_hranice_veg":"Kde je na mapě Hranice porostu?","ask_kopec":"Kde je na mapě Vrstevnice?","ask_doplnkova":"Kde je na mapě Pomocná vrstevnice?","ask_kupka":"Kde je na mapě Kupka?","ask_protahla_kupka":"Kde je na mapě Protáhlá kupka?","ask_prohluben":"Kde je na mapě Malá prohlubeň?","ask_jama":"Kde je na mapě Jáma?","ask_teren_objekt":"Kde je na mapě Zvláštní terénní objekt?","ask_rozbity":"Kde je na mapě Rozbitý povrch?","ask_zemni_sraz":"Kde je na mapě Mez?","ask_ryha":"Kde je na mapě Rýha?","ask_val":"Kde je na mapě Zemní val?","ask_balvan":"Kde je na mapě Balvan?","ask_velkybalvan":"Kde je na mapě Velký balvan?","ask_shluk":"Kde je na mapě Shluk balvanů?","ask_obrovsky":"Kde je na mapě Obrovský balvan?","ask_balvanove_pole":"Kde je na mapě Balvanové pole?","ask_kamenity":"Kde je na mapě Kamenitý povrch?","ask_skala":"Kde je na mapě Holá skála?","ask_sraz":"Kde je na mapě Skalní sráz?","ask_nepr_sraz":"Kde je na mapě Nepřekonatelný sráz?","ask_kamenna_jama":"Kde je na mapě Kamenná jáma?","ask_pisek":"Kde je na mapě Písek?","ask_zpevnena":"Kde je na mapě Asfalt?","ask_sirokasilnice":"Kde je na mapě Široká silnice?","ask_silnice":"Kde je na mapě Silnice?","ask_vozovka":"Kde je na mapě Vozová cesta?","ask_cesta":"Kde je na mapě Pěší cesta?","ask_pesina":"Kde je na mapě Pěšina?","ask_prusek":"Kde je na mapě Průsek?","ask_zeleznice":"Kde je na mapě Železnice?","ask_vedeni":"Kde je na mapě Elektrické vedení?","ask_most":"Kde je na mapě Most?","ask_zed":"Kde je na mapě Zeď?","ask_nepr_zed":"Kde je na mapě Vysoká zeď?","ask_plot":"Kde je na mapě Plot?","ask_nepr_plot":"Kde je na mapě Vysoký plot?","ask_pruchod_plot":"Kde je na mapě Průchod v plotu?","ask_budova":"Kde je na mapě Budova?","ask_zakaz":"Kde je na mapě Zakázaný prostor?","ask_zricenina":"Kde je na mapě Zřícenina?","ask_zastreseni":"Kde je na mapě Přístřešek?","ask_veza":"Kde je na mapě Vysoká věž?","ask_posed":"Kde je na mapě Posed?","ask_schody":"Kde je na mapě Schody?","ask_mohyla":"Kde je na mapě Hraniční kámen?","ask_krmelec":"Kde je na mapě Krmelec?","ask_krouzek":"Kde je na mapě Zvláštní objekt – kroužek?","ask_krizek":"Kde je na mapě Zvláštní objekt – křížek?","ask_potrubi":"Kde je na mapě Potrubí?","ask_nepr_potrubi":"Kde je na mapě Vysoké potrubí?","ask_start":"Kde je na mapě Start?","ask_kontrola":"Kde je na mapě Kontrola?","ask_cil":"Kde je na mapě Cíl?","ask_spojnice":"Kde je na mapě Spojnice?","ask_znaceny":"Kde je na mapě Značený úsek?","ask_nepristupna":"Kde je na mapě Zakázaná oblast?","ask_pruchod":"Kde je na mapě Průchod?","ask_prvni_pomoc":"Kde je na mapě První pomoc?","ask_obcerstveni":"Kde je na mapě Občerstvení?","ask_nepristupna_trasa":"Kde je na mapě Zakázaná trasa?","ask_cislo_kontroly":"Kde je na mapě Číslo kontroly?","askpd_pd_1_1":"Kde je v popisu kontrol Terasa?","askpd_pd_1_2":"Kde je v popisu kontrol Hřbítek?","askpd_pd_1_3":"Kde je v popisu kontrol Údolíčko?","askpd_pd_1_4":"Kde je v popisu kontrol Zemní sráz?","askpd_pd_1_5":"Kde je v popisu kontrol Lom?","askpd_pd_1_6":"Kde je v popisu kontrol Zemní val?","askpd_pd_1_7":"Kde je v popisu kontrol Rýha?","askpd_pd_1_8":"Kde je v popisu kontrol Malá rýha?","askpd_pd_1_9":"Kde je v popisu kontrol Kupa?","askpd_pd_1_10":"Kde je v popisu kontrol Kupka?","askpd_pd_1_11":"Kde je v popisu kontrol Sedlo?","askpd_pd_1_12":"Kde je v popisu kontrol Prohlubeň?","askpd_pd_1_13":"Kde je v popisu kontrol Malá prohlubeň?","askpd_pd_1_14":"Kde je v popisu kontrol Jáma?","askpd_pd_1_15":"Kde je v popisu kontrol Rozbitý povrch?","askpd_pd_1_16":"Kde je v popisu kontrol Mraveniště?","askpd_pd_2_1":"Kde je v popisu kontrol Skalní sráz?","askpd_pd_2_2":"Kde je v popisu kontrol Skalní věž?","askpd_pd_2_3":"Kde je v popisu kontrol Jeskyně?","askpd_pd_2_4":"Kde je v popisu kontrol Balvan?","askpd_pd_2_5":"Kde je v popisu kontrol Balvanové pole?","askpd_pd_2_6":"Kde je v popisu kontrol Shluk balvanů?","askpd_pd_2_7":"Kde je v popisu kontrol Kamenitý povrch?","askpd_pd_2_8":"Kde je v popisu kontrol Holá skála?","askpd_pd_2_9":"Kde je v popisu kontrol Úzký průchod?","askpd_pd_2_10":"Kde je v popisu kontrol Příkop?","askpd_pd_3_1":"Kde je v popisu kontrol Jezero?","askpd_pd_3_2":"Kde je v popisu kontrol Rybníček?","askpd_pd_3_3":"Kde je v popisu kontrol Jáma s vodou?","askpd_pd_3_4":"Kde je v popisu kontrol Potok?","askpd_pd_3_5":"Kde je v popisu kontrol Malý vodní příkop?","askpd_pd_3_6":"Kde je v popisu kontrol Úzká bažina?","askpd_pd_3_7":"Kde je v popisu kontrol Bažina?","askpd_pd_3_8":"Kde je v popisu kontrol Pevná půda v bažině?","askpd_pd_3_9":"Kde je v popisu kontrol Studna?","askpd_pd_3_10":"Kde je v popisu kontrol Pramen?","askpd_pd_3_11":"Kde je v popisu kontrol Vodní nádrž?","askpd_pd_4_1":"Kde je v popisu kontrol Otevřený prostor?","askpd_pd_4_2":"Kde je v popisu kontrol Polootevřený prostor?","askpd_pd_4_3":"Kde je v popisu kontrol Roh lesa?","askpd_pd_4_4":"Kde je v popisu kontrol Světlina?","askpd_pd_4_5":"Kde je v popisu kontrol Hustník?","askpd_pd_4_6":"Kde je v popisu kontrol Úzký hustník?","askpd_pd_4_7":"Kde je v popisu kontrol Hranice vegetace?","askpd_pd_4_8":"Kde je v popisu kontrol Skupina stromů?","askpd_pd_4_9":"Kde je v popisu kontrol Výrazný strom?","askpd_pd_4_10":"Kde je v popisu kontrol Vývrat?","askpd_pd_5_1":"Kde je v popisu kontrol Silnice?","askpd_pd_5_2":"Kde je v popisu kontrol Cesta?","askpd_pd_5_3":"Kde je v popisu kontrol Průsek?","askpd_pd_5_4":"Kde je v popisu kontrol Most?","askpd_pd_5_5":"Kde je v popisu kontrol Elektrické vedení?","askpd_pd_5_6":"Kde je v popisu kontrol Sloup elektrického vedení?","askpd_pd_5_7":"Kde je v popisu kontrol Tunel?","askpd_pd_5_8":"Kde je v popisu kontrol Zeď?","askpd_pd_5_9":"Kde je v popisu kontrol Plot?","askpd_pd_5_10":"Kde je v popisu kontrol Průchod?","askpd_pd_5_11":"Kde je v popisu kontrol Budova?","askpd_pd_5_12":"Kde je v popisu kontrol Zpevněná plocha?","askpd_pd_5_13":"Kde je v popisu kontrol Zřícenina?","askpd_pd_5_14":"Kde je v popisu kontrol Potrubí?","askpd_pd_5_15":"Kde je v popisu kontrol Věž?","askpd_pd_5_16":"Kde je v popisu kontrol Posed?","askpd_pd_5_17":"Kde je v popisu kontrol Hraniční kámen?","askpd_pd_5_18":"Kde je v popisu kontrol Krmelec?","askpd_pd_5_19":"Kde je v popisu kontrol Milíř?","askpd_pd_5_20":"Kde je v popisu kontrol Pomník?","askpd_pd_5_21":"Kde je v popisu kontrol Zastřešení?","askpd_pd_5_22":"Kde je v popisu kontrol Schodiště?","askpd_pd_5_23":"Kde je v popisu kontrol Oblast se zákazem vstupu?","askpd_pd_5_24":"Kde je v popisu kontrol Železnice?","askpd_pd_6_1":"Kde je v popisu kontrol Zvláštní objekt – křížek?","askpd_pd_6_2":"Kde je v popisu kontrol Zvláštní objekt – kroužek?","ui_mp":"Je tohle značka z mapy, nebo obrázek z popisu kontrol?","fr_zmapy":"To je značka z mapy.","fr_zpopisu":"To je obrázek z popisu kontrol.","ui_pd_name":"Co znamená tenhle obrázek v popisu kontrol?","ui_pd_pic":"Najdi v popisu kontrol:","fr_vpopisu":"V popisu kontrol je to","ui_row_a":"Ťukni na pořadí kontroly.","ui_row_b":"Ťukni na kód kontroly.","ui_row_d":"Ťukni na obrázek, který říká, co na kontrole najdeš.","ui_row_len":"Ťukni na délku tratě.","ui_row_climb":"Ťukni na převýšení.","ui_row_name":"Ťukni na název tratě.","fr_row_a":"To je pořadí kontroly. Stejné číslo najdeš na mapě u kolečka.","fr_row_b":"To je kód kontroly. Stejné číslo najdeš na lampionu.","fr_row_d":"To je obrázek, který říká, co na kontrole najdeš.","fr_row_len":"To je délka tratě. Říká, kolik kilometrů poběžíš.","fr_row_climb":"To je převýšení. Říká, kolik metrů celkem vystoupáš do kopce.","fr_row_name":"To je název tratě.","ui_locked5":"Druhá výprava se otevře, až najdeš Zlatý kompas. Nejdřív dohraj a přečti pirátskou mapu!","ui_newpds":"Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vyraz na výpravu!","ui_boss_rules5":"Já ti řeknu jméno a ty rychle klepni na jeho obrázek v popisu kontrol. Vyhraje ten, kdo jich najde víc, než dohoří svíčka.","ui_duel_pd":"Souboj! Najdi v popisu kontrol správný obrázek dřív než Mlha, než dohoří svíčka.","exam5_intro":"Zkouška moře! Na každý obrázek z popisu kontrol se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, dobrodruhu!"};
+const AUDIO_IDS=["n_voda","say_voda","cheer_voda","n_melka_voda","say_melka_voda","n_potok","say_potok","n_prikop","say_prikop","n_bazina","say_bazina","cheer_bazina","n_nezretelna_bazina","say_nezretelna_bazina","n_uzka_bazina","say_uzka_bazina","n_jama_s_vodou","say_jama_s_vodou","n_studna","say_studna","n_pramen","say_pramen","n_vodni_objekt","say_vodni_objekt","n_louka","say_louka","cheer_louka","n_roztrousene","say_roztrousene","n_divoky","say_divoky","n_pole","say_pole","n_sad","say_sad","n_vinice","say_vinice","n_les","say_les","cheer_les","n_zelena_svetla","say_zelena_svetla","n_zelena_stredni","say_zelena_stredni","n_housti","say_housti","cheer_housti","n_podrost","say_podrost","n_strom","say_strom","n_ker","say_ker","n_veg_x","say_veg_x","n_hranice_veg","say_hranice_veg","n_kopec","say_kopec","cheer_kopec","n_doplnkova","say_doplnkova","n_kupka","say_kupka","n_protahla_kupka","say_protahla_kupka","n_prohluben","say_prohluben","n_jama","say_jama","n_teren_objekt","say_teren_objekt","n_rozbity","say_rozbity","n_zemni_sraz","say_zemni_sraz","n_ryha","say_ryha","n_val","say_val","n_balvan","say_balvan","cheer_balvan","n_velkybalvan","say_velkybalvan","n_shluk","say_shluk","n_obrovsky","say_obrovsky","n_balvanove_pole","say_balvanove_pole","n_kamenity","say_kamenity","n_skala","say_skala","n_sraz","say_sraz","n_nepr_sraz","say_nepr_sraz","n_kamenna_jama","say_kamenna_jama","n_pisek","say_pisek","n_zpevnena","say_zpevnena","n_sirokasilnice","say_sirokasilnice","n_silnice","say_silnice","n_vozovka","say_vozovka","n_cesta","say_cesta","cheer_cesta","n_pesina","say_pesina","n_prusek","say_prusek","n_zeleznice","say_zeleznice","n_vedeni","say_vedeni","n_most","say_most","n_zed","say_zed","n_nepr_zed","say_nepr_zed","n_plot","say_plot","n_nepr_plot","say_nepr_plot","n_pruchod_plot","say_pruchod_plot","n_budova","say_budova","cheer_budova","n_zakaz","say_zakaz","n_zricenina","say_zricenina","n_zastreseni","say_zastreseni","n_veza","say_veza","n_posed","say_posed","n_schody","say_schody","n_mohyla","say_mohyla","n_krmelec","say_krmelec","n_krouzek","say_krouzek","n_krizek","say_krizek","n_potrubi","say_potrubi","n_nepr_potrubi","say_nepr_potrubi","n_start","say_start","cheer_start","n_kontrola","say_kontrola","cheer_kontrola","n_cil","say_cil","cheer_cil","n_spojnice","say_spojnice","n_znaceny","say_znaceny","n_nepristupna","say_nepristupna","n_pruchod","say_pruchod","n_prvni_pomoc","say_prvni_pomoc","n_obcerstveni","say_obcerstveni","n_nepristupna_trasa","say_nepristupna_trasa","intro_papousci","iname_papousci","crew_crew0","intro_bazina","iname_bazina","crew_crew1","intro_kameny","iname_kameny","crew_crew2","intro_sopka","iname_sopka","crew_crew3","intro_zavod","iname_zavod","crew_crew4","intro_mlha1","iname_mlha1","crew_crew5","intro_stiny","iname_stiny","crew_crew6","intro_cesty","iname_cesty","crew_crew7","intro_skaly","iname_skaly","crew_crew8","intro_pole","iname_pole","crew_crew9","intro_vodni","iname_vodni","crew_crew10","intro_mlha2","iname_mlha2","crew_crew11","intro_ploty","iname_ploty","crew_crew12","intro_stavby","iname_stavby","crew_crew13","intro_draty","iname_draty","crew_crew14","intro_teren","iname_teren","crew_crew15","intro_zahrady","iname_zahrady","crew_crew16","intro_mlha3","iname_mlha3","crew_crew17","intro_trat","iname_trat","crew_crew18","intro_melciny","iname_melciny","crew_crew19","intro_balvany","iname_balvany","crew_crew20","intro_tajemny","iname_tajemny","crew_crew21","intro_hnedy","iname_hnedy","crew_crew22","intro_mlha4","iname_mlha4","crew_kompas","q_0","hint_0","q_1","hint_1","q_2","hint_2","q_3","hint_3","q_4","hint_4","q_5","hint_5","q_6","hint_6","q_7","hint_7","q_8","hint_8","q_9","hint_9","q_10","hint_10","q_11","hint_11","q_12","hint_12","q_13","hint_13","q_14","hint_14","q_15","hint_15","q_16","hint_16","q_17","hint_17","q_18","hint_18","q_19","hint_19","q_20","hint_20","q_21","hint_21","q_22","hint_22","q_23","hint_23","praise_0","praise_1","praise_2","praise_3","praise_4","praise_5","sea_0","sea_1","sea_2","sea_3","sea_4","sea_5","sea_6","sea_7","seadone_0","seadone_1","seadone_2","rank_1","rank_2","rank_3","rank_4","rank_5","ui_home_new","ui_home_first","ui_home_back","ui_home_won","ui_world","ui_locked","ui_daily","ui_newsyms","ui_boss_rules","mlha_challenge","ui_endless","ui_duel","ui_duel_start","mlha_score_0","mlha_score_1","mlha_score_2","mlha_gloat","mlha_lost","res_lose","ui_what","ui_pexeso","ui_pexeso_done","ui_desc_a","ui_shared","ui_shared_intro","ui_shared_more","ui_desc_yes","ui_desc_no","ui_order","ui_desc_b","no_0","no_1","no_2","fr_find","fr_toneni","fr_ale","fr_znovu","fr_anojeto","fr_ne","fr_vypada","fr_spravne","fr_netoje","fr_kdeje","fr_klepni","fr_presnetam","fr_toje","fr_hledej","fr_rozkaz","fr_potom","fr_nakonec","fr_ated","fr_tedhledej","fr_splnen","fr_namapeje","fr_jaktovypada","fr_anonamape","fr_presnetak_popisy","fr_takhle","fr_tohlejevpopisech","fr_learned1","fr_learned2","ui_all_learned","res_win_1","res_win_2","res_win_3","res_retry","res_duel_1","res_duel_2","res_duel_3","res_piece","res_map","exam_intro","exam_round2","exam_gold","exam_silver","exam_bronze","exam_none","fix_intro","fix_done","review_offer","review_intro","review_done","ui_shop_intro","ui_shop_poor","ui_shop_bought","ui_shop_treasure","ui_shop_equipped","ui_mute_on","ui_reset","story_0","story_1","mlha_story","story_2","story_2b","story_3","quest_0","quest_1","qhint_1","quest_2","qhint_2","quest_3","qhint_3","quest_4","qhint_4","qok_0","qok_1","qok_2","quest_done","qwrong_bazina","qwrong_voda","qwrong_housti","qwrong_poklad","qwrong_nothing","qwrong_again","ui_final","intro_sifry","iname_sifry","crew_crew24","les_1","les_2","les_3","les_4","les_5","les_6","les_7","intro_hadanky","iname_hadanky","crew_crew25","intro_skryse","iname_skryse","crew_crew26","intro_kopce","iname_kopce","crew_crew27","intro_pstavby","iname_pstavby","crew_crew28","intro_mlha5","iname_mlha5","crew_crew29","pdn_1_1","pds_1_1","pdn_1_2","pds_1_2","pdn_1_3","pds_1_3","pdn_1_4","pdn_1_5","pds_1_5","pdn_1_8","pds_1_8","pdn_1_9","pdn_1_11","pds_1_11","pdn_1_12","pds_1_12","pdn_1_16","pds_1_16","pdn_2_2","pdn_2_3","pds_2_3","pdn_2_9","pds_2_9","pdn_2_10","pds_2_10","pdn_3_1","pdn_3_2","pdn_3_5","pdn_3_8","pds_3_8","pdn_3_11","pds_3_11","pdn_4_1","pdn_4_2","pdn_4_3","pdn_4_4","pds_4_4","pdn_4_6","pds_4_6","pdn_4_7","pdn_4_8","pds_4_8","pdn_4_9","pdn_5_2","pdn_5_6","pds_5_6","pdn_5_7","pds_5_7","pdn_5_12","pdn_5_15","pdn_5_19","pdn_5_20","pds_5_20","pdn_5_21","pdn_5_22","pdn_5_23","n_cislo_kontroly","say_cislo_kontroly","ask_voda","ask_melka_voda","ask_potok","ask_prikop","ask_bazina","ask_nezretelna_bazina","ask_uzka_bazina","ask_jama_s_vodou","ask_studna","ask_pramen","ask_vodni_objekt","ask_louka","ask_roztrousene","ask_divoky","ask_pole","ask_sad","ask_vinice","ask_les","ask_zelena_svetla","ask_zelena_stredni","ask_housti","ask_podrost","ask_strom","ask_ker","ask_veg_x","ask_hranice_veg","ask_kopec","ask_doplnkova","ask_kupka","ask_protahla_kupka","ask_prohluben","ask_jama","ask_teren_objekt","ask_rozbity","ask_zemni_sraz","ask_ryha","ask_val","ask_balvan","ask_velkybalvan","ask_shluk","ask_obrovsky","ask_balvanove_pole","ask_kamenity","ask_skala","ask_sraz","ask_nepr_sraz","ask_kamenna_jama","ask_pisek","ask_zpevnena","ask_sirokasilnice","ask_silnice","ask_vozovka","ask_cesta","ask_pesina","ask_prusek","ask_zeleznice","ask_vedeni","ask_most","ask_zed","ask_nepr_zed","ask_plot","ask_nepr_plot","ask_pruchod_plot","ask_budova","ask_zakaz","ask_zricenina","ask_zastreseni","ask_veza","ask_posed","ask_schody","ask_mohyla","ask_krmelec","ask_krouzek","ask_krizek","ask_potrubi","ask_nepr_potrubi","ask_start","ask_kontrola","ask_cil","ask_spojnice","ask_znaceny","ask_nepristupna","ask_pruchod","ask_prvni_pomoc","ask_obcerstveni","ask_nepristupna_trasa","ask_cislo_kontroly","askpd_pd_1_1","askpd_pd_1_2","askpd_pd_1_3","askpd_pd_1_4","askpd_pd_1_5","askpd_pd_1_6","askpd_pd_1_7","askpd_pd_1_8","askpd_pd_1_9","askpd_pd_1_10","askpd_pd_1_11","askpd_pd_1_12","askpd_pd_1_13","askpd_pd_1_14","askpd_pd_1_15","askpd_pd_1_16","askpd_pd_2_1","askpd_pd_2_2","askpd_pd_2_3","askpd_pd_2_4","askpd_pd_2_5","askpd_pd_2_6","askpd_pd_2_7","askpd_pd_2_8","askpd_pd_2_9","askpd_pd_2_10","askpd_pd_3_1","askpd_pd_3_2","askpd_pd_3_3","askpd_pd_3_4","askpd_pd_3_5","askpd_pd_3_6","askpd_pd_3_7","askpd_pd_3_8","askpd_pd_3_9","askpd_pd_3_10","askpd_pd_3_11","askpd_pd_4_1","askpd_pd_4_2","askpd_pd_4_3","askpd_pd_4_4","askpd_pd_4_5","askpd_pd_4_6","askpd_pd_4_7","askpd_pd_4_8","askpd_pd_4_9","askpd_pd_4_10","askpd_pd_5_1","askpd_pd_5_2","askpd_pd_5_3","askpd_pd_5_4","askpd_pd_5_5","askpd_pd_5_6","askpd_pd_5_7","askpd_pd_5_8","askpd_pd_5_9","askpd_pd_5_10","askpd_pd_5_11","askpd_pd_5_12","askpd_pd_5_13","askpd_pd_5_14","askpd_pd_5_15","askpd_pd_5_16","askpd_pd_5_17","askpd_pd_5_18","askpd_pd_5_19","askpd_pd_5_20","askpd_pd_5_21","askpd_pd_5_22","askpd_pd_5_23","askpd_pd_5_24","askpd_pd_6_1","askpd_pd_6_2","ui_mp","fr_zmapy","fr_zpopisu","ui_pd_name","ui_pd_pic","fr_vpopisu","ui_row_a","ui_row_b","ui_row_d","ui_row_len","ui_row_climb","ui_row_name","fr_row_a","fr_row_b","fr_row_d","fr_row_len","fr_row_climb","fr_row_name","ui_locked5","ui_newpds","ui_boss_rules5","ui_duel_pd","exam5_intro"];
 /*AUDIO-DATA-END*/
-const RANKS=[{n:"Plavčík",e:"🧒",xp:0},{n:"Námořník",e:"⚓",xp:20},{n:"Lodník",e:"🪢",xp:50},{n:"Kormidelník",e:"🛞",xp:90},{n:"Kapitán",e:"🏴‍☠️",xp:150},{n:"Admirál",e:"👑",xp:240}];
+const RANKS=[{n:"Nováček",e:"🧒",xp:0},{n:"Stopař",e:"👣",xp:20},{n:"Průzkumník",e:"🔭",xp:50},{n:"Hledač pokladů",e:"🗺️",xp:90},{n:"Mistr mapy",e:"🏅",xp:150},{n:"Legenda",e:"👑",xp:240}];
 const SHOP=[
   {id:"hat_none", cat:"hat", emoji:"🙂", name:"Bez klobouku", price:0},
   {id:"hat_cap", cat:"hat", emoji:"🧢", name:"Kšiltovka", price:8},
@@ -1103,6 +1151,11 @@ let voices=[], csVoice=null, ttsTok=0, promptTimer=null;
 /* later(fn,ms): odložená řeč (zadání, úvod obrazovky). Ruší ji stopAudio/stopSpeak/show,
    takže po odchodu z obrazovky nebo novém ťuknutí už nepromluví. */
 function later(fn,ms){ clearTimeout(promptTimer); promptTimer=setTimeout(fn,ms); }
+/* „Můžeš pokračovat": po doposlouchání se hlavní tlačítko rozbliká (třída ready) a tiše cinkne; readyAfter = pojistka časem */
+let readyTimer=null;
+function armReady(btn){ if(!btn) return; clearTimeout(readyTimer); readyTimer=null; if(btn.classList.contains("ready")) return; btn.classList.add("ready"); sndReady(); }
+function disarmReady(){ clearTimeout(readyTimer); readyTimer=null; document.querySelectorAll(".bigbtn.ready").forEach(b=>b.classList.remove("ready")); }
+function readyAfter(btn,ms){ clearTimeout(readyTimer); readyTimer=setTimeout(()=>armReady(btn),ms); }
 function loadVoices(){
   try{ voices=window.speechSynthesis?window.speechSynthesis.getVoices():[]; }catch(e){ voices=[]; }
   csVoice=voices.find(v=>/^cs/i.test(v.lang))||voices.find(v=>/czech|cesk/i.test(v.name))||null;
@@ -1230,6 +1283,7 @@ function sndWrong(){ tone(300,0.18,"sine",0.16,0); tone(220,0.24,"sine",0.16,0.1
 function sndCoin(){ tone(1050,0.08,"square",0.12,0); tone(1400,0.12,"square",0.12,0.07); }
 function sndStar(i){ tone(700+i*200,0.18,"triangle",0.2,0); tone(1000+i*200,0.3,"triangle",0.2,0.12); }
 function sndFanfare(){ [523,659,784,1047].forEach((f,i)=>tone(f,0.22,"triangle",0.2,i*0.14)); tone(1319,0.5,"triangle",0.22,0.6); }
+function sndReady(){ tone(660,0.08,"triangle",0.1,0); tone(880,0.12,"triangle",0.1,0.09); }
 function sndTick(){ tone(1200,0.04,"square",0.08,0); }
 function sndMlha(){ tone(180,0.2,"sawtooth",0.08,0); tone(150,0.25,"sawtooth",0.08,0.15); }
 function sndFlip(){ tone(500,0.06,"triangle",0.1,0); }
@@ -1283,6 +1337,7 @@ function badge(emoji,text,ms=2200){
 /* ================== OBRAZOVKY ================== */
 const SCREENS=["start","world","island","play","result","exam","final","learn","shop","story","quest"];
 function show(name){
+  disarmReady();   /* změna obrazovky zhasne rozblikané tlačítko i pojistný časovač */
   stopSpeak();   /* každý přechod obrazovky zastaví řeč (i odložené promluvy) */
   SCREENS.forEach(k=>{ const s=byId("sc_"+k); const on=(k===name); s.hidden=!on; if(on){ s.classList.remove("in"); void s.offsetWidth; s.classList.add("in"); } });
   byId("homeBtn").hidden=(name==="start");
@@ -1292,7 +1347,7 @@ function goHome(){ stopSpeak(); clearRun(); renderHome(); show("start"); }
 function goWorld(){ stopSpeak(); clearRun(); curSea=-1; show("world"); renderWorld();
   if(!G.seenWorld){ G.seenWorld=true; saveG(); later(()=>play(["ui_world"]),300); } }
 
-/* ================== LOĎ (DOMOV) ================== */
+/* ================== TÁBOR (DOMOV) ================== */
 function homeIds(){
   const N=ISLANDS.length, p=piecesCount();
   if(!G.seenIntro) return ["ui_home_new"];
@@ -1309,7 +1364,7 @@ function renderHome(){
   let shown=0;
   ISLANDS.forEach((isl,i)=>{ const c=crewOf(i); const has=G.crew.includes(c.id); if(!has){ if(shown>=3) return; shown++; } const s=el("span",has?"":"empty",c.emoji); s.title=has?c.name:"Zatím tajemství"; crew.appendChild(s); });
   const p=piecesCount();
-  byId("stats").innerHTML=`<span>🗺️ Kousky mapy: ${p} / ${STAGE1}</span><span>🧭 Naučeno: ${masteredCount()} / ${SY.length}</span>`+(G.won?`<span>🌊 Nejlepší série: ${G.bestStreak}</span>`:"");
+  byId("stats").innerHTML=`<span>🗺️ Kousky mapy: ${p} / ${STAGE1}</span><span>🧭 Naučeno: ${masteredCount()} / ${SY.length}</span>`+(G.won?`<span>🌲 Nejlepší série: ${G.bestStreak}</span>`:"");
   const tr=G.owned.filter(id=>SHOPMAP[id]&&SHOPMAP[id].cat==="treasure").map(id=>SHOPMAP[id].emoji);
   if(G.won) tr.unshift("🧭");
   byId("chestLine").textContent = tr.length? "💰 Moje truhla: "+tr.join(" ") : "💰 Truhla je zatím prázdná. Poklady koupíš v krámu.";
@@ -1317,7 +1372,7 @@ function renderHome(){
   byId("dailyBtn").hidden=(G.daily.last===todayStr());
   byId("storyBtn").hidden=!!G.seenIntro; byId("sailBtn").hidden=!G.seenIntro; byId("storyAgain").hidden=!G.seenIntro;
   byId("freeBtn").hidden=!G.won;
-  byId("sailBtn").innerHTML=G.won?'<span class="bi">🗺️</span> Mapa ostrovů':'<span class="bi">⛵</span> Vyplout na mapu';
+  byId("sailBtn").innerHTML=G.won?'<span class="bi">🗺️</span> Mapa ostrovů':'<span class="bi">🗺️</span> Na výpravu!';
 }
 function readHome(){ ensureAudio(); startSpawner(); play(homeIds()); }
 byId("homeRead").onclick=readHome; byId("homeWho").onclick=readHome;
@@ -1365,8 +1420,8 @@ let curSea=-1;
 const COURSE_R=55, COURSE_RT=66;   /* poloměr kroužku kontroly a opsané kružnice startu (viewBox 400×500) */
 function courseSvg(pts, from, to){
   const R=COURSE_R, RT=COURSE_RT, GAP=3, N=ISLANDS.length, PU="#BB29BB";
-  /* Dvě samostatné „plavby": start na indexu 0 a STAGE1 (začátek 5. moře), cíl na STAGE1-1 (konec Zlatého kompasu)
-     a na N-1 (konec 5. moře). Mezi plavbami se spojnice nekreslí, takže moře 1–4 vypadají přesně jako dřív. */
+  /* Dvě samostatné „výpravy": start na indexu 0 a STAGE1 (začátek 5. moře), cíl na STAGE1-1 (konec Zlatého kompasu)
+     a na N-1 (konec 5. moře). Mezi výpravami se spojnice nekreslí, takže moře 1–4 vypadají přesně jako dřív. */
   const isStart=i=>(i===0||i===STAGE1), isFinish=i=>(i===N-1||i===STAGE1-1);
   const radiusOf=i=>(isStart(i)?RT:R);
   const seg=(a,b,ra,rb)=>{
@@ -1376,7 +1431,7 @@ function courseSvg(pts, from, to){
     return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
   };
   let out="";
-  if(from>0 && from!==STAGE1) out+=seg([-70,570], pts[0], 0, R);      /* spojnice přicházející z předchozího moře (ne na začátek 2. plavby) */
+  if(from>0 && from!==STAGE1) out+=seg([-70,570], pts[0], 0, R);      /* spojnice přicházející z předchozího moře (ne na začátek 2. výpravy) */
   for(let k=0;k<pts.length;k++){
     const i=from+k, p=pts[k];
     if(k>0) out+=seg(pts[k-1], p, radiusOf(i-1), R);
@@ -1388,7 +1443,7 @@ function courseSvg(pts, from, to){
       out+=`<circle cx="${p[0]}" cy="${p[1]}" r="${R}"/><circle cx="${p[0]}" cy="${p[1]}" r="${Math.round(R*0.7)}"/>`;
     } else {
       out+=`<circle cx="${p[0]}" cy="${p[1]}" r="${R}"/>`;
-      const num=isSea5(i)?i-STAGE1:i;   /* ve 2. plavbě číslujeme kontroly od 1 (jako nová trať) */
+      const num=isSea5(i)?i-STAGE1:i;   /* ve 2. výpravě číslujeme kontroly od 1 (jako nová trať) */
       const top=p[1]<120, left=top||p[0]<200, nx=left?p[0]-R-6:p[0]+R+6;   /* u horního ostrova číslo vlevo vedle kroužku */
       const ny=top?p[1]+10:p[1]-R+16;
       out+=`<text x="${nx}" y="${ny}" font-size="30" font-weight="700" font-family="'Baloo 2', Nunito, 'Segoe UI', sans-serif" fill="${PU}" stroke="none" text-anchor="${left?"end":"start"}">${num}</text>`;
@@ -1412,7 +1467,7 @@ function renderWorld(){
     const isl=ISLANDS[i]; const [x,y]=POS[i-from]; pts.push([x*4,y*5]);
     const state=islandState(i); const st=G.islands[isl.id]; const stars=st?st.stars:0;
     const b=el("button","isl "+state); b.style.left=x+"%"; b.style.top=y+"%";
-    b.style.setProperty("--lt", Math.round(29+((i===0||i===STAGE1)?COURSE_RT:COURSE_R)*k+4)+"px");   /* popisek těsně pod značkou (start plavby má větší kružnici) */
+    b.style.setProperty("--lt", Math.round(29+((i===0||i===STAGE1)?COURSE_RT:COURSE_R)*k+4)+"px");   /* popisek těsně pod značkou (start výpravy má větší kružnici) */
     b.setAttribute("aria-label",isl.name+(state==="locked"?" (zamčeno)":""));
     b.innerHTML=`<div class="blob">${isl.emoji||"🏝️"}</div><div class="lbl"><div>${isl.name}</div><div class="st">${state==="locked"?"":("⭐".repeat(stars)+"☆".repeat(3-stars))}</div></div>`;
     b.onclick=()=>tapIsland(i,b);
@@ -1424,7 +1479,7 @@ function renderWorld(){
   byId("compassBig").hidden=!(G.won && curSea===nSeas-1);
   renderPieces(byId("pieces"));
   const p=piecesCount(), N=STAGE1;
-  byId("piecesText").textContent = G.won ? (curSea===SEA5 ? "Druhá plavba: 5. moře! Zlatý kompas už máš, teď se učíš číst popis kontrol." : "Mapa je celá! Zlatý kompas je náš. 🧭") : "Kousky mapy: "+p+" / "+N+(p<N?". Každý ostrov schovává jeden.":"");
+  byId("piecesText").textContent = G.won ? (curSea===SEA5 ? "Druhá výprava: 5. moře! Zlatý kompas už máš, teď se učíš číst popis kontrol." : "Mapa je celá! Zlatý kompas je náš. 🧭") : "Kousky mapy: "+p+" / "+N+(p<N?". Každý ostrov schovává jeden.":"");
   const exOk=seaRegularDone(curSea), exb=byId("examBtn"); exb.hidden=!exOk;
   if(exOk){ const ex=G.exams[curSea]; exb.innerHTML='<span class="bi">📜</span> Zkouška moře'+(ex&&ex.medal?" "+MEDALS[ex.medal].e:""); }
   byId("reviewBtn").hidden=piecesCount()<2;
@@ -1437,7 +1492,7 @@ byId("seaNext").onclick=()=>{ curSea++; renderWorld(); play(["sea_"+curSea]); };
 function tapIsland(i,b){
   ensureAudio();
   if(islandState(i)==="locked"){ b.classList.add("wrong"); setTimeout(()=>b.classList.remove("wrong"),500); sndWrong();
-    if(isSea5(i)&&!G.won){ badge("🔒","Druhá plavba se otevře po Zlatém kompasu"); play(["ui_locked5"]); } else play(["ui_locked"]); return; }
+    if(isSea5(i)&&!G.won){ badge("🔒","Druhá výprava se otevře po Zlatém kompasu"); play(["ui_locked5"]); } else play(["ui_locked"]); return; }
   openIsland(i);
 }
 byId("examBtn").onclick=()=>{ ensureAudio(); startExam(curSea); };
@@ -1452,7 +1507,7 @@ function openIsland(i){
   const sea5pds = isSea5(i) && !isl.boss && isl.pds && isl.pds.length;   /* ostrov 5. moře s novými piktogramy (hádanky/skrýše/kopce/stavby) */
   byId("islTitle").textContent=(isl.emoji||"🏝️")+" "+isl.name;
   if(isSea5(i)){ const local=i-STAGE1, last=ISLANDS.length-1-STAGE1;
-    byId("islCtrl").textContent = local===0?"🚩 Start druhé plavby":(i===ISLANDS.length-1?"💎 Cíl druhé plavby":"🎯 Kontrola "+local+" z "+(last-1)); }
+    byId("islCtrl").textContent = local===0?"🚩 Start druhé výpravy":(i===ISLANDS.length-1?"🏁 Cíl druhé výpravy":"🎯 Kontrola "+local+" z "+(last-1)); }
   else byId("islCtrl").textContent=i===0?"🚩 Start trati":(i===STAGE1-1?"💎 Cíl trati":"🎯 Kontrola "+i+" z "+(STAGE1-2));
   const intro=introOf(i);
   byId("islText").textContent=intro;
@@ -1469,19 +1524,20 @@ function openIsland(i){
     list.forEach(num=>{ const p=PD_BY[num];
       const c=el("button","nsym",pdDescOf(p)+`<div>${p.emoji||"📋"} ${p.name}</div>`+(p.ill?`<div class="mini ill" title="Jak to vypadá na mapě">${pdIllOf(p)}</div>`:""));
       c.setAttribute("aria-label",p.name);
-      c.onclick=()=>{ c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); play([p.sclip||p.clip]); }; ns.appendChild(c); });
-    extra="Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!";
+      c.onclick=()=>{ c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); play([p.sclip||p.clip],{onend:()=>armReady(byId("goBtn"))}); }; ns.appendChild(c); });
+    extra="Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vyraz na výpravu!";
   }else{
     isl.syms.forEach(id=>{ const s=SYM[id]; const c=el("button","nsym",svgOf(s)+`<div>${s.emoji} ${s.name}</div><div class="isomline">${s.isom.split(" ")[0]}</div>`+(s.desc?`<div class="mini" title="V popisech kontrol">${descOf(s)}</div>`:"")); c.setAttribute("aria-label",s.name);
-      c.onclick=()=>{ c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); speak(s.say); }; ns.appendChild(c); });
-    extra="Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!";
+      c.onclick=()=>{ c.classList.remove("flash"); void c.offsetWidth; c.classList.add("flash"); speak(s.say,{onend:()=>armReady(byId("goBtn"))}); }; ns.appendChild(c); });
+    extra="Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vyraz na výpravu!";
   }
   const st=G.islands[isl.id];
   byId("islNote").textContent = st&&st.done ? (st.stars>=3?"Máš tu už tři hvězdy! Ostrov můžeš hrát znovu pro zlaťáky.":"Máš tu "+st.stars+" ⭐. Zahraj znovu bez chyb a získáš tři!") : "";
-  byId("goBtn").innerHTML=isl.boss?'<span class="bi">⚔️</span> Do souboje!':'<span class="bi">⛵</span> Vyplout!';
+  byId("goBtn").innerHTML=isl.boss?'<span class="bi">⚔️</span> Do souboje!':'<span class="bi">🥾</span> Na výpravu!';
   show("island");
-  const ids=["intro_"+isl.id].concat(isl.boss?["mlha_challenge",isSea5(i)?"ui_boss_rules5":"ui_boss_rules"]:(sea5pds?["ui_newpds"]:["ui_newsyms"])); byId("islRead").onclick=()=>play(ids);
-  later(()=>play(ids),300);
+  const ids=["intro_"+isl.id].concat(isl.boss?["mlha_challenge",isSea5(i)?"ui_boss_rules5":"ui_boss_rules"]:(sea5pds?["ui_newpds"]:["ui_newsyms"])); const goReady=()=>armReady(byId("goBtn"));
+  byId("islRead").onclick=()=>play(ids,{onend:goReady});
+  later(()=>play(ids,{onend:goReady}),300); readyAfter(byId("goBtn"),20000);
 }
 byId("goBtn").onclick=()=>{ ensureAudio(); startRun(curIsland); };
 
@@ -1527,7 +1583,7 @@ function startRun(i){
 function startEndless(){
   clearRun();
   R={idx:-1, sea:99, isl:null, tasks:null, t:0, errors:0, taskErr:false, coinsStart:coins, K:SY.map(s=>s.id), newIds:[], endless:true, streak:0, timers:[], lastTarget:null};
-  byId("playIsl").textContent="🌊 Volné moře"; byId("taskbar").hidden=true; byId("streakInfo").hidden=false;
+  byId("playIsl").textContent="🌲 Divočina"; byId("taskbar").hidden=true; byId("streakInfo").hidden=false;
   show("play"); play(["ui_endless"]); setTimeout(nextTask,1200);
 }
 function renderTaskbar(){
@@ -1696,7 +1752,7 @@ MODES.map=function(){
     grid.appendChild(b); });
   byId("stage").appendChild(grid); speakPrompt();
 };
-/* 5) Kapitánův rozkaz – klepni značky v pořadí */
+/* 5) Stopa za stopou – klepni značky v pořadí */
 MODES.order=function(){
   const n=R.K.length>=6?3:2;
   const seq=shuffle(R.K).slice(0,n);
@@ -1704,7 +1760,7 @@ MODES.order=function(){
   const opts=shuffle([...seq,...fill]).map(id=>SYM[id]);
   const names=seq.map(id=>sname(SYM[id]));
   const say=n===2?"Nejdřív "+lc(names[0])+", potom "+lc(names[1])+".":"Nejdřív "+lc(names[0])+", potom "+lc(names[1])+" a nakonec "+lc(names[2])+".";
-  setPrompt("📜","Kapitánův rozkaz! Klepni popořadě.",["ui_order"]);
+  setPrompt("👣","Stopa za stopou! Klepni popořadě.",["ui_order"]);
   const st=byId("stage"); const chips=el("div","chips");
   const chipEls=seq.map((id,i)=>{ const c=el("div","chip"+(i===0?" cur":""),`<span class="ce">${SYM[id].emoji}</span>${i+1}. ${SYM[id].name}`); chips.appendChild(c); return c; });
   st.appendChild(chips);
@@ -1721,23 +1777,35 @@ MODES.order=function(){
 };
 /* 6) Pexeso – dvojice značka + jméno (bonusová hra, chyby se nepočítají) */
 MODES.pexeso=function(){
-  const pairs=R.K.length>=4?4:3;
-  const ids=shuffle(R.K).slice(0,pairs);
-  const cards=shuffle([...ids.map(id=>({id,kind:"sym"})),...ids.map(id=>({id,kind:"name"}))]);
+  const want=(R.idx>=0&&R.idx<3)?4:6;
+  const fresh=shuffle(R.K.filter(id=>R.newIds.includes(id)));
+  const older=shuffle(R.K.filter(id=>!R.newIds.includes(id)));
+  const ids=[...fresh,...older].slice(0,Math.min(want,Math.max(3,R.K.length)));
+  const pairs=ids.length;
+  const s5=R.idx>=0&&isSea5(R.idx);
+  let n=0; const base=[];
+  ids.forEach(id=>{
+    const s=SYM[id];
+    if(R.sea===0) base.push({id,kind:"sym",n:n++},{id,kind:"sym",n:n++});
+    else if(s5&&s.desc) base.push({id,kind:"sym",n:n++},{id,kind:"desc",n:n++});
+    else base.push({id,kind:"sym",n:n++},{id,kind:"name",n:n++});
+  });
+  const cards=shuffle(base);
   setPrompt("🃏","Pexeso! Najdi dvojice.",["ui_pexeso"]);
   const grid=el("div","pex"+(pairs===3?" three":""));
   let up=[], matched=0, miss=0, busy=false;
   cards.forEach(c=>{
-    const b=el("button","pcard",`<span class="back">🏴‍☠️</span><span class="front">${c.kind==="sym"?svgOf(SYM[c.id]):`<span class="fe">${SYM[c.id].emoji}</span><span>${SYM[c.id].name}</span>`}</span>`);
+    const fr=c.kind==="sym"?svgOf(SYM[c.id]):c.kind==="desc"?descOf(SYM[c.id]):`<span class="fe">${SYM[c.id].emoji}</span><span class="fn">${SYM[c.id].name}</span>`;
+    const b=el("button","pcard",`<span class="back">🗺️</span><span class="front">${fr}</span>`);
     b.setAttribute("aria-label","Karta"); b._c=c;
     b.onclick=()=>{
       if(busy||locked||b.classList.contains("up")) return;
       b.classList.add("up"); sndFlip(); speak(sname(SYM[c.id])); up.push(b);
       if(up.length===2){
         busy=true;
-        if(up[0]._c.id===up[1]._c.id){
+        if(up[0]._c.id===up[1]._c.id&&up[0]._c.n!==up[1]._c.n){
           up.forEach(x=>x.classList.add("match")); matched++; sndGood(); addCoin(b); prog[c.id].ok++; saveProg(); up=[]; busy=false;
-          if(matched===pairs){ locked=true; confetti(130); const bonus=miss<=1?2:1; setTimeout(()=>addCoin(b,bonus),500); R.streak++; addXp(1);
+          if(matched===pairs){ locked=true; confetti(130); const bonus=miss<=1?({4:2,6:3,8:4}[pairs]||2):1; setTimeout(()=>addCoin(b,bonus),500); R.streak++; addXp(pairs>=8?2:1);
             speakSeq([{ids:["ui_pexeso_done"]}], taskDone); }
         } else { miss++; sndWrong(); setTimeout(()=>{ up.forEach(x=>x.classList.remove("up")); up=[]; busy=false; },900); }
       }
@@ -1963,12 +2031,13 @@ function lecekCell(root, key){ return root.querySelector('[data-k="'+key+'"]'); 
 MODES.lesson=function(){
   const steps=(ISLANDS[R.idx].lesson)||[]; const st=byId("stage"); st.innerHTML="";
   const lecek=buildLecek({}); st.appendChild(lecek);
-  const cont=el("button","bigbtn gold pulse",'<span class="bi">✅</span> Rozumím, jdeme na to!');
+  const cont=el("button","bigbtn gold",'<span class="bi">✅</span> Rozumím, jdeme na to!');
   cont.onclick=()=>{ if(locked) return; locked=true; stopSpeak(); if(!G.seenLesson){ G.seenLesson=true; saveG(); } taskDone(); };
-  st.appendChild(cont);
+  const contRow=el("div","btnrow stickyact"); contRow.appendChild(cont); st.appendChild(contRow);
   setPrompt("📜","Popis kontrol – poslechni si Pepíka a prohlédni si lístek.",steps.map(s=>s.id));
   const HI=[[],["name","len","climb"],["a"],["a"],["b"],["d"],["d"]];   /* co zvýraznit u kroku les_1..les_7 */
-  later(()=>speakSeq(steps.map((s,k)=>({ids:[s.id], before:()=>highlightLecek(lecek,HI[k]||[]), gap:300}))),350);
+  later(()=>speakSeq(steps.map((s,k)=>({ids:[s.id], before:()=>highlightLecek(lecek,HI[k]||[]), gap:300})),()=>armReady(cont)),350);
+  readyAfter(cont,70000);
 };
 /* row: dítě ťukne na správnou část lístku (pořadí / kód / obrázek / délka / převýšení / název) */
 const ROW_TXT={a:"Ťukni na pořadí kontroly.",b:"Ťukni na kód kontroly.",d:"Ťukni na obrázek, co na kontrole najdeš.",len:"Ťukni na délku tratě.",climb:"Ťukni na převýšení.",name:"Ťukni na název tratě."};
@@ -2060,27 +2129,28 @@ function renderResult(o){
       const pcs=el("div","pieces"); renderPieces(pcs, o.idx); pr.appendChild(pcs); rw.appendChild(pr);
     } else {   /* 5. moře – místo kousku mapy „naučené obrázky popisu" */
       const learned=(o.isl.pds||[]).filter(n=>prog[PD_BY[n].id]&&prog[PD_BY[n].id].box>=LEARN).length, tot=(o.isl.pds||[]).length;
-      if(tot) add("piece","📋",`Obrázky popisu: ${learned} / ${tot} umíš!<small>Druhá plavba pokračuje.</small>`,800);
+      if(tot) add("piece","📋",`Obrázky popisu: ${learned} / ${tot} umíš!<small>Druhá výprava pokračuje.</small>`,800);
     }
-    add("crew",crew.emoji,`${crew.name} je v posádce!<small>Uvidíš ho na palubě lodi.</small>`,1000);
+    add("crew",crew.emoji,`${crew.name} je v posádce!<small>Uvidíš ho v táboře.</small>`,1000);
     if(o.seaDone) add("piece","🌊",`${seaName(seaOf(o.idx))} je proplouté!<small>Otevírá se ${seaName(seaOf(o.idx)+1)}.</small>`,1200);
   }
-  const bt=byId("resBtns"); bt.innerHTML="";
+  const bt0=byId("resBtns"), bt2=byId("resBtns2"); bt0.innerHTML=""; bt2.innerHTML="";
+  const bt={appendChild:b=>(bt0.children.length?bt2:bt0).appendChild(b)};   /* první tlačítko = hlavní (přilepené dole), další pod ním */
   if(o.win){
     const sea=seaOf(o.idx), regs=seaIslands(sea).filter(i=>!ISLANDS[i].boss);
     const offerReview=o.first&&!isl.boss&&o.idx%SEA_SIZE===2;             /* po prvním dokončení 3. ostrova moře */
     const offerExam=!isl.boss&&o.idx===regs[regs.length-1]&&seaRegularDone(sea);   /* po dokončení 5. běžného ostrova moře */
     o.offerReview=offerReview;
-    if(o.justWon){ const b=el("button","bigbtn gold pulse",'<span class="bi">🗺️</span> Přečíst mapu a najít poklad!'); b.onclick=()=>{ ensureAudio(); startQuest(); }; bt.appendChild(b); }
+    if(o.justWon){ const b=el("button","bigbtn gold",'<span class="bi">🗺️</span> Přečíst mapu a najít poklad!'); b.onclick=()=>{ ensureAudio(); startQuest(); }; bt.appendChild(b); }
     else if(offerReview){
-      const b=el("button","bigbtn gold pulse",'<span class="bi">🔁</span> Zopakovat značky z minulých ostrovů'); b.onclick=()=>{ ensureAudio(); startReview(); }; bt.appendChild(b);
+      const b=el("button","bigbtn gold",'<span class="bi">🔁</span> Zopakovat značky z minulých ostrovů'); b.onclick=()=>{ ensureAudio(); startReview(); }; bt.appendChild(b);
       const bm=el("button","bigbtn",'<span class="bi">🗺️</span> Na mapu ostrovů'); bm.onclick=goWorld; bt.appendChild(bm);
     }
     else { const b=el("button","bigbtn gold",'<span class="bi">🗺️</span> Na mapu ostrovů'); b.onclick=goWorld; bt.appendChild(b); }
     if(offerExam&&!o.justWon){ const bx=el("button","bigbtn sea",'<span class="bi">📜</span> Zkouška moře'); bx.onclick=()=>{ ensureAudio(); startExam(sea); }; bt.appendChild(bx); }
     const b2=el("button","bigbtn",'<span class="bi">🔁</span> Hrát ostrov znovu'); b2.onclick=()=>{ ensureAudio(); startRun(o.idx); }; bt.appendChild(b2);
   } else {
-    const b=el("button","bigbtn gold pulse",'<span class="bi">⚔️</span> Znovu do souboje'); b.onclick=()=>{ ensureAudio(); startRun(o.idx); }; bt.appendChild(b);
+    const b=el("button","bigbtn gold",'<span class="bi">⚔️</span> Znovu do souboje'); b.onclick=()=>{ ensureAudio(); startRun(o.idx); }; bt.appendChild(b);
     const b2=el("button","bigbtn",'<span class="bi">🗺️</span> Na mapu ostrovů'); b2.onclick=goWorld; bt.appendChild(b2);
   }
   show("result");
@@ -2097,7 +2167,8 @@ function renderResult(o){
   } else {
     sndWrong(); seq.push({ids:["mlha_gloat","res_lose"]});
   }
-  later(()=>speakSeq(seq),400);
+  const mainBtn=bt0.querySelector(".bigbtn");
+  later(()=>speakSeq(seq,()=>armReady(mainBtn)),400); readyAfter(mainBtn,25000);
 }
 /* ================== ZKOUŠKA MOŘE, PROCVIČENÍ CHYB, OPAKOVÁNÍ ================== */
 /* Zkouška nic nepodmiňuje (odemykání ostrovů ani souboj s Mlhou na ní nezávisí); dává medaili a zlaťáky. */
@@ -2177,14 +2248,15 @@ function renderExamResult(o){
     grid.appendChild(c);
   });
   const bad=o.ids.filter(id=>o.res[id]!=="g");
-  const bt=byId("xBtns"); bt.innerHTML="";
-  const add=(cls,html,fn)=>{ const b=el("button","bigbtn "+cls,html); b.onclick=()=>{ ensureAudio(); fn(); }; bt.appendChild(b); };
+  const bt=byId("xBtns"), bt2=byId("xBtns2"); bt.innerHTML=""; bt2.innerHTML="";
+  const add=(cls,html,fn)=>{ const b=el("button","bigbtn "+cls,html); b.onclick=()=>{ ensureAudio(); fn(); }; (bt.children.length?bt2:bt).appendChild(b); };   /* první = hlavní (přilepené dole) */
   if(bad.length) add("gold",'<span class="bi">✏️</span> Procvičit chyby',()=>startFix(o.sea,bad));
   add(bad.length?"":"gold",'<span class="bi">📜</span> Zkusit zkoušku znovu',()=>startExam(o.sea));
   add(bad.length?"":"",'<span class="bi">🗺️</span> Na mapu ostrovů',()=>goWorldSea(o.sea));
   show("exam");
   if(o.medal){ sndFanfare(); confetti(o.medal==="gold"?200:(o.medal==="silver"?130:80)); } else sndWrong();
-  later(()=>play([MEDALS[o.medal].id]),500);
+  const mainBtn=bt.querySelector(".bigbtn");
+  later(()=>play([MEDALS[o.medal].id],{onend:()=>armReady(mainBtn)}),500); readyAfter(mainBtn,15000);
 }
 
 /* ---- Zkouška 5. moře: piktogramy sloupce D probrané v moři (najdi obrázek × pojmenuj obrázek), opravné kolo, medaile ---- */
@@ -2259,14 +2331,15 @@ function renderExamResult5(o){
     const c=el("button","xcard "+v,pdDescOf(p)+`<span class="xb">${v==="g"?"🟢":(v==="y"?"🟡":"🔴")}</span>`);
     c.setAttribute("aria-label",p.name); c.onclick=()=>{ ensureAudio(); play([p.clip]); }; grid.appendChild(c); });
   const bad=o.nums.filter(num=>o.res[num]!=="g");
-  const bt=byId("xBtns"); bt.innerHTML="";
-  const add=(cls,html,fn)=>{ const b=el("button","bigbtn "+cls,html); b.onclick=()=>{ ensureAudio(); fn(); }; bt.appendChild(b); };
+  const bt=byId("xBtns"), bt2=byId("xBtns2"); bt.innerHTML=""; bt2.innerHTML="";
+  const add=(cls,html,fn)=>{ const b=el("button","bigbtn "+cls,html); b.onclick=()=>{ ensureAudio(); fn(); }; (bt.children.length?bt2:bt).appendChild(b); };   /* první = hlavní (přilepené dole) */
   if(bad.length) add("gold",'<span class="bi">✏️</span> Procvičit chyby',()=>startFix5(o.sea,bad));
   add(bad.length?"":"gold",'<span class="bi">📜</span> Zkusit zkoušku znovu',()=>startExam5(o.sea));
   add("",'<span class="bi">🗺️</span> Na mapu ostrovů',()=>goWorldSea(o.sea));
   show("exam");
   if(o.medal){ sndFanfare(); confetti(o.medal==="gold"?200:(o.medal==="silver"?130:80)); } else sndWrong();
-  later(()=>play([MEDALS[o.medal].id]),500);
+  const mainBtn=bt.querySelector(".bigbtn");
+  later(()=>play([MEDALS[o.medal].id],{onend:()=>armReady(mainBtn)}),500); readyAfter(mainBtn,15000);
 }
 /* Procvičit chyby 5. moře: každý chybný piktogram jednou (max 8), střídavě pd_jmeno / pd_obrazek, s nápovědou */
 function startFix5(sea,bad){
@@ -2286,10 +2359,11 @@ function simpleDone(o){
   byId("resTitle").textContent=o.title; byId("resStars").hidden=true;
   const rw=byId("resRewards"); rw.innerHTML="";
   if(earned>0){ const r=el("div","reward",`<span class="re">🪙</span><div class="rt">+${earned} zlaťáků</div>`); r.style.animationDelay="300ms"; rw.appendChild(r); }
-  const bt=byId("resBtns"); bt.innerHTML="";
-  o.btns.forEach(x=>{ const b=el("button","bigbtn "+x.cls,x.html); b.onclick=()=>{ ensureAudio(); x.fn(); }; bt.appendChild(b); });
+  const bt=byId("resBtns"), bt2=byId("resBtns2"); bt.innerHTML=""; bt2.innerHTML="";
+  o.btns.forEach(x=>{ const b=el("button","bigbtn "+x.cls,x.html); b.onclick=()=>{ ensureAudio(); x.fn(); }; (bt.children.length?bt2:bt).appendChild(b); });
   show("result"); sndFanfare(); confetti(90);
-  later(()=>play(o.ids),400);
+  const mainBtn=bt.querySelector(".bigbtn");
+  later(()=>play(o.ids,{onend:()=>armReady(mainBtn)}),400); readyAfter(mainBtn,15000);
 }
 function runTypes(n){ const t=["find","what","map"]; return Array.from({length:n},(_,i)=>t[i%3]); }
 /* Procvičit chyby: každá neúspěšná značka jednou (max 8), typy střídavě find / what / map, běžný režim s nápovědou */
@@ -2323,7 +2397,7 @@ function showFinal(first){
   stopSpeak(); clearRun();
   if(first){ G.treasure=true; saveG(); }
   const t=T.ui_final||""; byId("finalText").textContent=t; show("final");
-  if(first){ confetti(300); sndFanfare(); if(!G.owned.includes("hat_crown")){ /* koruna zdarma za dohrání */ G.owned.push("hat_crown"); G.hat="hat_crown"; saveG(); setTimeout(()=>badge("👑","Koruna pro kapitána!"),1500); } }
+  if(first){ confetti(300); sndFanfare(); if(!G.owned.includes("hat_crown")){ /* koruna zdarma za dohrání */ G.owned.push("hat_crown"); G.hat="hat_crown"; saveG(); setTimeout(()=>badge("👑","Koruna pro mistra mapy!"),1500); } }
   later(()=>play(["ui_final"]),300);
 }
 byId("finalFree").onclick=()=>{ ensureAudio(); startEndless(); };
@@ -2334,11 +2408,13 @@ const STORY=[
   {title:"Pirátská mapa", art:"map", ids:["story_0"]},
   {title:"Kapitán Mlha", art:"tear", ids:["story_1","mlha_story"]},
   {title:"Umění číst mapu", art:"symbols", ids:["story_2"]},
+  {title:"Hledač pokladů", art:"hunter", ids:["story_2b"]},
   {title:"Papoušek Pepík", art:"pepik", ids:["story_3"]},
 ].map(p=>Object.assign(p,{text:T[p.ids[0]]||""}));
 let storyPage=0, storyFirst=false;
 function pulseAt(list){ return list.map(([x,y,r])=>`<circle class="pulse" cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#BB29BB" stroke-width="1.2"/>`).join(""); }
 function renderStoryPage(){
+  disarmReady();   /* stránky se střídají bez show() */
   const pg=STORY[storyPage]; const art=byId("storyArt"); art.innerHTML="";
   byId("storyTitle").textContent=pg.title; byId("storyText").textContent=pg.text; byId("storyWho").textContent=pg.art==="tear"?"🌫️":"🦜";
   if(pg.art==="map"){ art.innerHTML=`<svg class="pmap" viewBox="0 0 150 100" aria-hidden="true">${MAP_ART}${pulseAt([[112,64,9]])}</svg>`; }
@@ -2350,17 +2426,19 @@ function renderStoryPage(){
     setTimeout(()=>{ if(!t.isConnected) return; t.classList.add("gone"); [...t.querySelectorAll("svg")].forEach(sv=>{ const a=Math.random()*Math.PI*2, d=160+Math.random()*220; sv.style.transform=`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px) rotate(${(Math.random()*2-1)*140}deg) scale(.6)`; sv.style.opacity="0"; }); sndWrong(); },900);
   }
   else if(pg.art==="symbols"){ art.innerHTML=`<svg class="pmap" viewBox="0 0 150 100" aria-hidden="true">${MAP_ART}${pulseAt([[28,80,23],[70,79,16],[36,48,10]])}</svg>`; }
-  else { art.innerHTML=`<div class="storyrow"><span class="storyhero">🦜</span><span class="storyhero" style="animation-delay:.7s">⛵</span></div>`; }
+  else if(pg.art==="hunter"){ art.innerHTML=`<div class="storyrow"><span class="storyhero">🌲</span><span class="storyhero" style="animation-delay:.4s">🌫️</span><span class="storyhero" style="animation-delay:.8s">🌲</span></div>`; }
+  else { art.innerHTML=`<div class="storyrow"><span class="storyhero">🦜</span><span class="storyhero" style="animation-delay:.7s">🗺️</span></div>`; }
   const dots=byId("storyDots"); dots.innerHTML=""; STORY.forEach((_,i)=>dots.appendChild(el("i",i===storyPage?"on":"")));
-  byId("storyNext").innerHTML=storyPage<STORY.length-1?'<span class="bi">➡️</span> Dál':'<span class="bi">⛵</span> Jdu do toho!';
+  byId("storyNext").innerHTML=storyPage<STORY.length-1?'<span class="bi">➡️</span> Dál':'<span class="bi">🥾</span> Jdu do toho!';
   byId("storySkip").hidden=(storyPage>=STORY.length-1);
-  later(()=>play(pg.ids),350);
+  const nx=byId("storyNext");
+  later(()=>play(pg.ids,{onend:()=>armReady(nx)}),350); readyAfter(nx,20000);
 }
 function startStory(first){ storyFirst=first; storyPage=0; show("story"); renderStoryPage(); }
 function endStory(){ stopSpeak(); const wasFirst=!G.seenIntro; G.seenIntro=true; saveG(); if(wasFirst||storyFirst) goWorld(); else goHome(); }
 byId("storyNext").onclick=()=>{ ensureAudio(); if(storyPage<STORY.length-1){ storyPage++; renderStoryPage(); } else endStory(); };
 byId("storySkip").onclick=endStory;
-byId("storyRead").onclick=()=>play(STORY[storyPage].ids);
+byId("storyRead").onclick=()=>play(STORY[storyPage].ids,{onend:()=>armReady(byId("storyNext"))});
 
 /* ================== FINÁLE – ČTENÍ MAPY A CESTA K POKLADU ================== */
 /* Body na mapě pokladu (souřadnice viewBoxu 150×100) – id odpovídá značce v SY, „poklad" je cíl s křížkem */
@@ -2392,7 +2470,7 @@ function questTap(id){
     qLast=sp; qStep++; renderQuestSteps();
     if(qStep>=QUEST_STEPS.length){
       confetti(300); sndFanfare(); badge("💰","Poklad nalezen!",2600);
-      byId("questText").textContent="Našel jsi poklad! Přečetl jsi celou mapu jako opravdový pirát.";
+      byId("questText").textContent="Našel jsi poklad! Přečetl jsi celou mapu jako opravdový hledač pokladů.";
       play(["quest_done"],{onend:()=>{ qLocked=false; showFinal(true); }});
     } else {
       byId("questText").textContent=QUEST_STEPS[qStep].say;
@@ -2432,7 +2510,7 @@ byId("nextBtn").onclick=()=>{ if(li<SY.length-1){ li++; renderLearn(); speakLear
 /* ================== KRÁM ================== */
 function renderShop(greet){
   const body=byId("shopBody"); body.innerHTML="";
-  const cats=[["hat","🎩 Klobouky"],["flag","🚩 Vlajky na loď"],["treasure","💎 Poklady do truhly"]];
+  const cats=[["hat","🎩 Klobouky"],["flag","🚩 Vlajky nad tábor"],["treasure","💎 Poklady do truhly"]];
   cats.forEach(([cat,title])=>{
     body.appendChild(el("div","shopcat",title));
     const grid=el("div","shopgrid");

@@ -13,22 +13,22 @@ sys.path.insert(0, os.path.dirname(HERE))
 import gen_symbols as g
 
 N = len(g.ISL)
-RANKS = ["Plavčík", "Námořník", "Lodník", "Kormidelník", "Kapitán", "Admirál"]
+RANKS = ["Nováček", "Stopař", "Průzkumník", "Hledač pokladů", "Mistr mapy", "Legenda"]
 NAME_STYLE = ("Přečti nahlas jen následující český název, správnou českou výslovností, klidně a jasně, nepřidávej žádná další slova.")
 
 UI = {
  # domov, mapa ostrovů
- "ui_home_new": "Ahoj, plavčíku! Já jsem papoušek Pepík. Klepni na Začít příběh a dozvíš se, proč musí každý hledač pokladů umět číst mapu.",
- "ui_home_first": "Vítej zpátky, plavčíku! Ještě nemáme žádný kousek mapy. Vyplujeme k Ostrovu papoušků?",
- "ui_home_back": "Vítej zpátky, plavčíku! Další kousek mapy čeká na ostrově:",
- "ui_home_won": "Vítej zpátky, kapitáne! Zlatý kompas máme, ale na Volném moři čeká další dobrodružství. Zvládneš delší sérii než minule?",
+ "ui_home_new": "Ahoj, dobrodruhu! Já jsem papoušek Pepík. Klepni na Začít příběh a dozvíš se, proč musí každý hledač pokladů umět číst mapu.",
+ "ui_home_first": "Vítej zpátky, dobrodruhu! Ještě nemáme žádný kousek mapy. Vyrazíme na Ostrov papoušků?",
+ "ui_home_back": "Vítej zpátky, dobrodruhu! Další kousek mapy čeká na ostrově:",
+ "ui_home_won": "Vítej zpátky, mistře mapy! Zlatý kompas máme, ale v Divočině čeká další dobrodružství. Zvládneš delší sérii než minule?",
  "ui_world": "Tohle je mapa ostrovů. Je nakreslená jako trať v orientačním běhu: start, kontroly a cíl. Na každém ostrově je schovaný kousek mapy. Klepni na první ostrov!",
  "ui_locked": "Sem se dostaneš, až vyluštíš předchozí ostrov.",
  "ui_daily": "Denní poklad! Zlaťáky navíc do truhly. Přijď zase zítra, bude jich ještě víc!",
- "ui_newsyms": "Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!",
+ "ui_newsyms": "Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vyraz na výpravu!",
  "ui_boss_rules": "Já ti vždycky řeknu jméno značky a ty na ni rychle klepni. Vyhraje ten, kdo jich najde víc, než dohoří svíčka.",
- "mlha_challenge": "Arr! Tak ty chceš kousek mapy, plavčíku? Poraz mě v souboji, jestli to dokážeš!",
- "ui_endless": "Volné moře! Kolik značek přečteš v řadě bez chyby?",
+ "mlha_challenge": "Arr! Tak ty chceš kousek mapy, suchozemská kryso? Poraz mě v souboji, jestli to dokážeš!",
+ "ui_endless": "Divočina! Kolik značek přečteš v řadě bez chyby?",
  # souboj
  "ui_duel": "Souboj! Najdi značku dřív než Mlha, než dohoří svíčka.",
  "ui_duel_start": "Souboj začíná! Tři, dva, jedna, teď!",
@@ -44,11 +44,11 @@ UI = {
  "ui_pexeso_done": "Všechny dvojice! Bonus do truhly!",
  "ui_desc_a": "V popisech kontrol je tenhle obrázek. Najdi, jak to vypadá na mapě.",
  "ui_shared": "Kterým značkám na mapě patří tenhle obrázek? Najdi všechny.",
- "ui_shared_intro": "Pozor, plavčíku! Popis kontrol říká, co to je, a mapa ukazuje, jak to vypadá. Proto jeden obrázek v popisu někdy patří víc značkám na mapě.",
+ "ui_shared_intro": "Pozor, dobrodruhu! Popis kontrol říká, co to je, a mapa ukazuje, jak to vypadá. Proto jeden obrázek v popisu někdy patří víc značkám na mapě.",
  "ui_shared_more": "Správně! Ještě nějaká chybí.",
  "ui_desc_yes": "V popisech kontrol má svůj obrázek.",
  "ui_desc_no": "V popisech kontrol se tahle značka nepoužívá, je jen v mapě.",
- "ui_order": "Kapitánův rozkaz! Klepni značky v tomhle pořadí.",
+ "ui_order": "Stopa za stopou! Klepni značky v tomhle pořadí.",
  "ui_desc_b": "Tahle značka je na mapě. Najdi, jak vypadá v popisech kontrol.",
  "no_0": "To ne, zkus to znovu.",
  "no_1": "To není ono, hledej dál.",
@@ -68,12 +68,12 @@ UI = {
  "fr_presnetam": "Přesně tam!",
  "fr_toje": "To je",
  "fr_hledej": "Hledej:",
- "fr_rozkaz": "Kapitánův rozkaz! Nejdřív",
+ "fr_rozkaz": "Stopa za stopou! Nejdřív",
  "fr_potom": "potom",
  "fr_nakonec": "a nakonec",
  "fr_ated": "A teď:",
  "fr_tedhledej": "Teď hledej:",
- "fr_splnen": "Rozkaz splněn!",
+ "fr_splnen": "Stopa nalezena!",
  "fr_namapeje": "Na mapě je",
  "fr_jaktovypada": "Jak to vypadá v popisech kontrol?",
  "fr_anonamape": "Ano! Na mapě je to",
@@ -94,9 +94,9 @@ UI = {
  "res_piece": "Získal jsi kousek mapy!",
  "res_map": "Mapa je celá! Teď ji přečti a najdi poklad!",
  # zkouška moře, procvičení chyb, opakování (klipy zatím nejsou namluvené, hra čte hlasem prohlížeče)
- "exam_intro": "Zkouška moře! Na každou značku se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!",
+ "exam_intro": "Zkouška moře! Na každou značku se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, dobrodruhu!",
  "exam_round2": "Ještě jednou projdeme ty, které se ti pletly. Tentokrát se zeptám obráceně.",
- "exam_gold": "Zlatá medaile! Tohle moře znáš jako své boty. Jsi opravdový kapitán!",
+ "exam_gold": "Zlatá medaile! Tohle moře znáš jako své boty. Jsi opravdový mistr mapy!",
  "exam_silver": "Stříbrná medaile! Skoro všechno si pamatuješ. Tak se pluje!",
  "exam_bronze": "Bronzová medaile! Dobrý začátek. Pár značek ještě procvičíme a bude zlatá.",
  "exam_none": "Tentokrát bez medaile, ale nevěš hlavu! Procvičíme, co se pletlo, a zkusíš to znovu.",
@@ -106,19 +106,20 @@ UI = {
  "review_intro": "Zopakujeme si značky z minulých ostrovů, hlavně ty, co se ti pletou.",
  "review_done": "Výborně, značky z minulých ostrovů máš zase čerstvé!",
  # krám a ovládání
- "ui_shop_intro": "Vítej v krámu! Klobouk si nasadíš na hlavu, vlajku dáš na loď a poklady ti zůstanou v truhle.",
+ "ui_shop_intro": "Vítej v krámu! Klobouk si nasadíš na hlavu, vlajku vyvěsíš nad tábor a poklady ti zůstanou v truhle.",
  "ui_shop_poor": "Ještě nemáš dost zlaťáků. Vylušti další ostrov a budeš je mít!",
  "ui_shop_bought": "Paráda! Je to tvoje!",
  "ui_shop_treasure": "Krásný poklad! Už je v truhle.",
- "ui_shop_equipped": "Hotovo, už je to na lodi.",
- "ui_mute_on": "Zvuk je zapnutý, námořníku.",
+ "ui_shop_equipped": "Hotovo, už to máš v táboře.",
+ "ui_mute_on": "Zvuk je zapnutý, dobrodruhu.",
  "ui_reset": "Hotovo! Můžeš začít znovu od začátku.",
  # příběh
  "story_0": "Před dávnými časy schovali piráti na ostrově poklad. Aby ho zase našli, nakreslili mapu. A hádej co: použili úplně stejné značky, jaké se dnes používají v orientačním běhu! Modrá je voda, žlutá louka, černá tečka balvan a křížek v kolečkách je poklad.",
  "story_1": "Jenže zlý kapitán Mlha mapu ukradl, roztrhal ji na %d kousků a každý schoval na jiném ostrově. Bez mapy poklad nikdo nenajde." % N,
  "mlha_story": "Cha chá! Tu mapu už nikdy neuvidíte!",
  "story_2": "Kdo chce poklad najít, musí umět značky číst: poznat, kde je voda, kde bažina a kudy vede cesta. A pak vymyslet, kudy se k pokladu dostat, aby nezapadl do bažiny a neztratil se v hustníku.",
- "story_3": "Já jsem papoušek Pepík a budu ti pomáhat. Za každý vyluštěný ostrov získáš kousek mapy. Až budeš mít všechny, mapu přečteš, dojdeš k pokladu a Zlatý kompas bude tvůj!",
+ "story_2b": "Kapitán Mlha umí plout po moři, ale v lese se ztratí hned za první borovicí. Proto poklad nikdy nenašel, i když měl mapu v ruce. Ty jsi hledač pokladů. Hledači nesedí na lodi, chodí po lese, přes kopce a louky, a mapu čtou jako knížku.",
+ "story_3": "Já jsem papoušek Pepík. Kdysi jsem seděl na rameni pirátovi, který tu mapu kreslil, a tak znám každou značku. Budu ti pomáhat. Za každý vyluštěný ostrov získáš kousek mapy. Až budeš mít všechny, mapu přečteš, dojdeš k pokladu a Zlatý kompas bude tvůj!",
  # finále – cesta k pokladu
  "quest_0": "Tohle je celá pirátská mapa pokladu. Každá cesta začíná na startu, to je fialový trojúhelník vlevo dole. Klepni na start.",
  "quest_1": "Od startu vede pěší cesta, ta černá přerušovaná čára. Běž po ní až k balvanu, k černé tečce u kontroly jedna. Klepni na balvan.",
@@ -131,15 +132,15 @@ UI = {
  "qhint_4": "Poklad je v cíli, ve dvou fialových kolečkách s křížkem.",
  "qok_0": "Správně!",
  "qok_1": "Přesně tak!",
- "qok_2": "Výborně, čteš mapu jako kapitán!",
- "quest_done": "Hurá! Našel jsi poklad! Přečetl jsi celou mapu jako opravdový pirát. A v truhle je Zlatý kompas!",
+ "qok_2": "Výborně, čteš mapu jako opravdový hledač pokladů!",
+ "quest_done": "Hurá! Našel jsi poklad! Přečetl jsi celou mapu jako opravdový hledač pokladů. A v truhle je Zlatý kompas!",
  "qwrong_bazina": "To je bažina, tam bys promokl a zapadl.",
  "qwrong_voda": "To je voda, tam se neběží, tu obejdi.",
  "qwrong_housti": "To je hustník, tam se zamotáš do větví.",
  "qwrong_poklad": "Poklad je tam, ale nejdřív musíš doběhnout po trati.",
  "qwrong_nothing": "Tam nic není.",
  "qwrong_again": "Poslechni si to znovu.",
- "ui_final": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový kapitán! Na Volném moři na tebe čekají další dobrodružství.",
+ "ui_final": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový mistr mapy! V Divočině na tebe čekají další dobrodružství.",
 }
 
 # 5. moře „Jak mluví popis I“ – zadání a zpětná vazba nových typů úkolů (id jsou závazná pro herní logiku).
@@ -167,11 +168,11 @@ UI5 = {
  "fr_row_climb": "To je převýšení. Říká, kolik metrů celkem vystoupáš do kopce.",
  "fr_row_name": "To je název tratě.",
  # navíc: stávající texty říkají „značka“, tady jde o obrázky z popisu
- "ui_locked5": "Druhá plavba se otevře, až najdeš Zlatý kompas. Nejdřív dohraj a přečti pirátskou mapu!",
- "ui_newpds": "Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!",
+ "ui_locked5": "Druhá výprava se otevře, až najdeš Zlatý kompas. Nejdřív dohraj a přečti pirátskou mapu!",
+ "ui_newpds": "Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vyraz na výpravu!",
  "ui_boss_rules5": "Já ti řeknu jméno a ty rychle klepni na jeho obrázek v popisu kontrol. Vyhraje ten, kdo jich najde víc, než dohoří svíčka.",
  "ui_duel_pd": "Souboj! Najdi v popisu kontrol správný obrázek dřív než Mlha, než dohoří svíčka.",
- "exam5_intro": "Zkouška moře! Na každý obrázek z popisu kontrol se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!",
+ "exam5_intro": "Zkouška moře! Na každý obrázek z popisu kontrol se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, dobrodruhu!",
 }
 
 def build():

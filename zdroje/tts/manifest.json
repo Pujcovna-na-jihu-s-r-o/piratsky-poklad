@@ -905,7 +905,7 @@
  {
   "id": "say_kontrola",
   "role": "pepik",
-  "text": "Fialové kolečko je kontrola, je tam oranžovo-bílý lampionek a čip. Pomůcka: kolečko je jako lampionek, oraž si ho za okamžik!"
+  "text": "Fialové kolečko je kontrola, visí tam oranžovo-bílý lampion a krabička, kde si orazíš. Pomůcka: kolečko je jako lampion, oraž si ho za okamžik!"
  },
  {
   "id": "cheer_kontrola",
@@ -1019,7 +1019,7 @@
  {
   "id": "crew_crew0",
   "role": "pepik",
-  "text": "Opička Kiki se přidává k posádce! Umí šplhat na stěžeň a hlídat zlaťáky."
+  "text": "Opička Kiki se přidává k posádce! Umí šplhat na stromy a hlídat zlaťáky."
  },
  {
   "id": "intro_bazina",
@@ -1067,7 +1067,7 @@
  {
   "id": "crew_crew3",
   "role": "pepik",
-  "text": "Chobotnice Ola se přidává k posádce! Osmi rukama vytáhne kotvu jako nic."
+  "text": "Chobotnice Ola se přidává k posádce! Osmi rukama prohrabe každou skrýš."
  },
  {
   "id": "intro_zavod",
@@ -1083,7 +1083,7 @@
  {
   "id": "crew_crew4",
   "role": "pepik",
-  "text": "Delfín Dan se přidává k posádce! Plave rychleji než každá loď."
+  "text": "Delfín Dan se přidává k posádce! Převeze tě přes každou řeku."
  },
  {
   "id": "intro_mlha1",
@@ -1131,7 +1131,7 @@
  {
   "id": "crew_crew7",
   "role": "pepik",
-  "text": "Tučňák Pája se přidává k posádce! Chodí v obleku i na palubě."
+  "text": "Tučňák Pája se přidává k posádce! Chodí v obleku i v lese."
  },
  {
   "id": "intro_skaly",
@@ -1307,7 +1307,7 @@
  {
   "id": "crew_crew18",
   "role": "pepik",
-  "text": "Koala Kuba se přidává k posádce! Prospí celou plavbu."
+  "text": "Koala Kuba se přidává k posádce! Prospí celou výpravu."
  },
  {
   "id": "intro_melciny",
@@ -1339,7 +1339,7 @@
  {
   "id": "crew_crew20",
   "role": "pepik",
-  "text": "Opička Kiki se přidává k posádce! Umí šplhat na stěžeň a hlídat zlaťáky."
+  "text": "Opička Kiki se přidává k posádce! Umí šplhat na stromy a hlídat zlaťáky."
  },
  {
   "id": "intro_tajemny",
@@ -1482,22 +1482,22 @@
  {
   "id": "q_9",
   "role": "ukol",
-  "text": "Kde si cvakneš čipem?"
+  "text": "Kde cestou hledáš lampion?"
  },
  {
   "id": "hint_9",
   "role": "ukol",
-  "text": "Čipem cvakneš na kontrole, to je jedno kolečko."
+  "text": "Lampion visí na kontrole, to je jedno kolečko. Tam si ho orazíš."
  },
  {
   "id": "q_10",
   "role": "ukol",
-  "text": "Kde je schovaný poklad?"
+  "text": "Kde závod končí?"
  },
  {
   "id": "hint_10",
   "role": "ukol",
-  "text": "Poklad je v cíli, to jsou dvě kolečka."
+  "text": "Závod končí v cíli, to jsou dvě kolečka. A tam je i poklad."
  },
  {
   "id": "q_11",
@@ -1642,7 +1642,7 @@
  {
   "id": "praise_2",
   "role": "ukol",
-  "text": "Výborně, námořníku!"
+  "text": "Výborně, dobrodruhu!"
  },
  {
   "id": "praise_3",
@@ -1725,47 +1725,47 @@
  {
   "id": "rank_1",
   "role": "pepik",
-  "text": "Povýšení! Teď jsi Námořník!"
+  "text": "Povýšení! Teď jsi Stopař!"
  },
  {
   "id": "rank_2",
   "role": "pepik",
-  "text": "Povýšení! Teď jsi Lodník!"
+  "text": "Povýšení! Teď jsi Průzkumník!"
  },
  {
   "id": "rank_3",
   "role": "pepik",
-  "text": "Povýšení! Teď jsi Kormidelník!"
+  "text": "Povýšení! Teď jsi Hledač pokladů!"
  },
  {
   "id": "rank_4",
   "role": "pepik",
-  "text": "Povýšení! Teď jsi Kapitán!"
+  "text": "Povýšení! Teď jsi Mistr mapy!"
  },
  {
   "id": "rank_5",
   "role": "pepik",
-  "text": "Povýšení! Teď jsi Admirál!"
+  "text": "Povýšení! Teď jsi Legenda!"
  },
  {
   "id": "ui_home_new",
   "role": "pepik",
-  "text": "Ahoj, plavčíku! Já jsem papoušek Pepík. Klepni na Začít příběh a dozvíš se, proč musí každý hledač pokladů umět číst mapu."
+  "text": "Ahoj, dobrodruhu! Já jsem papoušek Pepík. Klepni na Začít příběh a dozvíš se, proč musí každý hledač pokladů umět číst mapu."
  },
  {
   "id": "ui_home_first",
   "role": "pepik",
-  "text": "Vítej zpátky, plavčíku! Ještě nemáme žádný kousek mapy. Vyplujeme k Ostrovu papoušků?"
+  "text": "Vítej zpátky, dobrodruhu! Ještě nemáme žádný kousek mapy. Vyrazíme na Ostrov papoušků?"
  },
  {
   "id": "ui_home_back",
   "role": "pepik",
-  "text": "Vítej zpátky, plavčíku! Další kousek mapy čeká na ostrově:"
+  "text": "Vítej zpátky, dobrodruhu! Další kousek mapy čeká na ostrově:"
  },
  {
   "id": "ui_home_won",
   "role": "pepik",
-  "text": "Vítej zpátky, kapitáne! Zlatý kompas máme, ale na Volném moři čeká další dobrodružství. Zvládneš delší sérii než minule?"
+  "text": "Vítej zpátky, mistře mapy! Zlatý kompas máme, ale v Divočině čeká další dobrodružství. Zvládneš delší sérii než minule?"
  },
  {
   "id": "ui_world",
@@ -1785,7 +1785,7 @@
  {
   "id": "ui_newsyms",
   "role": "pepik",
-  "text": "Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!"
+  "text": "Tohle jsou nové značky. Klepni na ně a poslechni si je. Až budeš připravený, vyraz na výpravu!"
  },
  {
   "id": "ui_boss_rules",
@@ -1795,12 +1795,12 @@
  {
   "id": "mlha_challenge",
   "role": "mlha",
-  "text": "Arr! Tak ty chceš kousek mapy, plavčíku? Poraz mě v souboji, jestli to dokážeš!"
+  "text": "Arr! Tak ty chceš kousek mapy, suchozemská kryso? Poraz mě v souboji, jestli to dokážeš!"
  },
  {
   "id": "ui_endless",
   "role": "ukol",
-  "text": "Volné moře! Kolik značek přečteš v řadě bez chyby?"
+  "text": "Divočina! Kolik značek přečteš v řadě bez chyby?"
  },
  {
   "id": "ui_duel",
@@ -1870,7 +1870,7 @@
  {
   "id": "ui_shared_intro",
   "role": "pepik",
-  "text": "Pozor, plavčíku! Popis kontrol říká, co to je, a mapa ukazuje, jak to vypadá. Proto jeden obrázek v popisu někdy patří víc značkám na mapě."
+  "text": "Pozor, dobrodruhu! Popis kontrol říká, co to je, a mapa ukazuje, jak to vypadá. Proto jeden obrázek v popisu někdy patří víc značkám na mapě."
  },
  {
   "id": "ui_shared_more",
@@ -1890,7 +1890,7 @@
  {
   "id": "ui_order",
   "role": "ukol",
-  "text": "Kapitánův rozkaz! Klepni značky v tomhle pořadí."
+  "text": "Stopa za stopou! Klepni značky v tomhle pořadí."
  },
  {
   "id": "ui_desc_b",
@@ -1985,7 +1985,7 @@
  {
   "id": "fr_rozkaz",
   "role": "ukol",
-  "text": "Kapitánův rozkaz! Nejdřív"
+  "text": "Stopa za stopou! Nejdřív"
  },
  {
   "id": "fr_potom",
@@ -2010,7 +2010,7 @@
  {
   "id": "fr_splnen",
   "role": "ukol",
-  "text": "Rozkaz splněn!"
+  "text": "Stopa nalezena!"
  },
  {
   "id": "fr_namapeje",
@@ -2105,7 +2105,7 @@
  {
   "id": "exam_intro",
   "role": "ukol",
-  "text": "Zkouška moře! Na každou značku se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!"
+  "text": "Zkouška moře! Na každou značku se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, dobrodruhu!"
  },
  {
   "id": "exam_round2",
@@ -2115,7 +2115,7 @@
  {
   "id": "exam_gold",
   "role": "pepik",
-  "text": "Zlatá medaile! Tohle moře znáš jako své boty. Jsi opravdový kapitán!"
+  "text": "Zlatá medaile! Tohle moře znáš jako své boty. Jsi opravdový mistr mapy!"
  },
  {
   "id": "exam_silver",
@@ -2160,7 +2160,7 @@
  {
   "id": "ui_shop_intro",
   "role": "pepik",
-  "text": "Vítej v krámu! Klobouk si nasadíš na hlavu, vlajku dáš na loď a poklady ti zůstanou v truhle."
+  "text": "Vítej v krámu! Klobouk si nasadíš na hlavu, vlajku vyvěsíš nad tábor a poklady ti zůstanou v truhle."
  },
  {
   "id": "ui_shop_poor",
@@ -2180,12 +2180,12 @@
  {
   "id": "ui_shop_equipped",
   "role": "pepik",
-  "text": "Hotovo, už je to na lodi."
+  "text": "Hotovo, už to máš v táboře."
  },
  {
   "id": "ui_mute_on",
   "role": "pepik",
-  "text": "Zvuk je zapnutý, námořníku."
+  "text": "Zvuk je zapnutý, dobrodruhu."
  },
  {
   "id": "ui_reset",
@@ -2213,9 +2213,14 @@
   "text": "Kdo chce poklad najít, musí umět značky číst: poznat, kde je voda, kde bažina a kudy vede cesta. A pak vymyslet, kudy se k pokladu dostat, aby nezapadl do bažiny a neztratil se v hustníku."
  },
  {
+  "id": "story_2b",
+  "role": "pepik",
+  "text": "Kapitán Mlha umí plout po moři, ale v lese se ztratí hned za první borovicí. Proto poklad nikdy nenašel, i když měl mapu v ruce. Ty jsi hledač pokladů. Hledači nesedí na lodi, chodí po lese, přes kopce a louky, a mapu čtou jako knížku."
+ },
+ {
   "id": "story_3",
   "role": "pepik",
-  "text": "Já jsem papoušek Pepík a budu ti pomáhat. Za každý vyluštěný ostrov získáš kousek mapy. Až budeš mít všechny, mapu přečteš, dojdeš k pokladu a Zlatý kompas bude tvůj!"
+  "text": "Já jsem papoušek Pepík. Kdysi jsem seděl na rameni pirátovi, který tu mapu kreslil, a tak znám každou značku. Budu ti pomáhat. Za každý vyluštěný ostrov získáš kousek mapy. Až budeš mít všechny, mapu přečteš, dojdeš k pokladu a Zlatý kompas bude tvůj!"
  },
  {
   "id": "quest_0",
@@ -2275,12 +2280,12 @@
  {
   "id": "qok_2",
   "role": "pepik",
-  "text": "Výborně, čteš mapu jako kapitán!"
+  "text": "Výborně, čteš mapu jako opravdový hledač pokladů!"
  },
  {
   "id": "quest_done",
   "role": "pepik",
-  "text": "Hurá! Našel jsi poklad! Přečetl jsi celou mapu jako opravdový pirát. A v truhle je Zlatý kompas!"
+  "text": "Hurá! Našel jsi poklad! Přečetl jsi celou mapu jako opravdový hledač pokladů. A v truhle je Zlatý kompas!"
  },
  {
   "id": "qwrong_bazina",
@@ -2315,7 +2320,7 @@
  {
   "id": "ui_final",
   "role": "pepik",
-  "text": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový kapitán! Na Volném moři na tebe čekají další dobrodružství."
+  "text": "Přečetl jsi celou pirátskou mapu, našel poklad a porazil kapitána Mlhu. Zlatý kompas je tvůj a ty jsi opravdový mistr mapy! V Divočině na tebe čekají další dobrodružství."
  },
  {
   "id": "intro_sifry",
@@ -3669,12 +3674,12 @@
  {
   "id": "ui_locked5",
   "role": "pepik",
-  "text": "Druhá plavba se otevře, až najdeš Zlatý kompas. Nejdřív dohraj a přečti pirátskou mapu!"
+  "text": "Druhá výprava se otevře, až najdeš Zlatý kompas. Nejdřív dohraj a přečti pirátskou mapu!"
  },
  {
   "id": "ui_newpds",
   "role": "pepik",
-  "text": "Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vypluj!"
+  "text": "Tohle jsou nové obrázky z popisu kontrol. Klepni na ně a poslechni si je. Až budeš připravený, vyraz na výpravu!"
  },
  {
   "id": "ui_boss_rules5",
@@ -3689,6 +3694,6 @@
  {
   "id": "exam5_intro",
   "role": "ukol",
-  "text": "Zkouška moře! Na každý obrázek z popisu kontrol se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, námořníku!"
+  "text": "Zkouška moře! Na každý obrázek z popisu kontrol se zeptám jen jednou a nápovědu nedám. Ukaž, co umíš, dobrodruhu!"
  }
 ]

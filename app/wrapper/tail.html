@@ -4,7 +4,9 @@
    (Cache Storage) a pak fungují offline. Při prvním spuštění se stáhnou všechny najednou
    s ukazatelem průběhu; dokud nejsou, čte hlas prohlížeče (cs-CZ). */
 (function(){
-  var AUD_CACHE="pp-audio-v1";
+  /* Verze zvuků: po přegenerování klipů zvednout AUD_VER – nový název cache i nové stažení (příznak pp_audio_dl nese verzi). */
+  var AUD_VER="2", AUD_CACHE="pp-audio-v"+AUD_VER;
+  try{ caches.delete("pp-audio-v1"); }catch(e){}   /* úklid staré cache */
   async function cachedFetch(url){
     try{ var c=await caches.open(AUD_CACHE); var r=await c.match(url); if(r) return r;
       var n=await fetch(url); if(n&&n.ok){ try{ await c.put(url,n.clone()); }catch(e){} } return n;
@@ -30,7 +32,7 @@
     document.body.appendChild(o); return o;
   }
   async function firstRun(){
-    var done=false; try{ done=localStorage.getItem("pp_audio_dl")==="1"; }catch(e){}
+    var done=false; try{ done=localStorage.getItem("pp_audio_dl")===AUD_VER; }catch(e){}
     if(done) return;
     if(typeof AUDIO_IDS==="undefined"||!AUDIO_IDS.length) return;
     if(!navigator.onLine) return;              /* offline: necháme na příště, zatím TTS */
@@ -48,7 +50,7 @@
       await Promise.all(chunk.map(one));
       if(skipped){ /* dál na pozadí bez overlaye */ }
     }
-    try{ localStorage.setItem("pp_audio_dl","1"); }catch(e){}
+    try{ localStorage.setItem("pp_audio_dl",AUD_VER); }catch(e){}
     if(!skipped && o.parentNode) o.remove();
   }
   if(document.readyState==="complete"||document.readyState==="interactive") setTimeout(firstRun,400);
@@ -70,7 +72,7 @@
       if(!armed){ armed=true; b.textContent="Opravdu smazat zvuky? Klepni znovu";
         t=setTimeout(function(){ armed=false; b.textContent="🗑️ Smazat stažené zvuky"; },3000); return; }
       clearTimeout(t); armed=false;
-      try{ await caches.delete("pp-audio-v1"); }catch(e){}
+      try{ await caches.delete(AUD_CACHE); }catch(e){}
       try{ localStorage.removeItem("pp_audio_dl"); }catch(e){}
       try{ for(var k in bufCache) delete bufCache[k]; }catch(e){}
       b.textContent="✅ Smazáno, stáhnou se znovu";
@@ -165,7 +167,7 @@
    Když nějaký klip chybí (nenadabovaný text), použije se sekvenční záloha s hlasem prohlížeče. */
 (function(){
   if(typeof play!=="function"||typeof AUDIO_BASE==="undefined") return;
-  var CACHE="pp-audio-v1", SILENT="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
+  var CACHE="pp-audio-v2", SILENT="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=";
   function logp(m){ try{ if(window.pplog) window.pplog(m); }catch(e){} }
   /* odemčení HTMLAudio cesty tichým klipem v gestu */
   if(typeof ensureAudio==="function"){ var _ea2=ensureAudio, unlocked=false;
