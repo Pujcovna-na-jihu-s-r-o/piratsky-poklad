@@ -560,6 +560,17 @@ FINDS = [
  dict(id="tr_key", set="kram", emoji="🗝️", name="Zlatý klíč", rare=False, price=55, say="Zlatý klíč. K čemu je? To se teprve uvidí."),
 ]
 assert len({f["id"] for f in FINDS}) == len(FINDS)
+# ---------- VÝPRAVA VEN (deník hledače: jednou týdně úkol do opravdového lesa, rodič potvrdí) ----------
+OUT_TASKS = [
+ dict(id="balvan", emoji="🪨", name="Balvan", say="Najdi venku opravdový balvan. Velký kámen, který by se nevešel do batohu. Až ho uvidíš, klepni."),
+ dict(id="krizovatka", emoji="🛤️", name="Křižovatka cest", say="Najdi křižovatku dvou cest. Místo, kde se cesty kříží nebo rozdělují. Na mapě se to pozná hned."),
+ dict(id="kopec", emoji="⛰️", name="Kopec", say="Vyběhni na kopec nebo aspoň do svahu. Nahoře se rozhlédni jako opravdový hledač pokladů."),
+ dict(id="louka", emoji="🌼", name="Louka", say="Najdi louku, otevřené místo bez stromů. Na mapě by byla žlutá."),
+ dict(id="potok", emoji="🏞️", name="Potok", say="Najdi potok nebo řeku. Na mapě je to modrá čára. Nemusíš se brodit, stačí ho vidět."),
+ dict(id="plot", emoji="🚧", name="Plot nebo zeď", say="Najdi plot nebo zeď, které by na mapě byly černou čarou. A najdi i místo, kudy se dá projít."),
+ dict(id="posed", emoji="🪑", name="Posed", say="Najdi posed nebo krmelec. Myslivci je staví v lese a na mapě mají svou značku."),
+ dict(id="strom", emoji="🌳", name="Výrazný strom", say="Najdi strom, který je jiný než ostatní. Osamělý, obrovský nebo zvláštně křivý. Na mapě je to výrazný strom."),
+]
 SYM_BY = {s["id"]: s for s in S}
 def sname(s): return re.sub(r"\s*\(.*?\)", "", s["name"]).strip()
 def crew_of(i):
@@ -932,6 +943,8 @@ out.append("const SYM704={" + ", ".join([f'id:{js_str(_m["id"])}', f'name:{js_st
 out.append("/* Sbírka nálezů (deník hledače) – generováno z gen_symbols.py (FIND_SETS, FINDS); texty vět = klipy find_<id> v T */")
 out.append("const FIND_SETS=[" + ",".join(json.dumps(x, ensure_ascii=False) for x in FIND_SETS) + "];")
 out.append("const FINDS=[" + ",".join(json.dumps({k: v for k, v in f.items() if k != "say"}, ensure_ascii=False) for f in FINDS) + "];")
+out.append("/* Výprava ven (deník hledače) – generováno z gen_symbols.py (OUT_TASKS); zadání = klipy out_<id> v T */")
+out.append("const OUT_TASKS=[" + ",".join(json.dumps({k: v for k, v in o.items() if k != "say"}, ensure_ascii=False) for o in OUT_TASKS) + "];")
 SY_ISL_JS = "\n".join(out)
 
 out = ["const CONCEPTS=["]

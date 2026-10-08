@@ -162,6 +162,23 @@ UI = {
  "ui_album_locked": "Tenhle nález ještě nemáš. Najdeš ho v truhle dne.",
  "ui_album_set": "Celá sada je tvoje! Máš odznak do deníku.",
  "ui_album_all": "Máš úplně všechny nálezy! Jsi mistr sběratel!",
+ # fáze 3: tábor, vybavení, výprava ven, připomínka
+ "ui_out_intro": "Výprava ven! Jednou týdně ti dám úkol do opravdového lesa. Vezmi s sebou rodiče a klepni, až ho splníš.",
+ "ui_out_wait": "Výprava ven je jednou týdně. Další úkol dostaneš za pár dní.",
+ "ui_out_confirm": "Teď ať rodič podrží tlačítko a potvrdí, že jsi to opravdu našel.",
+ "ui_out_done": "Paráda, výprava ven splněna! Tohle je ten nejopravdovější úkol ze všech. Nález do sbírky a zlaťáky jsou tvoje.",
+ "ui_camp_mnam": "Mňam! Polévka od posádky je nejlepší na světě.",
+ "ui_lookout": "Z pozorovatelny vidíš příští ostrov. Tyhle značky tě tam čekají.",
+ "ui_scope_map": "Dalekohledem vidíš, co tě čeká na příštím ostrově.",
+ "ui_compass": "Kompas ti pomůže. Poslechni si ještě jednou, co hledáš.",
+ "ui_compass_used": "Kompas už jsi na tomhle ostrově použil. Teď to zkus sám.",
+ "ui_boots": "Boty hledače tě podržely! Tahle chyba se nepočítá.",
+ "ui_lantern": "Lucerna svítí, svíčka hoří déle!",
+ "ui_bag": "Batoh! Dneska si z truhly odnášíš dva nálezy.",
+ "ui_shop_camp": "Věci do tábora ti postavíme hned. Klepni na ně v táboře a uvidíš, co umějí.",
+ "ui_shop_gear": "Vybavení hledače ti opravdu pomůže na výpravě. Nosíš ho s sebou pořád.",
+ "ui_notify_on": "Připomínka je zapnutá. Každý den v pět odpoledne ti řeknu, že výprava čeká.",
+ "ui_notify_off": "Připomínka je vypnutá.",
 }
 
 # 5. moře „Jak mluví popis I“ – zadání a zpětná vazba nových typů úkolů (id jsou závazná pro herní logiku).
@@ -214,6 +231,7 @@ def build():
         add("q_%d" % k, c["q"]); add("hint_%d" % k, c["hint"])
     for k, p in enumerate(g.PRAISE): add("praise_%d" % k, p)
     for f in g.FINDS: add("find_" + f["id"], f["say"])
+    for o in g.OUT_TASKS: add("out_" + o["id"], o["say"])
     for k, sname_ in enumerate(g.SEAS): add("sea_%d" % k, sname_, style=NAME_STYLE)
     nseas = (N + 5) // 6
     for k in range(max(0, nseas - 1)): add("seadone_%d" % k, "Proplul jsi celé %s! Otevírá se %s." % (g.SEAS[k], g.SEAS[k + 1]))

@@ -259,3 +259,26 @@
   logp("HTMLAudio přehrávač aktivní (slepené věty)");
 })();
 </script>
+<script>
+/* Appka: volitelná denní připomínka v 17:00 (lokální notifikace, výchozí vypnuto).
+   Na webu plugin neexistuje, window.ppNotify se nevytvoří a hra volbu v deníku skryje. */
+(function(){
+  var LN=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.LocalNotifications;
+  if(!LN) return;
+  window.ppNotify={
+    available:true,
+    enable:async function(){
+      try{
+        var p=await LN.requestPermissions();
+        if(!p||p.display!=="granted") return false;
+        await LN.schedule({notifications:[{id:1, title:"Pirátský poklad", body:"Pepík: Dnešní výprava čeká!",
+          schedule:{on:{hour:17,minute:0}, repeats:true, allowWhileIdle:true}}]});
+        return true;
+      }catch(e){ return false; }
+    },
+    disable:async function(){
+      try{ await LN.cancel({notifications:[{id:1}]}); }catch(e){}
+    }
+  };
+})();
+</script>

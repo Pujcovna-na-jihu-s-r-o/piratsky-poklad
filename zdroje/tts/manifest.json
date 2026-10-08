@@ -1810,6 +1810,46 @@
   "text": "Zlatý klíč. K čemu je? To se teprve uvidí."
  },
  {
+  "id": "out_balvan",
+  "role": "pepik",
+  "text": "Najdi venku opravdový balvan. Velký kámen, který by se nevešel do batohu. Až ho uvidíš, klepni."
+ },
+ {
+  "id": "out_krizovatka",
+  "role": "pepik",
+  "text": "Najdi křižovatku dvou cest. Místo, kde se cesty kříží nebo rozdělují. Na mapě se to pozná hned."
+ },
+ {
+  "id": "out_kopec",
+  "role": "pepik",
+  "text": "Vyběhni na kopec nebo aspoň do svahu. Nahoře se rozhlédni jako opravdový hledač pokladů."
+ },
+ {
+  "id": "out_louka",
+  "role": "pepik",
+  "text": "Najdi louku, otevřené místo bez stromů. Na mapě by byla žlutá."
+ },
+ {
+  "id": "out_potok",
+  "role": "pepik",
+  "text": "Najdi potok nebo řeku. Na mapě je to modrá čára. Nemusíš se brodit, stačí ho vidět."
+ },
+ {
+  "id": "out_plot",
+  "role": "pepik",
+  "text": "Najdi plot nebo zeď, které by na mapě byly černou čarou. A najdi i místo, kudy se dá projít."
+ },
+ {
+  "id": "out_posed",
+  "role": "pepik",
+  "text": "Najdi posed nebo krmelec. Myslivci je staví v lese a na mapě mají svou značku."
+ },
+ {
+  "id": "out_strom",
+  "role": "pepik",
+  "text": "Najdi strom, který je jiný než ostatní. Osamělý, obrovský nebo zvláštně křivý. Na mapě je to výrazný strom."
+ },
+ {
   "id": "sea_0",
   "role": "pepik",
   "text": "Papouščí moře",
@@ -2571,6 +2611,86 @@
   "id": "ui_album_all",
   "role": "pepik",
   "text": "Máš úplně všechny nálezy! Jsi mistr sběratel!"
+ },
+ {
+  "id": "ui_out_intro",
+  "role": "pepik",
+  "text": "Výprava ven! Jednou týdně ti dám úkol do opravdového lesa. Vezmi s sebou rodiče a klepni, až ho splníš."
+ },
+ {
+  "id": "ui_out_wait",
+  "role": "pepik",
+  "text": "Výprava ven je jednou týdně. Další úkol dostaneš za pár dní."
+ },
+ {
+  "id": "ui_out_confirm",
+  "role": "pepik",
+  "text": "Teď ať rodič podrží tlačítko a potvrdí, že jsi to opravdu našel."
+ },
+ {
+  "id": "ui_out_done",
+  "role": "pepik",
+  "text": "Paráda, výprava ven splněna! Tohle je ten nejopravdovější úkol ze všech. Nález do sbírky a zlaťáky jsou tvoje."
+ },
+ {
+  "id": "ui_camp_mnam",
+  "role": "pepik",
+  "text": "Mňam! Polévka od posádky je nejlepší na světě."
+ },
+ {
+  "id": "ui_lookout",
+  "role": "pepik",
+  "text": "Z pozorovatelny vidíš příští ostrov. Tyhle značky tě tam čekají."
+ },
+ {
+  "id": "ui_scope_map",
+  "role": "pepik",
+  "text": "Dalekohledem vidíš, co tě čeká na příštím ostrově."
+ },
+ {
+  "id": "ui_compass",
+  "role": "pepik",
+  "text": "Kompas ti pomůže. Poslechni si ještě jednou, co hledáš."
+ },
+ {
+  "id": "ui_compass_used",
+  "role": "pepik",
+  "text": "Kompas už jsi na tomhle ostrově použil. Teď to zkus sám."
+ },
+ {
+  "id": "ui_boots",
+  "role": "pepik",
+  "text": "Boty hledače tě podržely! Tahle chyba se nepočítá."
+ },
+ {
+  "id": "ui_lantern",
+  "role": "pepik",
+  "text": "Lucerna svítí, svíčka hoří déle!"
+ },
+ {
+  "id": "ui_bag",
+  "role": "pepik",
+  "text": "Batoh! Dneska si z truhly odnášíš dva nálezy."
+ },
+ {
+  "id": "ui_shop_camp",
+  "role": "pepik",
+  "text": "Věci do tábora ti postavíme hned. Klepni na ně v táboře a uvidíš, co umějí."
+ },
+ {
+  "id": "ui_shop_gear",
+  "role": "pepik",
+  "text": "Vybavení hledače ti opravdu pomůže na výpravě. Nosíš ho s sebou pořád."
+ },
+ {
+  "id": "ui_notify_on",
+  "role": "pepik",
+  "text": "Připomínka je zapnutá. Každý den v pět odpoledne ti řeknu, že výprava čeká."
+ },
+ {
+  "id": "ui_notify_off",
+  "role": "pepik",
+  "text": "Připomínka je vypnutá."
  },
  {
   "id": "intro_sifry",
