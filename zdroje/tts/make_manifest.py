@@ -160,7 +160,7 @@ UI = {
  "ui_streak_free": "Včera jsme vynechali, ale jeden volný den v týdnu řetěz vydrží. Jedeme dál!",
  "ui_album_intro": "Tohle je tvoje sbírka nálezů. Šedé stíny ještě chybí, najdeš je v truhle dne.",
  "ui_album_locked": "Tenhle nález ještě nemáš. Najdeš ho v truhle dne.",
- "ui_album_set": "Celá sada je tvoje! Máš odznak do deníku.",
+ "ui_album_set": "Celá sada je tvoje! Máš odznak do deníku a dárek do tábora.",
  "ui_album_all": "Máš úplně všechny nálezy! Jsi mistr sběratel!",
  # fáze 3: tábor, vybavení, výprava ven, připomínka
  "ui_out_intro": "Výprava ven! Jednou týdně ti dám úkol do opravdového lesa. Vezmi s sebou rodiče a klepni, až ho splníš.",

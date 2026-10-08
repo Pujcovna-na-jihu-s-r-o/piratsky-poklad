@@ -2,10 +2,11 @@
 
 Stav po regeneraci manifestu.
 
-## Změněné klipy (0)
+## Změněné klipy (1)
 
 | id | hlas | dřív | nově |
 |---|---|---|---|
+| `ui_album_set` | Pepík | Celá sada je tvoje! Máš odznak do deníku. | **Celá sada je tvoje! Máš odznak do deníku a dárek do tábora.** |
 
 ## Nové klipy (24)
 
